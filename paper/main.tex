@@ -1,0 +1,52 @@
+\documentclass[12pt]{article}
+
+% --- Packages ---
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{ifthen} % for safe graphics include
+% after \usepackage{graphicx,hyperref,ifthen}
+\graphicspath{{figs/}{../figs/}} % search both source and build-relative figs
+\newcommand{\maybeincludegraphics}[2][]{%
+  \IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+    \fbox{\parbox{0.85\linewidth}{\centering \textbf{Missing figure:} \texttt{\detokenize{#2}}}}%
+  }%
+}
+
+
+% --- Page setup ---
+\geometry{margin=1in}
+
+% --- Graphics paths ---
+% Look both in ./figs (when running from paper/) and ../figs (when output-directory=build/)
+\graphicspath{{figs/}{../figs/}}
+
+
+% --- Title ---
+\title{Foundations of the X--$\theta$ Framework: $Q=\mathbb{R}^3 \times S^1$ and Testable Predictions}
+\author{Divyang Panchasara}
+\date{September 2025}
+
+\begin{document}
+
+\maketitle
+
+% --- Sections ---
+\input{sections/00_abstract}
+\input{sections/01_motivation}
+\input{sections/02_framework}
+\input{sections/03_math_formalism}
+\input{sections/04_analogies}
+\input{sections/05_qm_gr_conflicts}
+\input{sections/06_theory_predictions}
+\input{sections/07_experiments}
+\input{sections/08_simulations}
+\input{sections/09_related_work}
+\input{sections/10_conclusion}
+
+% --- Bibliography ---
+\bibliographystyle{unsrt}
+\bibliography{refs}
+
+\end{document}

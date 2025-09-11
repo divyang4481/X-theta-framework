@@ -1,0 +1,134 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+bin/
+lib/
+lib64/
+pip-wheel-metadata/
+share/python-wheels/
+wheels/
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+.mypy_cache/
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+venv3/
+.pyenv/
+.python-version
+ipynb_checkpoints
+.profile
+.env
+.env.*
+
+
+# IDEs / editors
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.code-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Distribution / packaging
+pip-wheel-metadata/
+*.egg-info/
+dist/
+build/
+
+# LaTeX intermediate files (common)
+*.aux
+*.bbl
+*.blg
+*.brf
+*.idx
+*.ind
+*.lof
+*.log
+*.lot
+*.out
+*.toc
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.ist
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.nav
+*.snm
+*.synctex(busy)
+*.run.xml
+*.xdv
+*.lof
+*.lot
+
+# LaTeX build directories and generated files
+_build/
+build/
+auto/
+minted/
+_minted-*/
+*.4ct
+*.4tc
+*.xwm
+
+# Paper build
+paper/build/
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.log
+paper/*.out
+paper/*.toc
+paper/*.synctex*
+
+# Figures generated from notebooks
+# (keep them tracked if you want prebuilt PDF without running notebooks)
+# paper/figs/
+
+# Generated PDFs (uncomment if you want to ignore all PDFs)
+# *.pdf
+
+# Common auxiliary / tool files
+latexmkrc
+*.fls
+*.out.ps
+
+# Logs and temp
+*.log.*
+*.tmp
+tmp/
+
+# Custom: keep final, checked-in PDFs by default; ignore only build outputs
+/build/
