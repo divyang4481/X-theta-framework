@@ -1,3 +1,4 @@
+
 \section{Mathematical Formalism}
 
 We extend the wavefunction to include the $\theta$ variable:
@@ -10,8 +11,18 @@ The Hamiltonian acquires an extra kinetic term:
 \begin{equation}
 H = \frac{p_X^2}{2m} + \frac{p_\theta^2}{2I} + V(X,\theta),
 \end{equation}
-where $p_\theta = -i\hbar \partial_\theta$ and $I$ is an effective ``moment
-of inertia'' in the internal space.
+where $p_\theta = -i\hbar \partial_\theta$ and $I$ is an effective ``moment of inertia'' in the internal space. Physically, $I$ may depend on the particle's mass, spin, or charge---for a minimal model, we treat $I$ as a phenomenological parameter to be constrained by experiment.
+
+\subsection{Path Integral Formulation}
+The action for a trajectory in the extended space $Q = \mathbb{R}^3 \times S^1$ is:
+\begin{equation}
+S = \int dt \left[ \frac{m}{2} \dot{X}^2 + \frac{I}{2} \dot{\theta}^2 - V(X,\theta) \right]
+\end{equation}
+The path integral becomes:
+\begin{equation}
+\mathcal{Z} = \int \mathcal{D}X \mathcal{D}\theta \; e^{iS/\hbar}
+\end{equation}
+This shows how $\theta$ modifies quantum amplitudes and phase accumulation.
 
 \subsection{Continuity Equation}
 The probability current now has two components:
