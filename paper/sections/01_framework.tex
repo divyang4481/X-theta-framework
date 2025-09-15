@@ -2,7 +2,7 @@
 
 I collect the full formalism here; later sections specialize to experiments and cosmology. To match prior drafts that used $F_{ab}$, I write the field strength on $Q$ as $G_{ab}\equiv\partial_aA_b-\partial_bA_a$ (synonymous with $F_{ab}$ earlier).
 
-\paragraph{Units and conventions.} Unless stated otherwise, I use SI units in this section and keep $\hbar$ explicit in quantum contexts. In the relativistic Stueckelberg completion (\cref{sec:unified-force}) I adopt natural units with $\hbar=c=1$; when needed, $\hbar$ and $c$ can be restored by dimensional analysis.
+\paragraph{Units and conventions.} Unless stated otherwise, I use SI units in this section and keep $\hbar$ explicit in quantum contexts. In the relativistic St\"uckelberg completion (\cref{sec:unified-force}) I adopt natural units with $\hbar=c=1$; when needed, $\hbar$ and $c$ can be restored by dimensional analysis.
 
 \subsection{Configuration space, connection, and curvature}\label{sec:config-connection-curvature}
 \begin{align}
@@ -15,7 +15,7 @@ Key mixed component: $G_{\mu\theta}=\partial_\mu A_\theta-\partial_\theta A_\mu$
 Think of ordinary space as a city map, and add a tiny circular \emph{dial} $\theta$ at every point. Turning the dial moves you along the fiber circle without moving on the map. The connection $A$ tells you how “phase” changes as you move—on the map and around the dial. The curvature $G=dA$ measures how those changes \emph{fail to cancel} around a loop (that failure is the holonomy). A picture of this "map\,$\times$\,dial" view is shown in Fig.~\ref{fig:map-dial}.
 \end{idea}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{UG_S2_config_space_with_theta.png}
   \caption{Configuration space as “map $\times$ dial”: every base point carries a circular fiber $\theta$. Mixed curvature $G_{\mu\theta}$ links base motion to the fiber dial.}
@@ -80,6 +80,10 @@ Worldline action with einbein $e(\tau)$ and metric $G^{(\mathrm{geom})}_{ab}dq^a
 \begin{equation}
  S_{\mathrm{rel}}=\int d\tau\Big[\frac{1}{2e}\,G^{(\mathrm{geom})}_{ab}\,\dot q^a\dot q^b - \frac{e}{2}\,m^2 + q_X A_\mu\dot X^\mu + q_\theta A_\theta\dot\theta\Big].
 \end{equation}
+
+    \begin{idea}
+      	\textbf{Worldline, in one picture.} Imagine a tram on a flexible track that sags where heavy objects sit. The tram \emph{must} follow those curves. A particle’s worldline is the tram’s path; mass and curvature bend spacetime the way weights bend the track. Tracing the worldline is simply tracing that path through time.
+    \end{idea}
 Mass-shell constraint $G^{ab}_{\mathrm{(geom)}}(P_a-q_aA_a)(P_b-q_bA_b)+m^2=0$. In the NR limit $I=m\kappa^2$.
 
 \paragraph{Worldline and einbein (at a glance).}
@@ -95,6 +99,10 @@ Covariant wave equation on $Q$ (scalar):
  \big[D_\mu D^\mu + \kappa^{-2} D_\theta^2 + m^2\big]\,\Psi(X,\theta)=0,\quad D_\mu=\partial_\mu+\tfrac{i}{\hbar}q_XA_\mu,\; D_\theta=\partial_\theta+\tfrac{i}{\hbar}q_\theta A_\theta.
 \end{equation}
 
+  \begin{idea}
+  	  	\textbf{Covariant waves.} Think of raindrop ripples on a pond. From the shore or from a raft, the pattern \emph{looks} different, but the water’s rule is the same. The covariant wave equation is that universal rule: one description that stays consistent in any coordinates while the ripple can also wrap around the compact $\theta$ direction.
+  \end{idea}
+
 \paragraph{Massless limit (\texorpdfstring{$m\to 0$}{m->0}).} With finite $\kappa_0$,
 \begin{equation}
  S_{m=0}=\int d\tau\Big[\frac{1}{2e}(\eta_{\mu\nu}\dot X^\mu\dot X^\nu+\kappa_0^2\dot\theta^2)+q_X A_\mu\dot X^\mu+q_\theta A_\theta\dot\theta\Big],\quad \eta_{\mu\nu}\dot X^\mu\dot X^\nu+\kappa_0^2\dot\theta^2=0.
@@ -106,7 +114,7 @@ Covariant wave equation on $Q$ (scalar):
 Two pictures: the \emph{rubber sheet} (curvature makes dimples that steer motion) and the \emph{ripple} (the covariant wave equation moves ripples consistently in any good coordinates). The fiber just adds one compact direction the ripple can wrap around; the NR limit packages it into the rotor inertia $I=m\kappa^2$.
 \end{idea}
 
-\paragraph{Parameter map.} The rotor inertia $I$ is a probe property tied to geometry via $I=m\kappa^2$, whereas the 4D vector mass $m_\theta=g_\theta f_\theta$ in the Stueckelberg completion is a mediator property controlling the shared Yukawa range $\lambda_\theta=1/m_\theta$ (\cref{sec:unified-force}).
+\paragraph{Parameter map.} The rotor inertia $I$ is a probe property tied to geometry via $I=m\kappa^2$, whereas the 4D vector mass $m_\theta=g_\theta f_\theta$ in the St\"uckelberg completion is a mediator property controlling the shared Yukawa range $\lambda_\theta=1/m_\theta$ (\cref{sec:unified-force}).
 
 \subsection{Gauge invariance on \texorpdfstring{$Q$}{Q} and large loops}\label{sec:gauge-invariance}
 Gauge transformations: $A_\mu\to A_\mu+\partial_\mu\Lambda_X$, $A_\theta\to A_\theta+\partial_\theta\Lambda_\theta$, with $\psi\to \exp\!\left[-\tfrac{i}{\hbar}(q_X\Lambda_X+q_\theta\Lambda_\theta)\right]\psi$. Under a large gauge transformation around the circle, $\oint A_\theta d\theta \to \oint A_\theta d\theta + 2\pi\,\hbar/q_\theta$, so only $\phi_\theta$ modulo $2\pi$ is physical.
@@ -115,15 +123,16 @@ Gauge transformations: $A_\mu\to A_\mu+\partial_\mu\Lambda_X$, $A_\theta\to A_\t
 Changing gauge is like moving the zero mark on an altimeter: the mountain stays the same. Only \emph{closed loops} reveal structure. March once around the fiber circle and you collect a net phase $\phi_\theta=\tfrac{q_\theta}{\hbar}\oint A_\theta d\theta$, but physics cares only modulo $2\pi$ (large–gauge periodicity).
 \end{idea}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{UG_S2_gauge_and_holonomy.png}
   \caption{Gauge change shifts the reference, not the hill. A closed loop probes holonomy; only $\phi_\theta\ (\bmod\ 2\pi)$ is observable.}
+  \label{fig:ug-holonomy}
 \end{figure}
 
 The Bianchi identity $dG=0$ holds for $G=dA$ when one treats $(A_\mu, A_\theta)$ as components of a single connection; in many experiments I choose $\partial_\theta A_\mu=0$, leaving the measurable gradient $\partial_\mu A_\theta$.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.6\linewidth]{stokes_rectangles.png}
   \caption{Holonomy schematic: Stokes rectangles visualize how loop integrals relate to enclosed curvature; only the loop integral modulo the large-gauge period is observable.}

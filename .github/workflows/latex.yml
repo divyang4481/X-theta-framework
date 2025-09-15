@@ -1,0 +1,52 @@
+name: LaTeX build
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'paper/**'
+  push:
+    branches: [ research ]
+    paths:
+      - 'paper/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up TeX Live
+        uses: teatimeguest/setup-texlive-action@v3
+        with:
+          packages: >-
+            latexmk
+            texlive-latex-recommended
+            texlive-latex-extra
+            texlive-fonts-recommended
+            texlive-bibtex-extra
+            texlive-science
+            texlive-pictures
+
+      - name: Install deps for graphics
+        run: sudo apt-get update && sudo apt-get install -y ghostscript poppler-utils
+
+      - name: Build paper
+        working-directory: paper
+        run: |
+          latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+
+      - name: Fail on undefined references/citations
+        if: always()
+        run: |
+          if grep -E "Undefined reference|Citation .* undefined|Label(s) may have changed" paper/build/main.log; then
+            echo "Undefined references/citations detected" && exit 1
+          fi
+
+      - name: Upload PDF artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: x-theta-paper
+          path: paper/main.pdf

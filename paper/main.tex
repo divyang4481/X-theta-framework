@@ -31,9 +31,14 @@
 \usepackage{xcolor}
 \usepackage{microtype}
 
+% Project-wide macros
+\input{sections/00_macros}
+
 % Helper macros
-% Undergrad-friendly callout box and data-note line
-\newenvironment{idea}{\begin{tcolorbox}\textbf{Idea in one line.} }{\end{tcolorbox}}
+% simple-friendly callout box with optional title and data-note line
+% Usage: \begin{idea} ... \end{idea}  -> default title "Idea in one line."
+%        \begin{idea}[Why this, now.] ... \end{idea}
+\newenvironment{idea}[1][Idea in one line.]{\begin{tcolorbox}\textbf{#1} }{\end{tcolorbox}}
 % Figure/CSV helper: add a one-line CSV pointer under figures. Use detokenize to allow underscores etc.
 \newcommand{\csvnote}[1]{\par\smallskip\noindent\textit{Data:} \texttt{\detokenize{#1}}.}
 % Short unit helpers
