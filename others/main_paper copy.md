@@ -245,6 +245,12 @@ $$
 
  Gauge transformations act as $A_\mu\to A_\mu+\partial_\mu\Lambda_X$, $A_\theta\to A_\theta+\partial_\theta\Lambda_\theta$, with $\psi\to \exp\!\left[-\tfrac{i}{\hbar}(q_X\Lambda_X+q_\theta\Lambda_\theta)\right]\psi$. Under a large gauge transformation around the circle, the holonomy shifts as $\displaystyle \oint A_\theta\,d\theta \to \oint A_\theta\,d\theta + 2\pi\,\hbar/q_\theta$ (large‑gauge period $2\pi\hbar/q_\theta$), so only $\phi_\theta = (q_\theta/\hbar) \oint A_\theta d\theta$ modulo $2\pi$ is physical. The Bianchi identity $dG=0$ holds for $G=dA$ when one treats $(A_\mu, A_\theta)$ as components of a single connection; in experiments we often choose $\partial_\theta A_\mu=0$, leaving the measurable gradient $\partial_\mu A_\theta$.
 
+Holonomy schematic (support)
+
+![Holonomy schematic](../paper/figs/stokes_rectangles.svg)
+
+Caption. Stokes‑type rectangles visualize how loop integrals of the connection relate to enclosed curvature; only the loop integral modulo the large‑gauge period is observable.
+
 <a id="consistency-checks"></a>
 ### 1.5 Consistency checks & known limits
 
@@ -344,6 +350,12 @@ Observables & controls:
 - Gate reversals ($\theta\!:\;0\to2\pi$ vs. $2\pi\to0$) leave the holonomy unchanged; imperfect synchronization broadens fringes but does not change period.
 - Systematics: residual spatial EM drift (control by flipping magnetic shields), path‑length mismatch (scan delay), amplitude‑to‑phase leakage in the gate (characterize with gate‑off runs).
 
+Figure 2.1a — $\theta$–AB conceptual schematic (cartoon)
+
+![S1: $\theta$–AB schematic](../paper/figs/S1_theta_AB_cartoon.svg)
+
+Caption (intuition). A two‑arm interferometer with a compact‑fiber gate: a closed loop in $\theta$ imprints a holonomy phase $\Delta\varphi_\theta = (q_\theta/\hbar)\oint A_\theta d\theta$ even when $\mathbf E=\mathbf B=0$ along both arms. The effective flux $\phi_\theta$ is $2\pi$‑periodic.
+
 #### Detailed experimental description — θ–Aharonov–Bohm
 
 - Equipment
@@ -375,6 +387,22 @@ Observables & controls:
 - Calibration and analysis
   - Fit fringe phase vs $(A_\theta,\,\Delta N_\theta)$; demonstrate $2\pi$ periodicity and returns under integer loop additions.
   - Null check: vary spatial EM at fixed $(A_\theta,\Delta N_\theta)$ and confirm a response at $\Phi=0$.
+
+Figure 2.1b — θ–AB fringe vs effective flux (simulation)
+
+![Exp1: θ–AB fringe vs ϕ_θ](../paper/figs/exp1_fringe_vs_phi.png)
+
+Data: ../paper/data/exp1_fringe_vs_phi.csv  |  Alt SVG: ../paper/figs/exp1_theta_ab_fringe.svg (data: ../paper/data/exp1_theta_ab_fringe.csv)
+
+Extended visuals (support):
+
+Figure 2.1c — AB‑baseline configuration (null spatial EM)
+
+![AB baseline](../paper/figs/ab_baseline.svg)
+
+Figure 2.1d — Vector‑field paths and holonomy intuition
+
+![Vector paths](../paper/figs/avec_quiver_paths.svg)
 
 <a id="cross-hall"></a>
 ### 2.2 Cross‑Hall drift from mixed curvature
@@ -435,6 +463,22 @@ Observables & controls:
   - Fit $\Delta y(\partial_y A_\theta,\dot\theta,T)$ to the Appendix A model to extract the cross‑Hall coefficient and compare with $(I, q_\theta)$ predictions.
   - Report double‑reversal metric (half‑difference between opposite signs) to reject even drifts.
 
+Figure 2.2a — Cross‑Hall drift: centroid trajectory ⟨y(t)⟩ (simulation)
+
+![Exp2: ⟨y(t)⟩ trajectory](../paper/figs/exp2_y_traj.png)
+
+Figure 2.2b — Cross‑Hall scaling: Δy vs T² (simulation)
+
+![Exp2: Δy vs T²](../paper/figs/exp2_dy_vs_T2.png)
+
+Data: ../paper/data/exp2_drift_T2.csv
+
+Figure 2.2c — Cross‑Hall schematic (cartoon)
+
+![S2: cross‑Hall schematic](../paper/figs/S2_cross_hall_cartoon.svg)
+
+Caption (intuition). A spatial gradient in $A_\theta$ ($G_{i\theta}=\partial_i A_\theta$ in the common gauge) coupled to a gate $\dot\theta\neq 0$ produces a sideways drift of the packet centroid.
+
 <a id="sidebands"></a>
 ### 2.3 Sidebands from the [rotor](#glossary-rotor) Hamiltonian
 
@@ -449,6 +493,20 @@ $$
 Intuition: sidebands scale as $\sim\hbar^2/(2I)$; increasing $I$ compresses them.
 
  **Discriminant:** neutral with respect to spatial EM ($q_X=0$) yet $q_\theta\ne 0$ still show sidebands and $\theta$‑AB shifts via $A_\theta$.
+
+Figure 2.3a — Rotor spectrum (conceptual cartoon)
+
+![S3: rotor levels cartoon](../paper/figs/S3_rotor_levels_cartoon.svg)
+
+Figure 2.3b — Rotor levels and sideband spacing ΔE ≈ ħ²/(2I) (simulation)
+
+![Exp3: rotor levels](../paper/figs/exp3_rotor_levels.png)
+
+Data: ../paper/data/exp3_rotor_levels.csv
+
+Figure 2.3c — θ‑only baseline (support)
+
+![θ‑only baseline](../paper/figs/theta_only.svg)
 
 <a id="iom"></a>
 ### 2.4 Order‑of‑magnitude anchors for $I$
@@ -501,6 +559,16 @@ Minimal numeric anchor: if $\tfrac{q_\theta}{\hbar}A_\theta=0.10$ and $N_\theta=
 Notes:
 - Use arm swaps and common‑mode rejection to remove technical phases (cf. atom‑interferometry practice).
 - Document $I$ and $q_\theta$ assumptions alongside $A_\theta$ to tie lab measurements to the cosmology parameters in §3.
+
+Method visuals (support):
+
+Figure 2.7a — FFT of a sample $\theta$ drive
+
+![FFT of θ drive](../paper/figs/fft_theta_drive.svg)
+
+Figure 2.7b — Lock‑in demodulation concept
+
+![Lock‑in demod](../paper/figs/lockin_theta_drive.svg)
 
 ---
 
@@ -577,6 +645,16 @@ $$
 $$
 
 We specialize to $k=0$ only when discussing late‑time evolution; the bounce analysis itself keeps $k>0$.
+
+Figure 3.2a — Bounce schematic (cartoon)
+
+![S4: bounce schematic](../paper/figs/S4_bounce_schematic.svg)
+
+Figure 3.2b — Classical bounce scan: turning point a_min vs parameters (simulation)
+
+![Exp4: bounce scan](../paper/figs/exp4_bounce_scan.svg)
+
+Data: ../paper/data/exp4_bounce_scan.csv
 
 <a id="wdw"></a>
 ### 3.3 Wheeler–DeWitt (quantum) wall at $a=0$
@@ -697,6 +775,16 @@ so the sign is attractive/repulsive according to the product of source charges (
   where $\Phi_\theta$ is the $U(1)_\theta$ flux through the loop. Null the spatial EM field; any residual fringe shift tags fiber holonomy.
 
 The same $\lambda_\theta$ appears in all three sectors → a cross‑consistency lever.
+
+Figure 6.3a — Yukawa profile V(r) with range λ_θ (simulation)
+
+![Exp5: Yukawa profile](../paper/figs/exp5_yukawa_profile.png)
+
+Figure 6.3b — Fractional deviation from 1/r vs distance (simulation)
+
+![Exp5: fractional deviation](../paper/figs/exp5_fractional_deviation.png)
+
+Data: ../paper/data/exp5_yukawa_profiles.csv
 
 ### 6.4 Anomalies and charge assignments
 

@@ -1,12 +1,8 @@
-csv_path,svg_path,intended_section
-exp1_fringe_vs_phi.csv,figs_svg/exp1_fringe_vs_phi.svg,§2.1 θ–AB (null EM)
-exp2_drift_T2.csv,figs_svg/exp2_dy_vs_T2.svg,§2.2 Cross–Hall drift (scaling)
-exp2_drift_T2.csv,figs_svg/exp2_y_traj.svg,§2.2 Cross–Hall drift (trajectory)
-exp3_rotor_levels.csv,figs_svg/exp3_rotor_levels.svg,§2.3 Rotor sidebands
-exp4_bounce_scan.csv,figs_svg/exp4_bounce_scan.svg,§3.2 Bounce a_min vs Π_θ
-exp5_yukawa_profiles.csv,figs_svg/exp5_yukawa_profile.svg,§6.3 Yukawa profile
-exp5_yukawa_profiles.csv,figs_svg/exp5_fractional_deviation.svg,§6.3 Fractional deviations
-(n/a),figs_svg/S1_theta_AB_cartoon.svg,§0/§2.1 Educational schematic
-(n/a),figs_svg/S2_cross_hall_cartoon.svg,§2.2 Educational schematic
-(n/a),figs_svg/S3_rotor_levels_cartoon.svg,§2.3 Educational schematic
-(n/a),figs_svg/S4_bounce_schematic.svg,§3.2 Educational schematic
+section,figure,data,label
+§2.1 θ–AB,C:\workspace\Physics\X-theta-framework\paper\figs\exp1_theta_ab_fringe.svg,C:\workspace\Physics\X-theta-framework\paper\data\exp1_theta_ab_fringe.csv,Fringes vs φ_θ
+§2.2 Cross–Hall,C:\workspace\Physics\X-theta-framework\paper\figs\exp2_y_traj.svg,,<y(t)> trajectory
+§2.2 Cross–Hall,C:\workspace\Physics\X-theta-framework\paper\figs\exp2_drift_T2.svg,C:\workspace\Physics\X-theta-framework\paper\data\exp2_drift_T2.csv,Δy vs T^2
+§2.3 Rotor,C:\workspace\Physics\X-theta-framework\paper\figs\exp3_rotor_levels.svg,C:\workspace\Physics\X-theta-framework\paper\data\exp3_rotor_levels.csv,E_ℓ vs ℓ
+§3.2 Bounce,C:\workspace\Physics\X-theta-framework\paper\figs\exp4_bounce_scan.svg,C:\workspace\Physics\X-theta-framework\paper\data\exp4_bounce_scan.csv,a_min vs Π_θ
+§6.3 Yukawa,C:\workspace\Physics\X-theta-framework\paper\figs\exp5_yukawa_profile.svg,C:\workspace\Physics\X-theta-framework\paper\data\exp5_yukawa_profiles.csv,Yukawa profile
+§6.3 Yukawa,C:\workspace\Physics\X-theta-framework\paper\figs\exp5_fractional_deviation.svg,C:\workspace\Physics\X-theta-framework\paper\data\exp5_yukawa_profiles.csv,Fractional deviations
