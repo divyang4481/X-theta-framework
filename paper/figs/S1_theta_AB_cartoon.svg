@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500" viewBox="0 0 900 500">
+  <rect width="100%" height="100%" fill="white"/>
+  <!-- Beam splitter and arms -->
+  <line x1="120" y1="250" x2="260" y2="250" stroke="black" stroke-width="3"/>
+  <line x1="260" y1="250" x2="420" y2="140" stroke="black" stroke-width="3"/>
+  <line x1="260" y1="250" x2="420" y2="360" stroke="black" stroke-width="3"/>
+  <line x1="420" y1="140" x2="700" y2="140" stroke="black" stroke-width="3"/>
+  <line x1="420" y1="360" x2="700" y2="360" stroke="black" stroke-width="3"/>
+  <!-- Recombiner -->
+  <line x1="700" y1="140" x2="820" y2="250" stroke="black" stroke-width="3"/>
+  <line x1="700" y1="360" x2="820" y2="250" stroke="black" stroke-width="3"/>
+  <!-- Detectors -->
+  <circle cx="850" cy="250" r="8" fill="black"/>
+  <text x="860" y="255" font-size="18" font-family="Arial">Detector</text>
+  <!-- Theta knob -->
+  <circle cx="540" cy="250" r="60" fill="none" stroke="#555" stroke-width="2"/>
+  <path d="M 540 190 A 60 60 0 1 1 539.9 190" fill="none" stroke="#999" stroke-width="4" stroke-dasharray="6,6"/>
+  <line x1="540" y1="250" x2="585" y2="225" stroke="#cc6600" stroke-width="5"/>
+  <text x="510" y="330" font-size="20" font-family="Arial" fill="#cc6600">θ gate</text>
+  <!-- Holonomy loop label -->
+  <path d="M 520 250 C 520 215 560 215 560 250 C 560 285 520 285 520 250" fill="none" stroke="#0066cc" stroke-width="3"/>
+  <text x="565" y="255" font-size="18" font-family="Arial" fill="#0066cc">Δφ = φθ (mod 2π)</text>
+  <!-- Null EM badge -->
+  <rect x="80" y="60" width="200" height="40" fill="#eef" stroke="#88a"/>
+  <text x="100" y="85" font-size="18" font-family="Arial" fill="#223">Null spatial EM</text>
+  <!-- Caption -->
+  <text x="100" y="470" font-size="18" font-family="Arial">θ–AB @ null EM: sweeping φθ by 2π returns the fringes.</text>
+</svg>

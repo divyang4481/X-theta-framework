@@ -1,0 +1,21 @@
+{
+  "timestamp_utc": "2025-09-13T12:34:12Z",
+  "python_version": "3.10.18 | packaged by Anaconda, Inc. | (main, Jun  5 2025, 13:08:55) [MSC v.1929 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26100-SP0",
+  "numpy_version": "2.0.1",
+  "params": {
+    "Phi0": 4.135667696923859e-15,
+    "q": -1.602176634e-19,
+    "hbar": 1.054571817e-34,
+    "lockin": {
+      "Fs": 2000,
+      "T": 2.0,
+      "f_drive": 47.0,
+      "phi_em_frac": 0.35
+    }
+  },
+  "seeds": {
+    "python_random": 1337,
+    "numpy_random": 1337
+  }
+}

@@ -6,6 +6,13 @@
 \usepackage{geometry}
 \usepackage{hyperref}
 \usepackage{ifthen} % for safe graphics include
+\pdfstringdefDisableCommands{%
+  \def\theta{theta}%
+  \def\Theta{Theta}%
+  \def\mathbb#1{#1}%
+  \def\mathbf#1{#1}%
+  \def\mathrm#1{#1}%
+}
 % after \usepackage{graphicx,hyperref,ifthen}
 \graphicspath{{figs/}{../figs/}} % search both source and build-relative figs
 \newcommand{\maybeincludegraphics}[2][]{%
