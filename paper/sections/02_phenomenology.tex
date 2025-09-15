@@ -5,11 +5,11 @@ Convention: “Fiber-off” means $I\to\infty$ and $q_\theta\to 0$.
 \subsection{\texorpdfstring{$\theta$}{theta}--AB phase under null spatial fields}\label{sec:theta-ab}
 Action contribution along a closed internal loop $\mathcal C_\theta$ yields a path-integral phase $\exp[i(q_\theta/\hbar)\oint A_\theta d\theta]$. The observable phase is
 \begin{equation}
- \Delta\varphi_\theta = \frac{q_\theta}{\hbar}\oint A_\theta\,d\theta \pmod{2\pi},\qquad \bm E=\bm B=0.
+ \Delta\phi_\theta = \frac{q_\theta}{\hbar}\oint A_\theta\,d\theta \pmod{2\pi},\qquad \bm E=\bm B=0.
 \end{equation}
 
 \begin{idea}
-Like a note sounding different in two rooms, the \emph{phase} can shift even when $\mathbf{E}=\mathbf{B}=0$ along both arms. Here the hidden dial $\theta$ supplies the shift: $\Delta\varphi=\phi_\theta \\ (\mathrm{mod}\ 2\pi)$, so sweeping $\phi_\theta$ by $2\pi$ brings the fringes right back.
+Like a note sounding different in two rooms, the \emph{phase} can shift even when $\mathbf{E}=\mathbf{B}=0$ along both arms. Here the hidden dial $\theta$ supplies the shift: $\Delta\phi_\theta=\phi_\theta$ (\(\bmod\ 2\pi\)), so sweeping $\phi_\theta$ by $2\pi$ brings the fringes right back.
 \end{idea}
 
 \begin{figure}[h]
@@ -27,8 +27,6 @@ Like a note sounding different in two rooms, the \emph{phase} can shift even whe
 \end{figure}
 
 \csvnote{../paper/data/exp1_theta_ab_fringe.csv}
-
-Support visuals: AB baseline (\texttt{ab\_baseline.png}) and vector-field paths (\texttt{avec\_quiver\_paths.png}).
 
 \subsection{Cross-Hall drift from mixed curvature}\label{sec:cross-hall}
 With $\bm E=\bm B=0$, $m\ddot X_i = q_\theta\,G_{i\theta}\,\dot\theta$ ($G_{i\theta}=\partial_iA_\theta-\partial_\theta A_i$). For a uniform gate of duration $T$ and nearly constant $\dot\theta$,
@@ -106,7 +104,7 @@ Vary spatial flux at fixed $\phi_\theta$; enforce $2\pi$ periodicity in $\phi_\t
 Fiber-off ($I\to\infty$, $q_\theta\to 0$), pure $\theta$ sector ($q_X\to 0$), large-gauge periodicity in $\oint A_\theta d\theta$.
 
 \subsection{Methods: \texorpdfstring{$\theta$}{theta}--Aharonov--Bohm interferometer}\label{sec:methods-theta-ab}
-Program a $\theta(t)$ modulation that advances by $2\pi N_\theta$ during the arm transit; if $A_\theta$ is approximately constant along the path in $\theta$, then $\Delta\varphi_\theta \approx (q_\theta/\hbar) A_\theta (2\pi N_\theta)$.
+Program a $\theta(t)$ modulation that advances by $2\pi N_\theta$ during the arm transit; if $A_\theta$ is approximately constant along the path in $\theta$, then $\Delta\phi_\theta \approx (q_\theta/\hbar) A_\theta (2\pi N_\theta)$.
 
 \begin{figure}[h]
   \centering
