@@ -1,0 +1,7 @@
+\section*{Appendix A --- Cross-Hall Drift Coefficient (paraxial beam)}\label{sec:appendix-a}
+\addcontentsline{toc}{section}{Appendix A --- Cross-Hall Drift Coefficient}
+Assuming a paraxial Gaussian $\psi(X,\theta,t)=\Phi(X,t)\,\chi(\theta,t)$ and slowly varying $A_\theta(X)$ across waist $w_0$, treating $G_{i\theta}=\partial_iA_\theta$ as uniform and linearizing the moments gives
+\begin{equation}
+ \frac{d^2}{dt^2}\langle X_i\rangle = \frac{q_\theta}{m}\,(\partial_iA_\theta)\,\langle\dot\theta\rangle + \mathcal O(w_0^{-2},\partial_i^2A_\theta),
+\end{equation}
+so a square gate of duration $T$ yields $\Delta X_i = \alpha\,\frac{q_\theta}{m}\,(\partial_iA_\theta)\,\frac{T^2}{2}\,\langle\dot\theta\rangle$ with $\alpha\approx 1$ (top-hat) and $\alpha<1$ (Gaussian).

@@ -35,10 +35,10 @@ $BcfPath  = Join-Path $OutDir ($MainBase + ".bcf")  # biblatex indicator
 
 function Run-Bib {
   Push-Location $OutDir
-  if (Test-Path $BcfPath -and (Exists "biber")) {
+  if ((Test-Path $BcfPath) -and (Exists "biber")) {
     Write-Host ">> biber $MainBase"
     biber $MainBase
-  } elseif (Test-Path $AuxPath -and (Exists "bibtex")) {
+  } elseif ((Test-Path $AuxPath) -and (Exists "bibtex")) {
     Write-Host ">> bibtex $MainBase"
     bibtex $MainBase
   } else {

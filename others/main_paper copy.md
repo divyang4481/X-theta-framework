@@ -247,7 +247,7 @@ $$
 
 Holonomy schematic (support)
 
-![Holonomy schematic](../paper/figs/stokes_rectangles.svg)
+![Holonomy schematic](../paper/figs/stokes_rectangles.png)
 
 Caption. Stokes‑type rectangles visualize how loop integrals of the connection relate to enclosed curvature; only the loop integral modulo the large‑gauge period is observable.
 
@@ -352,7 +352,7 @@ Observables & controls:
 
 Figure 2.1a — $\theta$–AB conceptual schematic (cartoon)
 
-![S1: $\theta$–AB schematic](../paper/figs/S1_theta_AB_cartoon.svg)
+![S1: $\theta$–AB schematic](../paper/figs/S1_theta_AB_cartoon.png)
 
 Caption (intuition). A two‑arm interferometer with a compact‑fiber gate: a closed loop in $\theta$ imprints a holonomy phase $\Delta\varphi_\theta = (q_\theta/\hbar)\oint A_\theta d\theta$ even when $\mathbf E=\mathbf B=0$ along both arms. The effective flux $\phi_\theta$ is $2\pi$‑periodic.
 
@@ -392,17 +392,17 @@ Figure 2.1b — θ–AB fringe vs effective flux (simulation)
 
 ![Exp1: θ–AB fringe vs ϕ_θ](../paper/figs/exp1_fringe_vs_phi.png)
 
-Data: ../paper/data/exp1_fringe_vs_phi.csv  |  Alt SVG: ../paper/figs/exp1_theta_ab_fringe.svg (data: ../paper/data/exp1_theta_ab_fringe.csv)
+Data: ../paper/data/exp1_fringe_vs_phi.csv  |  Alt png: ../paper/figs/exp1_theta_ab_fringe.png (data: ../paper/data/exp1_theta_ab_fringe.csv)
 
 Extended visuals (support):
 
 Figure 2.1c — AB‑baseline configuration (null spatial EM)
 
-![AB baseline](../paper/figs/ab_baseline.svg)
+![AB baseline](../paper/figs/ab_baseline.png)
 
 Figure 2.1d — Vector‑field paths and holonomy intuition
 
-![Vector paths](../paper/figs/avec_quiver_paths.svg)
+![Vector paths](../paper/figs/avec_quiver_paths.png)
 
 <a id="cross-hall"></a>
 ### 2.2 Cross‑Hall drift from mixed curvature
@@ -475,7 +475,7 @@ Data: ../paper/data/exp2_drift_T2.csv
 
 Figure 2.2c — Cross‑Hall schematic (cartoon)
 
-![S2: cross‑Hall schematic](../paper/figs/S2_cross_hall_cartoon.svg)
+![S2: cross‑Hall schematic](../paper/figs/S2_cross_hall_cartoon.png)
 
 Caption (intuition). A spatial gradient in $A_\theta$ ($G_{i\theta}=\partial_i A_\theta$ in the common gauge) coupled to a gate $\dot\theta\neq 0$ produces a sideways drift of the packet centroid.
 
@@ -496,7 +496,7 @@ Intuition: sidebands scale as $\sim\hbar^2/(2I)$; increasing $I$ compresses them
 
 Figure 2.3a — Rotor spectrum (conceptual cartoon)
 
-![S3: rotor levels cartoon](../paper/figs/S3_rotor_levels_cartoon.svg)
+![S3: rotor levels cartoon](../paper/figs/S3_rotor_levels_cartoon.png)
 
 Figure 2.3b — Rotor levels and sideband spacing ΔE ≈ ħ²/(2I) (simulation)
 
@@ -506,7 +506,7 @@ Data: ../paper/data/exp3_rotor_levels.csv
 
 Figure 2.3c — θ‑only baseline (support)
 
-![θ‑only baseline](../paper/figs/theta_only.svg)
+![θ‑only baseline](../paper/figs/theta_only.png)
 
 <a id="iom"></a>
 ### 2.4 Order‑of‑magnitude anchors for $I$
@@ -564,11 +564,11 @@ Method visuals (support):
 
 Figure 2.7a — FFT of a sample $\theta$ drive
 
-![FFT of θ drive](../paper/figs/fft_theta_drive.svg)
+![FFT of θ drive](../paper/figs/fft_theta_drive.png)
 
 Figure 2.7b — Lock‑in demodulation concept
 
-![Lock‑in demod](../paper/figs/lockin_theta_drive.svg)
+![Lock‑in demod](../paper/figs/lockin_theta_drive.png)
 
 ---
 
@@ -648,11 +648,11 @@ We specialize to $k=0$ only when discussing late‑time evolution; the bounce an
 
 Figure 3.2a — Bounce schematic (cartoon)
 
-![S4: bounce schematic](../paper/figs/S4_bounce_schematic.svg)
+![S4: bounce schematic](../paper/figs/S4_bounce_schematic.png)
 
 Figure 3.2b — Classical bounce scan: turning point a_min vs parameters (simulation)
 
-![Exp4: bounce scan](../paper/figs/exp4_bounce_scan.svg)
+![Exp4: bounce scan](../paper/figs/exp4_bounce_scan.png)
 
 Data: ../paper/data/exp4_bounce_scan.csv
 
