@@ -23,6 +23,14 @@ if (Test-Path $FigsSrc) {
   Copy-Item -Path $FigsSrc -Destination $FigsDst -Recurse -Force
 }
 
+# --- Ensure .bib files are available in build (so bibtex can find them)
+$BibSrcFiles = Get-ChildItem -Path $PSScriptRoot -Filter *.bib -File -ErrorAction SilentlyContinue
+if ($BibSrcFiles) {
+  foreach ($bib in $BibSrcFiles) {
+    Copy-Item -Path $bib.FullName -Destination $OutDir -Force -ErrorAction SilentlyContinue
+  }
+}
+
 function Exists($cmd) { $null -ne (Get-Command $cmd -ErrorAction SilentlyContinue) }
 
 # Helpers
@@ -35,10 +43,10 @@ $BcfPath  = Join-Path $OutDir ($MainBase + ".bcf")  # biblatex indicator
 
 function Run-Bib {
   Push-Location $OutDir
-  if (Test-Path $BcfPath -and (Exists "biber")) {
+  if ((Test-Path $BcfPath) -and (Exists "biber")) {
     Write-Host ">> biber $MainBase"
     biber $MainBase
-  } elseif (Test-Path $AuxPath -and (Exists "bibtex")) {
+  } elseif ((Test-Path $AuxPath) -and (Exists "bibtex")) {
     Write-Host ">> bibtex $MainBase"
     bibtex $MainBase
   } else {

@@ -1,0 +1,8 @@
+section,figure,data,label
+§2.1 θ–AB,C:\workspace\Physics\X-theta-framework\paper\figs\exp1_theta_ab_fringe.svg,C:\workspace\Physics\X-theta-framework\paper\data\exp1_theta_ab_fringe.csv,Fringes vs φ_θ
+§2.2 Cross–Hall,C:\workspace\Physics\X-theta-framework\paper\figs\exp2_y_traj.svg,,<y(t)> trajectory
+§2.2 Cross–Hall,C:\workspace\Physics\X-theta-framework\paper\figs\exp2_drift_T2.svg,C:\workspace\Physics\X-theta-framework\paper\data\exp2_drift_T2.csv,Δy vs T^2
+§2.3 Rotor,C:\workspace\Physics\X-theta-framework\paper\figs\exp3_rotor_levels.svg,C:\workspace\Physics\X-theta-framework\paper\data\exp3_rotor_levels.csv,E_ℓ vs ℓ
+§3.2 Bounce,C:\workspace\Physics\X-theta-framework\paper\figs\exp4_bounce_scan.svg,C:\workspace\Physics\X-theta-framework\paper\data\exp4_bounce_scan.csv,a_min vs Π_θ
+§6.3 Yukawa,C:\workspace\Physics\X-theta-framework\paper\figs\exp5_yukawa_profile.svg,C:\workspace\Physics\X-theta-framework\paper\data\exp5_yukawa_profiles.csv,Yukawa profile
+§6.3 Yukawa,C:\workspace\Physics\X-theta-framework\paper\figs\exp5_fractional_deviation.svg,C:\workspace\Physics\X-theta-framework\paper\data\exp5_yukawa_profiles.csv,Fractional deviations

@@ -1,0 +1,8 @@
+{
+  "snr_on_over_off": 1069.8546159198308,
+  "shape_corr_vs_absJ1": 0.9999997152395563,
+  "f_drive_Hz": 47.0,
+  "Fs": 2000,
+  "T_sec": 2.0,
+  "phi_em_frac": 0.35
+}

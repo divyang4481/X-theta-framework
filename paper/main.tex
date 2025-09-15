@@ -1,51 +1,86 @@
-\documentclass[12pt]{article}
+% Main LaTeX file for the X–θ Framework paper
+\documentclass[11pt,a4paper]{article}
 
-% --- Packages ---
-\usepackage{amsmath, amssymb}
+% Encoding and fonts
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+
+% Math and symbols
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{physics}
+
+% Figures and subfigures; support for SVGs
 \usepackage{graphicx}
-\usepackage{geometry}
-\usepackage{hyperref}
-\usepackage{ifthen} % for safe graphics include
-% after \usepackage{graphicx,hyperref,ifthen}
-\graphicspath{{figs/}{../figs/}} % search both source and build-relative figs
-\newcommand{\maybeincludegraphics}[2][]{%
-  \IfFileExists{#2}{\includegraphics[#1]{#2}}{%
-    \fbox{\parbox{0.85\linewidth}{\centering \textbf{Missing figure:} \texttt{\detokenize{#2}}}}%
-  }%
-}
+\usepackage{subcaption}
+\graphicspath{{figs/}}
 
+% Tables and layout
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{csvsimple}
+\usepackage[most]{tcolorbox}
+\tcbset{colback=black!2!white, colframe=black!35, boxrule=0.4pt, arc=2pt}
+\usepackage[margin=1in]{geometry}
 
-% --- Page setup ---
-\geometry{margin=1in}
+% Links and references
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
 
-% --- Graphics paths ---
-% Look both in ./figs (when running from paper/) and ../figs (when output-directory=build/)
-\graphicspath{{figs/}{../figs/}}
+% Misc
+\usepackage{xcolor}
+\usepackage{microtype}
 
+% Project-wide macros
+\input{sections/00_macros}
 
-% --- Title ---
-\title{Foundations of the X--$\theta$ Framework: $Q=\mathbb{R}^3 \times S^1$ and Testable Predictions}
+% Helper macros
+% simple-friendly callout box with optional title and data-note line
+% Usage: \begin{idea} ... \end{idea}  -> default title "Idea in one line."
+%        \begin{idea}[Why this, now.] ... \end{idea}
+\newenvironment{idea}[1][Idea in one line.]{\begin{tcolorbox}\textbf{#1} }{\end{tcolorbox}}
+% Figure/CSV helper: add a one-line CSV pointer under figures. Use detokenize to allow underscores etc.
+\newcommand{\csvnote}[1]{\par\smallskip\noindent\textit{Data:} \texttt{\detokenize{#1}}.}
+% Short unit helpers
+\newcommand{\mm}{\si{\milli\metre}}
+\newcommand{\ms}{\si{\milli\second}}
+
+% Metadata
+\title{The X–\texorpdfstring{$\theta$}{theta} Framework: Geometry, Analogies, Math, and Where It Bites Physics\\\large A Unified Non-Relativistic and Relativistic Formulation on \texorpdfstring{$Q=\mathbb{R}^{3,1}\times S^1$}{Q=R^{3,1}xS1}}
 \author{Divyang Panchasara}
-\date{September 2025}
+\date{DRAFT — 14 Sep 2025}
 
 \begin{document}
 
 \maketitle
+\tableofcontents
+\clearpage
 
-% --- Sections ---
+% Sections
 \input{sections/00_abstract}
-\input{sections/01_motivation}
-\input{sections/02_framework}
-\input{sections/03_math_formalism}
-\input{sections/04_analogies}
-\input{sections/05_qm_gr_conflicts}
-\input{sections/06_theory_predictions}
-\input{sections/07_experiments}
-\input{sections/08_simulations}
-\input{sections/09_related_work}
-\input{sections/10_conclusion}
+\input{sections/00_overview}
+\input{sections/01_framework}
+\input{sections/02_phenomenology}
+\input{sections/02b_experimental_details}
+\input{sections/03_cosmology}
+\input{sections/04_simulation_playbook}
+\input{sections/04b_sim_assumptions}
+\input{sections/05_reserved}
+\input{sections/06_unified_force}
+\input{sections/07_notation_symbols}
+\input{sections/07b_glossary_notation}
+\input{sections/08_related_work}
+\input{sections/08b_comparative_analysis}
+\input{sections/09_vacuum_energy}
+\input{sections/10_data_code_availability}
+\appendix
+\input{sections/appendix_a}
+\input{sections/appendix_b}
 
-% --- Bibliography ---
+% Bibliography
+\clearpage
+% Include all references even if not cited
+\nocite{*}
 \bibliographystyle{unsrt}
 \bibliography{refs}
 
