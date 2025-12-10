@@ -2,7 +2,6 @@ import matplotlib
 matplotlib.use('Agg') # Set backend to Agg for headless environment
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.fftpack import fft2, ifft2, fftshift, ifftshift
 
 class XThetaQuantumSim:
     def __init__(self, N_y=128, N_theta=64, L_y=20.0, mass=1.0, Inertia=0.5, q_theta=1.0):
