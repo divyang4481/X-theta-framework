@@ -44,7 +44,8 @@ ipynb_checkpoints
 .profile
 .env
 .env.*
-
+.phy
+.phy/
 
 # IDEs / editors
 .vscode/
@@ -132,3 +133,4 @@ tmp/
 
 # Custom: keep final, checked-in PDFs by default; ignore only build outputs
 /build/
+.fake
