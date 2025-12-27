@@ -1,0 +1,39 @@
+# Building the X–θ Document (paper2)
+
+This is the **latest drafting workspace** for the X–θ Framework paper.
+
+We keep the LaTeX sources modular under `paper2/sections/` and compile everything from `paper2/main.tex`. Figures should be generated into `paper2/figs/`. Outputs go to `paper2/build/`.
+
+## Prereqs
+
+- **Windows**: MiKTeX (or TeX Live) + `latexmk` (MiKTeX installs it).
+- **macOS**: MacTeX (or TeX Live).
+- **Linux**: TeX Live (install `latexmk` via your package manager).
+- Optional: Python/conda for generating figures via notebooks.
+
+## Quick Start
+
+### Windows (PowerShell)
+```powershell
+cd paper2
+.\build.ps1              # full build (latexmk if available)
+.\build.ps1 -Fast        # quick pass (pdflatex-only)
+```
+
+### macOS / Linux
+```bash
+cd paper2
+make pdf                 # full build with latexmk
+make fast                # quick pass (pdflatex-only)
+make open                # open the built PDF
+
+```
+
+### Classic Manual (any OS)
+```bash
+pdflatex -interaction=nonstopmode -output-directory=build main.tex
+bibtex build/main
+pdflatex -interaction=nonstopmode -output-directory=build main.tex
+pdflatex -interaction=nonstopmode -output-directory=build main.tex
+
+```
