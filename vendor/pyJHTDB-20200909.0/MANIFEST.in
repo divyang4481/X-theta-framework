@@ -1,0 +1,6 @@
+include turblib/turblib.c
+include turblib/soapC.c
+include turblib/soapClient.c
+include turblib/stdsoap2.c
+include turblib/*.h
+include turblib/*.nsmap

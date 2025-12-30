@@ -1,5 +1,9 @@
+import sys
 import matplotlib
-matplotlib.use('Agg') # Set backend to Agg for headless environment
+
+# Only force a headless backend when not running in Jupyter.
+if 'ipykernel' not in sys.modules:
+    matplotlib.use('Agg')
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.fftpack import fft, ifft, fftshift

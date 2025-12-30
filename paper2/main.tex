@@ -1,0 +1,364 @@
+﻿\documentclass[twocolumn,aps,prd,nofootinbib]{revtex4-2}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{graphicx} % Required for inserting images
+\graphicspath{{figs/}{build/figs/}}
+
+\begin{document}
+
+\csname title\endcsname{The X-Theta Framework: Loop-Dependent Phase Transport via Fiber-Bundle Connections and a 4D St\"uckelberg EFT}
+\author{Divyang Panchasara}
+\affiliation{Gemini Research Institute}
+\date{\today}
+
+\begin{abstract}
+We present the X--$\theta$ framework: an effective geometric extension in which an internal compact phase coordinate $\theta$ is transported by a U(1) connection over spacetime. The central observable is a loop-phase response, quantified by the transport phase
+\begin{equation}
+\Delta\theta_{\mathrm{loop}}(\gamma)=-\kappa\oint_\gamma A\quad(\mathrm{mod}\,2\pi),
+\end{equation}
+which depends primarily on loop geometry (flux/area/winding) rather than traversal time. We formulate the gauge-invariant bundle/St\"uckelberg structure, relate it to Wilson loops and geometric phase, and outline how standard covariant derivatives arise from dimensional reduction on an $S^1$ fiber. A minimal 4D completion includes an explicit St\"uckelberg kinetic term $\tfrac{f^2}{2}(\partial_\mu\theta+\kappa A_\mu)^2$, which provides dynamics for the phase field and induces a mediator mass scale. We propose a three-tier validation suite (simulation, tabletop analogs, and open-data stress tests) with explicit falsifiers for numerical artifacts and speed-dominated drift. Consistency constraints are discussed, including Yukawa-suppressed long-range deviations to preserve agreement with solar-system gravity. We emphasize that Bell-violating correlations, if reproduced, require an explicit relaxation of at least one Bell assumption; the framework provides language for such hypotheses but no automatic loophole.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+\subsection{Motivation: from ``local forces'' to ``loop-phase response''}
+% Content from work.md
+Standard classical dynamics is local: the state at time ($t$) determines the evolution at ($t+dt$) through force laws. Quantum mechanics adds phase, but typically treats it as either (i) a gauge artifact or (ii) a wavefunction property without an explicit geometric ``mechanism.''
+
+The X--$\theta$ framework explores a minimal geometric extension: add a compact internal coordinate ($\theta$) and allow its evolution to depend on closed loops in X through a connection. This yields an operationally testable claim:
+
+\begin{quote}
+        	\textbf{Claim (Loop-phase invariance):} for closed loops ($\gamma$), the net transport phase ($\Delta\theta_{\mathrm{loop}}(\gamma)$) depends primarily on loop geometry (area/winding/flux), and only weakly on traversal details (speed profile), up to controlled noise.
+\end{quote}
+
+\subsection{Relation to known physics}
+% Content from work.md
+X--$\theta$ sits in the intersection of three established ideas:
+\begin{enumerate}
+    \item \textbf{Gauge connections and Wilson loops:} loop integrals ($\oint A\cdot dx$) are physical through gauge-invariant Wilson loops / geometric phase \cite{Wilson1974,Nakahara2003,AharonovBohm1959}.
+    \item \textbf{Geometric phases:} Berry-type phases depend on closed paths in parameter space \cite{Berry1984}.
+    \item \textbf{Kaluza--Klein style decompositions:} compact directions can appear as gauge structure \cite{Kaluza1921, Klein1926}, but X--$\theta$ treats $\theta$ as an \textbf{effective} compact internal degree of freedom, not necessarily Planck-scale.
+\end{enumerate}
+The framework is not presented as ``proof of new physics'' but as a \textbf{working EFT} with \textbf{kill tests}.
+
+\subsection{Bridge from our original checklist (what the new formalism actually solves)}
+% Content from work.md (table)
+Moving to a principal-bundle / St\"uckelberg framing cleanly separates what is \textbf{definition-level} (gauge-invariant and already rigorous) from what is \textbf{model-level} (extra dynamical assumptions that must be tested).
+
+\begin{table*}[!htbp]
+\caption{Bridge from our original checklist}
+\begin{ruledtabular}
+\begin{tabular}{r l >{\raggedright\arraybackslash}p{0.54\textwidth} >{\raggedright\arraybackslash}p{0.16\textwidth}}
+                Item & Topic & What the bundle/St\"uckelberg math gives immediately & Status in this draft \\
+\colrule
+1 & AB / loop phase & For a base loop $\gamma\subset X$, the physical fiber shift is defined by parallel transport, giving $\Delta\theta_{\mathrm{loop}}(\gamma)=-\kappa\oint_\gamma A$ (mod $2\pi$). By Stokes, $\Delta\theta_{\mathrm{loop}}(\gamma)=-\kappa\iint_S F$ for any spanning surface $\partial S=\gamma$. AB regime: $F=0$ along the path but nontrivial enclosed flux/topology. & \textbf{Included + Tier-1 tests} \\
+2 & Mercury / gravity & Provides a clean place to add a short-range scalar/mediator (e.g., from a St\"uckelberg mode) and compute weak-field corrections; also forces explicit observational constraints. & \textbf{Future work / constraints} \\
+3 & Schr\"odinger recovery & Makes ``minimal coupling'' geometric: covariant derivatives appear once $\omega=d\theta+\kappa A$ is the invariant phase 1-form; a full derivation depends on specifying a matter action. & \textbf{Partial (mapping only)} \\
+4--5 & Bell / EPR & Provides language for hypotheses (shared fiber phase / joint connection), but does not automatically evade Bell. Any completion must specify a probability map and clearly state which Bell assumption is relaxed. & \textbf{Hypothesis only (flagged)} \\
+6 & Singularity & Bundle language can host stabilization mechanisms (fiber freezing, higher-curvature terms), but this is a dynamical claim requiring an explicit high-curvature completion. & \textbf{Outlook / speculative} \\
+7 & Forces & Standard gauge logic: curvature $F$ encodes force-like effects. ``Unification'' is a separate claim requiring explicit EFT couplings plus tests. & \textbf{Framed as EFT} \\
+\end{tabular}
+\end{ruledtabular}
+\label{tab:checklist}
+\end{table*}
+
+\section{Geometric skeleton: bundle, connection, transport}
+
+\subsection{Principal-bundle viewpoint (reviewer-proof wording)}
+% Content from work.md
+Instead of treating $\theta$ as a rigid fifth coordinate, treat it as a \textbf{local fiber coordinate} on a principal U(1) bundle $\pi:P\to X$. The connection is the physical object; $\theta$ and $A_\mu$ are individually gauge-dependent, but the St\"uckelberg combination is gauge-invariant.
+
+Operationally, define the invariant 1-form $\omega \equiv d\theta + \kappa A_\mu(x) dx^\mu$. Under a local gauge parameter $\Lambda(x)$:
+\begin{itemize}
+    \item $A_\mu \to A_\mu - (1/\kappa) \partial_\mu\Lambda$
+    \item $\theta \to \theta + \Lambda$
+\end{itemize}
+so $\omega$ is unchanged.
+
+\paragraph{Important point (fixing a common ambiguity).}
+The 1-form $\omega$ lives on the \emph{total space} (it requires both $x(t)$ and $\theta(t)$). A loop $\gamma\subset X$ in the base does \emph{not} by itself define a curve in $P$ (or $Q$) unless we specify a lift. The physically meaningful ``net shift in $\theta$'' is therefore defined via \textbf{horizontal lift / parallel transport}.
+
+Concretely: given a base path $x(t)$, define its horizontal lift $\Gamma(t)=(x(t),\theta(t))$ by
+\begin{equation}
+\omega(\dot{\Gamma})=0\quad\Longleftrightarrow\quad \dot\theta(t)=-\kappa\,A_\mu(x(t))\,\dot x^\mu(t).
+\end{equation}
+For a base loop $\gamma$ with $x(T)=x(0)$, the transported fiber angle shifts by
+\begin{equation}
+\Delta\theta_{\mathrm{loop}}(\gamma)\equiv \theta(T)-\theta(0)= -\kappa\oint_\gamma A\quad(\mathrm{mod}\,2\pi).
+\end{equation}
+This is the loop-phase response observable. (Along the horizontal lift one has $\oint_\Gamma \omega=0$ by definition; the measured quantity is the endpoint mismatch in $\theta$ after transport.)
+
+This wording matches what reviewers expect from geometric-phase physics: the observable is a Wilson-loop-like quantity, not a coordinate \cite{Wilson1974,Nakahara2003}.
+
+\subsection{Gauge invariance}
+Define a local gauge transformation by a scalar ($\Lambda(x)$):
+\begin{equation}
+\theta \to \theta' = \theta + \Lambda(x),
+\qquad
+ A_\mu \to A_\mu' = A_\mu - \frac{1}{\kappa}\,\partial_\mu \Lambda.
+\end{equation}
+Then
+\begin{align}
+\omega' &= d\theta' + \kappa A_\mu' dx^\mu \\
+&= (d\theta + d\Lambda) + \kappa\left(A_\mu - \frac{1}{\kappa}\partial_\mu\Lambda\right)dx^\mu \\
+&= d\theta + \kappa A_\mu dx^\mu \\
+&= \omega.
+\end{align}
+So ($\omega$) is gauge invariant.
+
+\subsection{Loop phase as observable}
+For a closed loop ($\gamma\subset X$):
+\begin{equation}
+\Delta\theta_{\mathrm{loop}}(\gamma)
+\equiv -\kappa \oint_\gamma A_\mu dx^\mu
+\quad (\mathrm{mod}\,2\pi).
+\end{equation}
+Equivalently, define the Wilson loop element in U(1):
+\begin{equation}
+W(\gamma) = \exp\Big(i\kappa\oint_\gamma A_\mu dx^\mu\Big) = e^{-i\Delta\theta_{\mathrm{loop}}(\gamma)}.
+\end{equation}
+
+\subsection{Curvature and Stokes' theorem}
+The curvature two-form is
+\begin{equation}
+F \equiv dA = \frac{1}{2}F_{\mu\nu}dx^\mu\wedge dx^\nu,
+\qquad
+ F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu.
+\end{equation}
+For a surface ($S$) with boundary ($\partial S = \gamma$), Stokes gives
+\begin{equation}
+\oint_\gamma A = \int_S dA = \int_S F.
+\end{equation}
+Hence
+\begin{equation}
+\Delta\theta_{\mathrm{loop}}(\gamma) = -\kappa\int_S F.
+\end{equation}
+This is the precise statement of ``geometry dominates traversal'': the loop phase depends on the \textbf{flux of curvature} through the loop.
+
+\subsection{Units \& scales (minimal sanity)}
+I take $\theta$ to be dimensionless (an angle), so $d\theta$ is dimensionless. Therefore $\kappa A_\mu dx^\mu$ must also be dimensionless, implying $[\kappa A_\mu]=\mathrm{length}^{-1}$ (and for $\mu=0$ equivalently time$^{-1}$).
+Equivalently, one may treat $A_\mu$ as having inverse-length units and $\kappa$ dimensionless, or treat $A_\mu$ as carrying conventional field units and let $\kappa$ carry the compensating dimensions; either convention is acceptable provided $\kappa\oint A\cdot dx$ is dimensionless.
+
+In the hydrodynamic proxy $\mathbf A=\alpha_{\mathrm{eff}}\mathbf u$ with $[\mathbf u]=\mathrm{length}/\mathrm{time}$, the coefficient must satisfy $[\alpha_{\mathrm{eff}}]=[\mathbf A]/[\mathbf u]$ so that $\kappa\oint \mathbf A\cdot d\boldsymbol{\ell}$ is dimensionless. This bookkeeping is not cosmetic: it pins down what ``small coupling'' means and prevents scale-driven contradictions between lab-scale phases and solar-system constraints. We treat $\mathbf A=\alpha_{\rm eff}\mathbf u$ as a \emph{modeling choice}; only the loop functional $\oint_\gamma \mathbf A\cdot d\boldsymbol{\ell}$ (equivalently $\int_S \nabla\times\mathbf A\cdot d\mathbf S$) is claimed observable.
+
+\input{sections/03_emergence_of_qm.tex}
+
+\input{sections/05_bell_epr.tex}
+
+\section{Phenomenology II: hydrodynamic ansatz (macroscopic analog)}
+
+\subsection{Map from fluid velocity to connection}
+% Content from work.md
+Let ($\mathbf{u}(x,t)$) be an incompressible velocity field (($\nabla\cdot\mathbf{u}=0$)). Postulate
+\begin{equation}
+\mathbf{A}(x,t) = \alpha_{\mathrm{eff}}\,\mathbf{u}(x,t).
+\end{equation}
+Then curvature becomes proportional to vorticity:
+\begin{equation}
+\nabla\times\mathbf{A} = \alpha_{\mathrm{eff}}\,(\nabla\times\mathbf{u}) = \alpha_{\mathrm{eff}}\,\boldsymbol{\varpi}.
+\end{equation}
+
+\subsection{Loop phase equals circulation / vorticity flux}
+% Content from work.md
+For a material loop ($\gamma$):
+\begin{equation}
+\Delta\theta_{\mathrm{loop}}(\gamma) = -\kappa\oint_\gamma \mathbf{A}\cdot d\mathbf{\ell}
+= -\kappa\alpha_{\mathrm{eff}}\oint_\gamma \mathbf{u}\cdot d\mathbf{\ell}
+= -\kappa\alpha_{\mathrm{eff}}\int_S \boldsymbol{\varpi}\cdot d\mathbf{S}.
+\end{equation}
+Thus \textbf{winding/area/vorticity flux} statistics can be used as topological predictors of ($\Delta\theta$). 
+
+\subsection{Worked scaling example (solid-body rotation; $\alpha_{\mathrm{eff}}$ sanity)}
+To make the scaling concrete, consider a 2D solid-body rotation field $\mathbf u(\mathbf r)=\boldsymbol{\Omega}\times\mathbf r$ (constant angular velocity). Then the vorticity is uniform: $\boldsymbol{\varpi}=\nabla\times\mathbf u=2\boldsymbol{\Omega}$. For a planar loop of signed area $A$ with normal aligned with $\boldsymbol{\Omega}$,
+\begin{equation}
+\oint_\gamma \mathbf u\cdot d\boldsymbol{\ell}=\int_S \boldsymbol{\varpi}\cdot d\mathbf S = 2\,\Omega\,A,
+\end{equation}
+so the loop-phase response becomes
+\begin{equation}
+\Delta\theta_{\mathrm{loop}}\approx -2\,\kappa\,\alpha_{\mathrm{eff}}\,\Omega\,A\quad(\mathrm{mod}\,2\pi).
+\end{equation}
+This example makes three intended points: (i) the dependence is geometric ($A$) rather than traversal-time dominated, (ii) the sign is set by orientation, and (iii) $\kappa\alpha_{\mathrm{eff}}$ is fixed by a single amplitude calibration in any hydrodynamic proxy implementation.
+
+\section{Validation suite (three tiers): simulation + tabletop + open data}
+
+\noindent\textbf{Tier meaning.} Tier 1 is \textbf{pipeline validation + numerical falsifiers} (time-warp invariance, step-size stability, and pure-gauge controls). Tier 2/3 are the first places the framework becomes \emph{physically} testable once an independently measured dial variable is implemented.
+
+\subsection{Shared falsification principle}
+% Content from work.md
+For each tier we test whether the measured/inferred loop-phase statistic is:
+\begin{itemize}
+    \item \textbf{Geometry-dominated:} correlates with area/winding/flux
+    \item \textbf{Speed-robust:} weakly dependent on traversal time or speed profile
+    \item \textbf{Numerically stable:} robust to sampling rate and integration step size
+\end{itemize}
+We enforce a ``fit-once / predict-many'' rule: ($\kappa$) is fit on a calibration subset then held fixed.
+
+\subsection{Tier 1 --- pipeline validation (AB-like loop functional)}
+% Content from work.md
+\subsubsection*{T1-Sim: clean 2D simulation}
+\begin{enumerate}
+    \item Choose $\mathbf{A}(x,y)=\tfrac{B}{2}(-y,\,x)$.
+    \item Generate loop families:
+    \begin{itemize}
+        \item same geometry, different speed profiles
+        \item same area, different shapes
+        \item same duration, different area
+    \end{itemize}
+    \item Integrate ($\Delta\theta_{\mathrm{loop}} = -\kappa\oint \mathbf{A}\cdot d\mathbf{x}$) by discrete line integral.
+    \item Plot:
+    \begin{itemize}
+        \item ($\Delta\theta$) vs ($A_{\mathrm{signed}}$) (collapse)
+        \item ($\Delta\theta$) vs duration (should not collapse)
+    \end{itemize}
+\end{enumerate}
+
+    \noindent\textbf{Pipeline falsifier:} if duration explains ($\Delta\theta$) better than area in a static $\mathbf{A}(\mathbf{x})$, reject the estimator/pipeline (this indicates time-warp sensitivity or numerical artifacts, not new physics).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\linewidth]{cross_hall_drift_baseline.png}
+    \caption{Representative baseline output from the simulation pipeline (cross-Hall drift observable).}\label{fig:cross-hall-baseline}
+\end{figure}
+
+\subsubsection*{T1-Tabletop: phone-loop (estimator sanity check)}
+\begin{itemize}
+    \item Record trajectory (indoor VO or IMU fusion).
+    \item Reconstruct ($x(t)$), compute ($A_{\mathrm{signed}}$).
+    \item Compute the loop functional ($\Delta\theta_{\mathrm{loop}}=-\kappa\oint \mathbf{A}\cdot d\mathbf{x}$) and verify invariance under time warps / resampling.
+\end{itemize}
+    \noindent\textbf{Control:} same path, time-warped resampling $\to$ same ($\Delta\theta_{\mathrm{loop}}$).
+    \noindent\textbf{Scope note:} this validates the estimator and robustness pipeline, not a direct measurement of a physical $\theta$ degree of freedom.
+
+\subsubsection*{T1-Tabletop: physical dial (proposed falsifiable implementation)}
+To avoid a closed loop of definitions, the tabletop test must measure a dial variable independently. One minimal option is to realize $\theta$ as an instrumented rotor/oscillator phase (encoder or phase meter) and test whether its measured net shift correlates with $\oint A\cdot dx$ under controlled loop families. In this draft, I treat this as a proposed implementation detail rather than a completed experimental claim.
+
+\subsubsection*{T1-Open data: loop invariance with ground truth trajectories}
+\begin{itemize}
+    \item Extract loop segments from public VI datasets.
+    \item Compute ($A_{\mathrm{signed}}$).
+    \item Stress-test with time-warps.
+\end{itemize}
+Goal: demonstrate estimator invariance under time warps and resampling.
+
+\subsection{Tier 2 --- loop-phase statistics under turbulence}
+% Content from work.md
+\subsubsection*{T2-Sim: synthetic turbulence + tracer loop-phase response}
+\begin{enumerate}
+    \item Build incompressible ($\mathbf{u}(x,t)$) via Fourier modes.
+    \item Advect tracers: ($\dot x = u(x,t)$).
+    \item Define loop statistics in sliding windows:
+    \begin{itemize}
+        \item signed area ($A_w$)
+        \item winding number ($n_w$) about vortices
+    \end{itemize}
+    \item Set ($\mathbf{A}=\alpha\mathbf{u}$) and integrate ($\Delta\theta$).
+\end{enumerate}
+\textbf{Success metric:}
+\begin{equation}
+\mathbb{E}[\Delta\theta\mid n_w=n] \approx n\,C\quad\text{stable as noise increases.}
+\end{equation}
+\noindent\textbf{Negative control:} pure gauge ($\mathbf{A}=\nabla\chi\Rightarrow \Delta\theta\approx 0$).
+
+\subsubsection*{T2-Tabletop: shallow tank + tracer tracking}
+\begin{itemize}
+    \item Overhead camera; track dye blobs.
+    \item Compute winding/area stats.
+    \item Compare predicted ($\Delta\theta$) statistics to dial evolution.
+\end{itemize}
+
+\subsubsection*{T2-Open data: turbulent benchmark injection}
+\begin{itemize}
+    \item Load velocity fields from a public turbulence dataset.
+    \item Advect tracers and compute loop-phase statistics.
+\end{itemize}
+Deliverables:
+\begin{itemize}
+    \item ($\mathbb{E}[\Delta\theta]$) vs winding number with confidence bands
+    \item slope stability vs step size and added noise
+\end{itemize}
+
+\subsection{Tier 3 --- spectral sideband fingerprint}
+% Content from work.md
+\subsubsection*{T3-Sim: controlled phase modulation}
+Let ($\\theta(t)=\\omega_\theta t$) and
+($s(t)=\\cos(\\omega_0 t+\\beta\\theta(t))$).
+Then spectral lines appear at
+($\\omega_0\pm m\\omega_\theta$).
+
+In the sinusoidal PM case, sideband amplitudes follow Bessel scaling:
+\begin{equation}
+\cos(\\omega_0 t + \\beta\sin\\omega_\theta t)
+= \sum_{m=-\infty}^{\\infty} J_m(\\beta)\,\cos((\\omega_0+m\\omega_\theta)t).
+\end{equation}
+So a clean falsifier is: sideband power tracks ($J_m(\\beta)$) under controlled ($\\beta$) sweeps.
+
+\subsubsection*{T3-Tabletop: vibration or audio carrier}
+\begin{itemize}
+    \item Use motor vibration or audio tone as carrier.
+    \item Fit PM model vs baseline AM/FM.
+    \item Confirm identifiability and parameter stability.
+\end{itemize}
+
+\subsubsection*{T3-Open data: hostile benchmark for inference}
+\begin{itemize}
+    \item Apply sideband detection and model comparison to open vibration datasets.
+    \item Goal is not ``discovering new physics,'' but stress-testing inference and identifiability.
+\end{itemize}
+
+\section{Constraints, Limits, and Consistency Checks}
+
+\subsection{Decoupling limits}
+% Content from work.md
+\begin{itemize}
+    \item ($\kappa \to 0$): the dial decouples (no loop-phase response).
+    \item Flat curvature ($F\to 0$): the loop phase vanishes for contractible loops.
+\end{itemize}
+
+\subsection{Micro-Macro Scale Separation}
+% Content for Micro-Macro Scale Separation
+The X--$\theta$ framework distinguishes between microscopic and macroscopic manifestations of the $\theta$ phase:
+\begin{itemize}
+    \item \textbf{Microscopic:} $\theta$ phases are associated with coherent Quantum Interference and Memory effects. These are expected to be observable in systems where quantum coherence is maintained, such as in Aharonov-Bohm type experiments or other geometric phase phenomena.
+    \item \textbf{Macroscopic:} In the macroscopic (incoherent vacuum) regime, there is no observable force on planets, and Standard General Relativity (GR) applies. One concrete way to enforce this is a \emph{short-range mediator}: if the effective $\theta$-sector mediator has mass $m_\theta$ (range $\lambda_\theta\equiv 1/m_\theta$), then any static fifth-force-like modification is Yukawa-suppressed as $\propto e^{-r/\lambda_\theta}$ and is negligible for $r\gg\lambda_\theta$.
+\end{itemize}
+This distinction is crucial for maintaining consistency with observed physics across different scales.
+
+In the standard parameterization used for solar-system constraints, this suppression can be written as an effective Yukawa correction to the Newtonian potential,
+\begin{equation}
+V_{\text{eff}}(r) = -\frac{GM}{r} \left( 1 + \alpha e^{-r/\lambda_\theta} \right),
+\end{equation}
+where $\alpha$ is a dimensionless strength and $\lambda_\theta$ sets the range.
+
+\noindent\textbf{Single coupling choice (explicit).} For concreteness, take the minimal St\"uckelberg completion to be a massive $U(1)$ vector $A_\mu$ with action
+\begin{equation}
+S=\int d^4x\,\sqrt{-g}\left[-\frac{1}{4}F_{\mu\nu}F^{\mu\nu}+\frac{f^2}{2}(\partial_\mu\theta+\kappa A_\mu)^2 + g_\theta\,A_\mu J^\mu\right],
+\end{equation}
+where $m_\theta=g_\theta f$ sets $\lambda_\theta\equiv 1/m_\theta$. As a concrete low-energy coupling to ordinary matter, take $J^\mu$ to be the (approximately conserved) nonrelativistic mass current, $J^\mu\approx (\rho,\,\rho\mathbf v)$. In the static limit, exchange of $A_\mu$ yields a Yukawa-suppressed long-range correction, which can be mapped onto the standard $(\alpha,\lambda_\theta)$ parameterization used for solar-system bounds.
+
+\section{Discussion}
+% Content from work.md
+The X--$\theta$ framework is a structured way to ask a specific question: \textbf{can loop-dependent phase transport act as an effective, measurable channel in physical systems, beyond the contexts where geometric phase is already known?}
+
+The validation suite is intentionally designed to fail fast under:
+\begin{itemize}
+    \item duration-dominated drift,
+    \item numerical artifacts,
+    \item uncontrolled gauge choices,
+    \item and overfitting ($\kappa$) or ($\varepsilon$).
+\end{itemize}
+If the framework survives Tier 2 under harsh robustness tests, it becomes scientifically interesting irrespective of ultimate interpretation.
+
+\input{sections/10_conclusion.tex}
+
+\appendix
+\input{sections/appendix_c_bell_toy.tex}
+
+\bibliographystyle{apsrev4-2}
+\bibliography{refs} % This will be references.bib
+
+\end{document}

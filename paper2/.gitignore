@@ -1,0 +1,15 @@
+# LaTeX build outputs
+build/
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+*.synctex.gz
+
+# OS/editor noise
+.DS_Store
+Thumbs.db

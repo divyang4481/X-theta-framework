@@ -1,0 +1,13 @@
+\section*{Simulation Assumptions \& Limitations}
+\begin{tcolorbox}
+\textbf{Numerics.} Split\textendash step propagation on $(x,y)$; internal rotor treated via fixed Fourier index $\ell$.
+Time step satisfies the spatial CFL bound. Grids: $N_x{=}N_y$ (reported per run).
+
+\textbf{Physics scope.} No interparticle interactions; no decoherence or technical noise; classical $A_\theta(t,y)$ profiles; no back-reaction on $\theta$ dynamics.
+
+\textbf{Boundaries.} Periodic in $x,y$ for FFT (packet remains well inside domain). 
+
+\textbf{Validation.} Code reproduces free-packet propagation and agrees with analytic $T^2$ drift scaling for linear $A_\theta$ gradients within numeric error.
+
+\textbf{Implication.} Sim results demonstrate \emph{internal consistency} and \emph{detectability estimates}; they are not substitutes for measured data in the proposed setups.
+\end{tcolorbox}

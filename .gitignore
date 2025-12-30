@@ -131,6 +131,9 @@ latexmkrc
 *.tmp
 tmp/
 
+*.hdf5
+*.docx
+
 # Custom: keep final, checked-in PDFs by default; ignore only build outputs
 /build/
 .fake

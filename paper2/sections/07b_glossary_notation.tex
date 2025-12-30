@@ -1,0 +1,46 @@
+\section*{Glossary \& Notation (Quick Reference)}
+For a compact symbol list, see Notation \& Symbols on \cref{sec:notation}. This appendix expands key terms with one-paragraph definitions and analogies.
+\begin{description}
+  \item[$Q$] Configuration space: $Q=\mathbb{R}^{3,1}\times S^1$ with coordinates $q^a=(X^\mu,\theta)$; $\theta$ is $2\pi$-periodic.
+  \item[$\theta$] Compact internal angle (the ``dial''). Motion $\dot\theta$ is along the fiber, not in real space.
+  \item[Compact $S^1$] The compact dimension; an angle with period $2\pi$.
+    \begin{itemize}
+      \item \textbf{Analogy:} garden hose looks 1D from afar, but has a circular cross-section up close.
+    \end{itemize}
+  \item[$A$ (connection)] Gauge connection 1-form on $Q$: $A=A_a\,dq^a= A_\mu\,dX^\mu + A_\theta\,d\theta$.
+    \begin{itemize}
+      \item \textbf{Analogy:} navigation tool that keeps phase transport consistent.
+    \end{itemize}
+  \item[$A_\theta$] Internal gauge potential along $\theta$; units $[A_\theta]=\hbar/q_\theta$ so $q_\theta A_\theta$ carries momentum.
+  \item[$A_\mu,\ A_0,\ \mathbf B$] Spacetime potential $A_\mu=(A_0,\mathbf A)$ with $\mathbf B=\nabla\times \mathbf A$.
+  \item[$G=dA$] Curvature (field strength) 2-form with components $G_{ab}=\partial_aA_b-\partial_bA_a$; controls the loop phase via Stokes' theorem.
+  \item[$G_{\mu\theta}$] Mixed curvature: $G_{\mu\theta}=\partial_\mu A_\theta-\partial_\theta A_\mu$; in gauge $\partial_\theta A_\mu=0$, $G_{i\theta}=\partial_i A_\theta$.
+    \begin{itemize}
+      \item \textbf{Analogy:} meshed gears; motion in one axis drives the other.
+    \end{itemize}
+  \item[$\phi_\theta$] Effective flux: $\phi_\theta \equiv \tfrac{q_\theta}{\hbar}\oint A_\theta\,d\theta$; physics is $\bmod\,2\pi$.
+  \item[Loop phase] Loop-induced transport phase; for the fiber it is $\phi_\theta$ above. Only $\phi_\theta\ (\bmod\,2\pi)$ is observable.
+    \begin{itemize}
+      \item \textbf{Analogy:} compass twist after hiking a closed loop.
+    \end{itemize}
+  \item[Cross-Hall drift] Sideways drift $\propto\partial_i A_\theta$ (i.e., $G_{i\theta}$) when the fiber potential varies across space; appears even for $\mathbf E=\mathbf B=0$.
+  \item[Rotor (internal)] $\theta$-motion behaves like a rotor with levels
+    $\displaystyle E_\ell=\frac{\hbar^2}{2I}\Big(\ell-\frac{\phi_\theta}{2\pi}\Big)^2$, spacing $\Delta E\approx \hbar^2/(2I)$.
+  \item[$I$] Rotor (phase) inertia controlling sideband spacing $\Delta E\approx \hbar^2/(2I)$; NR map $I=m\kappa^2$.
+    \begin{itemize}
+      \item \textbf{Analogy:} heavier flywheel $\Rightarrow$ closer level spacing.
+    \end{itemize}
+  \item[$m_\theta,\ \lambda_\theta$] St\"uckelberg mediator mass $m_\theta=g_\theta f_\theta$; Yukawa range $\lambda_\theta\equiv 1/m_\theta$.
+  \item[$\Sigma^2$] Positive shear-like contribution $\propto a^{-6}$ in $H^2$ (early-time).
+  \item[$q_X,\ q_\theta$] Charges coupling to $A_\mu$ and $A_\theta$; minimal coupling $\mathbf p\to\mathbf p-q_X\mathbf A$, $p_\theta\to p_\theta-q_\theta A_\theta$.
+  \item[Large gauge] Large $\theta$-loop: $\oint A_\theta d\theta\to \oint A_\theta d\theta+2\pi\,\hbar/q_\theta$; only $\phi_\theta$ modulo $2\pi$ is physical.
+  \item[Einbein $e(\tau)$] Worldline multiplier ensuring reparametrization invariance; varying it imposes the mass-shell constraint; identifies $I=m\kappa^2$.
+\end{description}
+
+  % Compact add-ons requested by user
+  \paragraph{Loop phase.}
+  Phase acquired by parallel transport around a closed loop. In this work, one lap around the $\theta$ fiber yields
+  $\phi_\theta=\tfrac{q_\theta}{\hbar}\oint A_\theta d\theta$, observable only $\bmod\,2\pi$.
+
+  \paragraph{Einbein.}
+  A worldline Lagrange multiplier that enforces reparametrization invariance. Intuition: a speedometer for how we \emph{parametrize} the path; it calibrates the clock but does not change the track.

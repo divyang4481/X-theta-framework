@@ -1,0 +1,42 @@
+\section{Toy joint-connection model for Bell-style correlations}\label{app:bell-toy}
+
+This appendix collects material that is \,\emph{not} needed for the mainline claims of this paper (loop-phase transport and its falsifiers), but which may be useful as a bookkeeping example.
+
+\subsection{Reference result: the quantum singlet correlation}
+For spin-$\tfrac{1}{2}$ particles prepared in the singlet state $\lvert\psi^-\rangle$, the quantum prediction for the correlation of outcomes along analyzer directions $\hat a$ and $\hat b$ is
+\begin{equation}
+E(\hat a,\hat b)=\langle \psi^-\rvert\,\sigma_{\hat a}\otimes\sigma_{\hat b}\,\lvert\psi^-\rangle = -\hat a\cdot\hat b.
+\end{equation}
+For coplanar analyzer angles $a,b$, this reduces to $E(a,b)=-\cos(a-b)$.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.95\linewidth]{bell_correlation.png}
+	\caption{Reference correlation curve: the quantum singlet prediction $E(a,b)=-\cos(a-b)$ versus a simple deterministic local sign model.}\label{fig:bell-correlation}
+\end{figure}
+
+\subsection{Non-factorization on joint configuration space}
+In the X--$\theta$ language, a two-particle system is described on the joint configuration space $Q_2 = (X_1 \times S^1_1) \times (X_2 \times S^1_2)$. A structural possibility is that the relevant connection on this joint space does not decompose into a sum of connections on the individual particle spaces. This \emph{non-factorizability} is a compact way to represent non-separable phase structure, but it is not by itself a derivation of entanglement.
+
+\subsection{Toy generative model (explicitly non-local)}
+To go beyond plotting the quantum prediction, one must specify a generative model for measurement outcomes. The following is a \emph{toy} model included only to make the dependence structure explicit.
+
+Let the measurement outcome for particle A be
+\begin{equation}
+M_A=\mathrm{sign}\!\bigl(\cos(a-\lambda)\bigr),\qquad \lambda\sim \mathrm{Unif}[0,2\pi),
+\end{equation}
+and for particle B
+\begin{equation}
+M_B=\mathrm{sign}\!\bigl(\cos(b-\lambda-\pi-c\,(a-b))\bigr),
+\end{equation}
+where $c$ is a coupling parameter. Because $M_B$ depends on $(a,b)$ through the argument shift, this violates local causality (parameter independence).
+
+\subsection{Explicit no-signalling constraint}
+Any proposed completion that relaxes local causality must still enforce operational no-signalling. In standard notation:
+\begin{equation}
+P(M_A\mid a,b)=P(M_A\mid a),\qquad P(M_B\mid a,b)=P(M_B\mid b).
+\end{equation}
+In the toy model above, the marginal of $M_A$ is $P(M_A=\pm 1)=\tfrac{1}{2}$ for all $a,b$ because $(a-\lambda)$ is uniformly distributed modulo $2\pi$; similarly for $M_B$ because its argument is also a uniformly shifted angle. This property must be checked (analytically or numerically) in any more elaborate model.
+
+\subsection{Warning: no free lunch}
+If a simulation returns $-\cos(\Delta)$ by definition, it is not a model but a plotter. A legitimate simulation must specify a generative rule for outcomes, state which Bell assumption is being relaxed, and separately verify no-signalling.

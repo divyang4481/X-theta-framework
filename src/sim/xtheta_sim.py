@@ -1,5 +1,10 @@
+import sys
 import matplotlib
-matplotlib.use('Agg') # Set backend to Agg for headless environment
+
+# Only force a headless backend when not running in Jupyter.
+# In notebooks, forcing Agg makes plots non-interactive and triggers warnings on plt.show().
+if 'ipykernel' not in sys.modules:
+    matplotlib.use('Agg')
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -133,7 +138,7 @@ if __name__ == "__main__":
     plt.subplot(1, 2, 1)
     plt.plot(times, centroids, 'b-', linewidth=2, label=r'Drift $\langle y \rangle$')
     plt.plot(times, np.zeros_like(times), 'k--', alpha=0.5, label='Baseline (A=0)')
-    plt.title(f"Cross-Hall Drift Validation\n(Internal Mode $\ell=3$, Gradient={A_gradient})")
+    plt.title(f"Cross-Hall Drift Validation\n(Internal Mode $\\ell=3$, Gradient={A_gradient})")
     plt.xlabel("Time")
     plt.ylabel("Centroid Position $y$")
     plt.legend()
