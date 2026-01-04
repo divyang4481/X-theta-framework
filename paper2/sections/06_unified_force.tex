@@ -1,7 +1,12 @@
-\section{Unified Force --- Fixed-Core (St\"uckelberg) Edition}\label{sec:unified-force}
+\section{Consistent Relativistic Completion (Non-Minimal Extension)}\label{sec:unified-force}
+
+\begin{quote}
+\emph{Disclaimer: This section demonstrates that the X--$\theta$ framework admits a relativistically consistent completion. It does not assert uniqueness or phenomenological necessity, but serves to show that the framework is compatible with standard 4D field theory constraints.}
+\end{quote}
+
 I promote the fiber angle to a 4D field $\Theta(x)$ and the fiber connection to a 4D gauge field $A_{\theta\mu}(x)$. A St\"uckelberg mass $m_\theta = g_\theta f_\theta$ gives a single Yukawa range $\lambda_\theta = 1/m_\theta$.
 
-\subsection{From \texorpdfstring{$Q$}{Q} to 4D: fields and covariant derivatives}
+\subsection{From $Q$ to 4D: fields and covariant derivatives}
 Pullback of the connection on $Q=\mathbb R^{3,1}\times S^1$: $\Theta(x)$ and $A_{\theta\mu}(x)$. $D_\mu\Theta = \partial_\mu\Theta - g_\theta A_{\theta\mu}$; for matter, $D_\mu\psi = (\cdots + i g_\theta Q_\theta A_{\theta\mu})\psi$.
 
 \subsection{Lagrangian core and mass}
@@ -10,7 +15,7 @@ Pullback of the connection on $Q=\mathbb R^{3,1}\times S^1$: $\Theta(x)$ and $A_
 \end{equation}
 Unitary gauge ($\Theta=0$): $m_\theta=g_\theta f_\theta$, hence $\lambda_\theta=1/m_\theta$.
 
-\subsection{Distance-law modifications with a shared range \texorpdfstring{$\lambda_\theta$}{lambda-theta}}
+\subsection{Distance-law modifications with a shared range $\lambda_\theta$}
 Massive spin-1 exchange between static sources (Born approximation):
 \[
   V(r) = \mathrm{sgn}(Q_a Q_b)\, \frac{|g_a g_b|}{4\pi}\, \frac{e^{-m_\theta r}}{r}.
@@ -29,11 +34,6 @@ QED (kinetic mixing):
 
 See also the rotor ladder shift in Fig.~\ref{fig:ug-rotor} for an intuitive picture of the loop-phase shift.
 
-\begin{idea}
-                  		extbf{Ladder and shift.} Energy levels are like notes on a scale, with spacing set by $I$. The loop phase $\phi_\theta$ slides the whole ladder:
-$E_\ell=\tfrac{\hbar^2}{2I}\bigl(\ell-\phi_\theta/2\pi\bigr)^2$. (Skater picture: pull arms in $\Rightarrow$ smaller $I$ and wider spacing.)
-\end{idea}
-
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{UG_S3_rotor_ladder.png}
@@ -43,18 +43,18 @@ $E_\ell=\tfrac{\hbar^2}{2I}\bigl(\ell-\phi_\theta/2\pi\bigr)^2$. (Skater picture
 
 \begin{figure}[htbp]
   \centering
-  \begin{subfigure}[b]{0.48\linewidth}
+  \begin{minipage}[b]{0.48\linewidth}
     \centering
     \includegraphics[width=\linewidth]{exp5_yukawa_profile.png}
     \caption{Yukawa profile $V(r)$}
     \label{fig:yukawa-profile}
-  \end{subfigure}\hfill
-  \begin{subfigure}[b]{0.48\linewidth}
+  \end{minipage}\hfill
+  \begin{minipage}[b]{0.48\linewidth}
     \centering
     \includegraphics[width=\linewidth]{exp5_fractional_deviation.png}
     \caption{Fractional deviation vs distance}
     \label{fig:yukawa-deviation}
-  \end{subfigure}
+  \end{minipage}
   \caption{Shared-range $\lambda_\theta$ across sectors.}
   \label{fig:yukawa}
 \end{figure}

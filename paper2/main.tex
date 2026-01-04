@@ -3,9 +3,11 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage{array}
+% \usepackage{array} % Removed to avoid potential conflict
 \usepackage{graphicx} % Required for inserting images
+\usepackage{subcaption} % Required for subfigures
 \graphicspath{{figs/}{build/figs/}}
+% \usepackage[table]{xcolor} % Removed to avoid RevTeX conflict
 
 \begin{document}
 
@@ -19,7 +21,7 @@ We present the X--$\theta$ framework: an effective geometric extension in which 
 \begin{equation}
 \Delta\theta_{\mathrm{loop}}(\gamma)=-\kappa\oint_\gamma A\quad(\mathrm{mod}\,2\pi),
 \end{equation}
-which depends primarily on loop geometry (flux/area/winding) rather than traversal time. We formulate the gauge-invariant bundle/St\"uckelberg structure, relate it to Wilson loops and geometric phase, and outline how standard covariant derivatives arise from dimensional reduction on an $S^1$ fiber. A minimal 4D completion includes an explicit St\"uckelberg kinetic term $\tfrac{f^2}{2}(\partial_\mu\theta+\kappa A_\mu)^2$, which provides dynamics for the phase field and induces a mediator mass scale. We propose a three-tier validation suite (simulation, tabletop analogs, and open-data stress tests) with explicit falsifiers for numerical artifacts and speed-dominated drift. Consistency constraints are discussed, including Yukawa-suppressed long-range deviations to preserve agreement with solar-system gravity. We emphasize that Bell-violating correlations, if reproduced, require an explicit relaxation of at least one Bell assumption; the framework provides language for such hypotheses but no automatic loophole.
+which depends primarily on loop geometry (flux/area/winding) rather than traversal time. We formulate the gauge-invariant bundle/St\"uckelberg structure, relate it to Wilson loops and geometric phase, and outline how standard covariant derivatives arise from dimensional reduction on an $S^1$ fiber. A minimal 4D completion includes an explicit St\"uckelberg kinetic term $\tfrac{f^2}{2}(\partial_\mu\theta+\kappa A_\mu)^2$, which provides dynamics for the phase field and induces a mediator mass scale. We propose a three-tier validation suite (simulation, tabletop analogs, and open-data stress tests) with explicit falsifiers for numerical artifacts and speed-dominated drift. Consistency constraints are discussed, including Yukawa-suppressed long-range deviations to preserve agreement with solar-system gravity. We emphasize that Bell-violating correlations, if reproduced, require an explicit relaxation of at least one Bell assumption; the framework provides language for such hypotheses but no automatic loophole. Relativistic and cosmological extensions are presented as consistency checks and future-facing consequences, not as required premises.
 \end{abstract}
 
 \maketitle
@@ -53,7 +55,7 @@ Moving to a principal-bundle / St\"uckelberg framing cleanly separates what is \
 \begin{table*}[!htbp]
 \caption{Bridge from our original checklist}
 \begin{ruledtabular}
-\begin{tabular}{r l >{\raggedright\arraybackslash}p{0.54\textwidth} >{\raggedright\arraybackslash}p{0.16\textwidth}}
+\begin{tabular}{r l p{0.54\textwidth} p{0.16\textwidth}}
                 Item & Topic & What the bundle/St\"uckelberg math gives immediately & Status in this draft \\
 \colrule
 1 & AB / loop phase & For a base loop $\gamma\subset X$, the physical fiber shift is defined by parallel transport, giving $\Delta\theta_{\mathrm{loop}}(\gamma)=-\kappa\oint_\gamma A$ (mod $2\pi$). By Stokes, $\Delta\theta_{\mathrm{loop}}(\gamma)=-\kappa\iint_S F$ for any spanning surface $\partial S=\gamma$. AB regime: $F=0$ along the path but nontrivial enclosed flux/topology. & \textbf{Included + Tier-1 tests} \\
@@ -67,7 +69,7 @@ Moving to a principal-bundle / St\"uckelberg framing cleanly separates what is \
 \label{tab:checklist}
 \end{table*}
 
-\section{Geometric skeleton: bundle, connection, transport}
+\section{Core Geometric Framework on $Q = \mathbb{R}^{3,1} \times S^1$}\label{sec:framework}
 
 \subsection{Principal-bundle viewpoint (reviewer-proof wording)}
 % Content from work.md
@@ -285,17 +287,17 @@ Deliverables:
 \subsection{Tier 3 --- spectral sideband fingerprint}
 % Content from work.md
 \subsubsection*{T3-Sim: controlled phase modulation}
-Let ($\\theta(t)=\\omega_\theta t$) and
-($s(t)=\\cos(\\omega_0 t+\\beta\\theta(t))$).
+Let $\theta(t)=\omega_\theta t$ and
+$s(t)=\cos(\omega_0 t+\beta\theta(t))$.
 Then spectral lines appear at
-($\\omega_0\pm m\\omega_\theta$).
+$\omega_0\pm m\omega_\theta$.
 
 In the sinusoidal PM case, sideband amplitudes follow Bessel scaling:
 \begin{equation}
-\cos(\\omega_0 t + \\beta\sin\\omega_\theta t)
-= \sum_{m=-\infty}^{\\infty} J_m(\\beta)\,\cos((\\omega_0+m\\omega_\theta)t).
+\cos(\omega_0 t + \beta\sin\omega_\theta t)
+= \sum_{m=-\infty}^{\infty} J_m(\beta)\,\cos((\omega_0+m\omega_\theta)t).
 \end{equation}
-So a clean falsifier is: sideband power tracks ($J_m(\\beta)$) under controlled ($\\beta$) sweeps.
+So a clean falsifier is: sideband power tracks $J_m(\beta)$ under controlled $\beta$ sweeps.
 
 \subsubsection*{T3-Tabletop: vibration or audio carrier}
 \begin{itemize}
@@ -340,18 +342,25 @@ S=\int d^4x\,\sqrt{-g}\left[-\frac{1}{4}F_{\mu\nu}F^{\mu\nu}+\frac{f^2}{2}(\part
 \end{equation}
 where $m_\theta=g_\theta f$ sets $\lambda_\theta\equiv 1/m_\theta$. As a concrete low-energy coupling to ordinary matter, take $J^\mu$ to be the (approximately conserved) nonrelativistic mass current, $J^\mu\approx (\rho,\,\rho\mathbf v)$. In the static limit, exchange of $A_\mu$ yields a Yukawa-suppressed long-range correction, which can be mapped onto the standard $(\alpha,\lambda_\theta)$ parameterization used for solar-system bounds.
 
-\section{Discussion}
-% Content from work.md
-The X--$\theta$ framework is a structured way to ask a specific question: \textbf{can loop-dependent phase transport act as an effective, measurable channel in physical systems, beyond the contexts where geometric phase is already known?}
+\input{sections/06_unified_force.tex}
+\input{sections/03_cosmology.tex}
 
-The validation suite is intentionally designed to fail fast under:
-\begin{itemize}
-    \item duration-dominated drift,
-    \item numerical artifacts,
-    \item uncontrolled gauge choices,
-    \item and overfitting ($\kappa$) or ($\varepsilon$).
-\end{itemize}
-If the framework survives Tier 2 under harsh robustness tests, it becomes scientifically interesting irrespective of ultimate interpretation.
+\section*{Summary of Falsification Conditions}
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Channel} & \textbf{Observable} & \textbf{Reject X--$\theta$ if} \\
+\hline
+$\theta$--AB & Phase vs $\phi_\theta$ & No $2\pi$ periodicity \\
+\hline
+Cross-Hall & $\Delta y$ vs $T^2$ & Wrong scaling/sign \\
+\hline
+Rotor & $\Delta E$ spacing & Inconsistent $I$ \\
+\hline
+Bell (optional) & $\Delta S$ & $\Delta S \to 0$ under ordered cycling \\
+\hline
+\end{tabular}
+\end{center}
 
 \input{sections/10_conclusion.tex}
 

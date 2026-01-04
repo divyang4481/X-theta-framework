@@ -1,12 +1,40 @@
-\section{Bell correlations: scope and constraints}\label{sec:bell}
+\section{Operational Holonomy and Correlation Geometry (Bell-Type Systems)}\label{sec:bell}
 
-The X--$\theta$ framework provides a compact geometric language for \emph{non-separable phase structure} on enlarged configuration spaces (e.g., a joint two-particle space $Q_2$). This should not be read as an automatic loophole to Bell's theorem. Any completion that reproduces Bell-violating correlations must explicitly state which Bell assumption is relaxed (typically local causality / parameter independence) and must separately enforce operational no-signalling.
+The X--$\theta$ framework provides a direct geometric map for the phase relations in Bell-type experiments. Unlike standard hidden-variable theories that rely on nonlocal signaling, X--$\theta$ explores whether correlations can arise from a \emph{holonomy in detector configuration space}.
 
-\paragraph{Explicit no-signalling constraint.}
-Any proposed model must satisfy
+\subsection{Axioms of the Geometric Limit}
+We define the framework's application to Bell tests via minimal axioms:
+\begin{enumerate}
+    \item \textbf{Hidden Phase:} Each pair carries a shared phase $\Theta \in [0,2\pi)$, sampled independently of settings: $\Theta \perp (a,b)$.
+    \item \textbf{Local Generation:} Outcomes $x,y$ are locally generated; marginals satisfy $P(x|a,b)=P(x|a)$.
+    \item \textbf{Geometric Coupling:} Settings couple to $\Theta$ via a connection on the settings plaquette $\mathcal{C} \equiv \{(a_i,b_j)\}$.
+\end{enumerate}
+
+\subsection{Version-0A: Static Connection (Tsirelson Saturation)}
+In the static limit (Version-0A), the effective phase is path-independent:
 \begin{equation}
-P(M_A\mid a,b)=P(M_A\mid a),\qquad P(M_B\mid a,b)=P(M_B\mid b),
+\Theta_{\mathrm{eff}}(a,b) = \Theta + \oint_{(a,b)} A_\theta d\theta.
 \end{equation}
-in addition to whatever non-local dependence is introduced at the hidden-variable or joint-connection level.
+Motivated by geometric-phase analogues, we target correlators of the form $E(a,b) \approx -v\cos(a-b)$. This reproduces the Tsirelson bound $|S| \approx 2\sqrt{2}$ without superluminal signaling, effectively treating the CHSH violation as the maximal flux of a discrete U(1) connection.
 
-Details (including a toy generative model and a reference plot of the singlet curve) are moved to Appendix~\ref{app:bell-toy}.
+\subsection{Version-0B: Dynamic Holonomy and Asymmetry}
+The full framework allows for \emph{bounded path dependence}. We introduce a memory variable $h$ that updates during the traversal of the settings space:
+\begin{equation}\label{eq:hupdate}
+h_{t+1} = (1-\lambda)h_t + \delta\,\sigma_t,
+\end{equation}
+where $\delta$ is a geometric "kick" and $\sigma_t$ encodes orientation.
+This transport leads to an operational asymmetry between Clockwise (CW) and Counter-Clockwise (CCW) traversals of the CHSH loop:
+\begin{equation}
+\Delta S \equiv S_{\mathrm{CW}} - S_{\mathrm{CCW}} \neq 0.
+\end{equation}
+Crucially, this asymmetry persists even when local marginals are flat (no-signaling).
+
+\subsection{Experimental Outlook}
+This predicts a falsifiable signature:
+\begin{itemize}
+    \item \textbf{Test:} Cycle settings in controlled CW vs CCW blocks.
+    \item \textbf{Prediction:} A resolvable shift $\Delta S \sim 10^{-3}$ (depending on $\delta$) that cannot be explained by drift or signaling.
+\end{itemize}
+Existing photonic datasets with time-tagged trials could be re-analyzed for this geometric torsion effect.
+
+Details of the simulation axioms and results are provided in Appendix~\ref{app:bell-toy}.

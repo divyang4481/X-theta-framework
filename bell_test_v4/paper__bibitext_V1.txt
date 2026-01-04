@@ -1,0 +1,59 @@
+% Save as: x_theta_refs.bib
+@article{Bell1964,
+  author = {Bell, J. S.},
+  title  = {On the Einstein Podolsky Rosen paradox},
+  journal= {Physics},
+  volume = {1},
+  pages  = {195--200},
+  year   = {1964}
+}
+
+@article{CHSH1969,
+  author  = {Clauser, John F. and Horne, Michael A. and Shimony, Abner and Holt, Richard A.},
+  title   = {Proposed experiment to test local hidden-variable theories},
+  journal = {Physical Review Letters},
+  volume  = {23},
+  pages   = {880--884},
+  year    = {1969},
+  doi     = {10.1103/PhysRevLett.23.880}
+}
+
+@article{Tsirelson1980,
+  author  = {Tsirelson, B. S.},
+  title   = {Quantum generalizations of Bell's inequality},
+  journal = {Letters in Mathematical Physics},
+  volume  = {4},
+  pages   = {93--100},
+  year    = {1980},
+  doi     = {10.1007/BF00417500}
+}
+
+@article{AharonovBohm1959,
+  author  = {Aharonov, Yakir and Bohm, David},
+  title   = {Significance of electromagnetic potentials in the quantum theory},
+  journal = {Physical Review},
+  volume  = {115},
+  pages   = {485--491},
+  year    = {1959},
+  doi     = {10.1103/PhysRev.115.485}
+}
+
+@article{Berry1984,
+  author  = {Berry, M. V.},
+  title   = {Quantal phase factors accompanying adiabatic changes},
+  journal = {Proceedings of the Royal Society of London A},
+  volume  = {392},
+  pages   = {45--57},
+  year    = {1984},
+  doi     = {10.1098/rspa.1984.0023}
+}
+
+@article{WilczekZee1984,
+  author  = {Wilczek, Frank and Zee, A.},
+  title   = {Appearance of gauge structure in simple dynamical systems},
+  journal = {Physical Review Letters},
+  volume  = {52},
+  pages   = {2111--2114},
+  year    = {1984},
+  doi     = {10.1103/PhysRevLett.52.2111}
+}

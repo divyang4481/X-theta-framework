@@ -1,0 +1,273 @@
+% !TEX TS-program = lualatex
+% Compile with: lualatex -> biber -> lualatex -> lualatex
+% MiKTeX-friendly, biber-based bibliography
+
+\documentclass[11pt,a4paper]{article}
+
+% ----------------------------
+% Packages (MiKTeX standard)
+% ----------------------------
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{physics}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{authblk}
+
+% Bibliography (recommended)
+\usepackage[
+  backend=biber,
+  style=phys,
+  sorting=nyt,
+  maxbibnames=99
+]{biblatex}
+\addbibresource{x_theta_refs.bib}
+
+% Hyperref setup
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!55!black,
+  citecolor=blue!55!black,
+  urlcolor=blue!55!black,
+  pdftitle={X--Theta Holonomy: A Geometric, Path-Dependent Extension of Bell Correlations},
+  pdfauthor={},
+  pdfkeywords={Bell test, CHSH, holonomy, geometric phase, hidden-variable models, no-signaling}
+}
+
+% ----------------------------
+% Theorem environments
+% ----------------------------
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{axiom}{Axiom}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+% ----------------------------
+% Convenience macros
+% ----------------------------
+\newcommand{\CHSH}{\mathrm{CHSH}}
+\newcommand{\CW}{\mathrm{CW}}
+\newcommand{\CCW}{\mathrm{CCW}}
+\newcommand{\Hol}{\Omega}
+\newcommand{\Config}{\mathcal{C}}
+\newcommand{\E}{\mathbb{E}}
+
+% ----------------------------
+% Title block
+% ----------------------------
+\title{\textbf{X--\(\Theta\) Holonomy: A Geometric, Path-Dependent Extension of Bell Correlations}}
+\author[1]{Divyang Panchasara\thanks{Email: \texttt{your-email@example.com}}}
+\affil[1]{Independent Research / Nayvid Technology LLP, Bengaluru, India}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We introduce \textit{X--\(\Theta\)}, a geometric framework in which Bell-type correlations arise from a hidden phase connection defined over detector configuration space. In its static formulation (Version-0A), the framework reproduces Tsirelson-saturating CHSH correlations without invoking superluminal signaling or measurement dependence. We then present a dynamic extension (Version-0B) in which the effective phase acquires bounded, path-dependent transport, leading to an operational asymmetry between clockwise (CW) and counter-clockwise (CCW) traversals of the CHSH settings loop. The resulting holonomy-induced asymmetry preserves no-signaling and local flat marginals, while providing a falsifiable geometric signature beyond standard assumptions of path-independence. We discuss experimental tests based on controlled cycling of settings and outline principled future refinements (curved memory geometry, non-Abelian transport, dwell-time dependence, and correlator-level diagnostics).
+\end{abstract}
+
+\tableofcontents
+
+% ============================================================
+\section{Introduction}
+Bell inequality violations are often interpreted as requiring nonlocal influences or contextuality. Yet modern physics contains many operational effects---Berry phase, Aharonov--Bohm interference, Wilson loops---in which \emph{global geometric structure} produces observable signatures without local forces or superluminal signaling.
+This motivates a geometric alternative viewpoint: Bell correlations may reflect \emph{holonomy in detector configuration space}, rather than explicit nonlocal causation.
+
+This paper develops the \textit{X--\(\Theta\)} framework: a local, no-signaling construction in which outcomes arise from local stochastic detection coupled to a hidden phase \(\Theta\) via a connection over the settings space. Version-0A is static and reproduces the familiar cosine correlator (and Tsirelson saturation at the canonical CHSH angles). Version-0B introduces bounded memory transport that makes the effective phase \emph{path-dependent}, yielding a CW/CCW asymmetry that is not visible in static analyses.
+
+\paragraph{Scope.}
+We do not claim an experimental confirmation, nor a replacement of quantum mechanics. The aim is to propose a \emph{testable geometric mechanism} and identify falsifiable signatures.
+
+% ============================================================
+\section{Bell scenario, CHSH, and configuration space}
+
+\subsection{Operational scenario}
+Alice and Bob choose settings \(a\in\{a_0,a_1\}\) and \(b\in\{b_0,b_1\}\), and record outcomes \(x,y\in\{+1,-1\}\). The correlator is
+\begin{equation}
+E(a_i,b_j) \equiv \E[xy \mid a=a_i,b=b_j],
+\end{equation}
+and the CHSH statistic is
+\begin{equation}
+S \equiv E(a_0,b_0) + E(a_0,b_1) + E(a_1,b_0) - E(a_1,b_1).
+\end{equation}
+Local realistic models satisfy \(|S|\le 2\), while quantum theory allows \(|S|\le 2\sqrt{2}\) \cite{Tsirelson1980}.
+
+\subsection{Configuration space and paths}
+The detector setting pairs form a discrete configuration space
+\begin{equation}
+\Config \equiv \{(a_i,b_j)\}_{i,j\in\{0,1\}},
+\end{equation}
+a 4-vertex plaquette. A \emph{measurement path} is an ordered sequence
+\(\gamma = \{(a(t_k),b(t_k))\}_{k=1}^n\).
+Standard Bell analyses typically assume that correlators depend only on the visited vertex \((a_i,b_j)\), not on the order of visits. X--\(\Theta\) explicitly allows \emph{mild path dependence} via bounded internal transport, while preserving no-signaling.
+
+% ============================================================
+\section{Axioms of X--\(\Theta\)}
+We state the minimal axioms used throughout.
+
+\begin{axiom}[Hidden phase]\label{ax:hidden}
+Each emitted pair carries a shared phase \(\Theta \in [0,2\pi)\), sampled from a distribution independent of settings:
+\(\Theta \perp (a,b)\).
+\end{axiom}
+
+\begin{axiom}[Local generation and no-signaling]\label{ax:local}
+Outcomes \(x\) and \(y\) are generated locally from the local setting and internal variables; marginal statistics satisfy
+\(P(x\mid a,b)=P(x\mid a)\) and \(P(y\mid a,b)=P(y\mid b)\).
+\end{axiom}
+
+\begin{axiom}[Nonlinear detector response]\label{ax:nonlinear}
+The detection map from a continuous internal signal to \(\pm1\) outcomes is nonlinear (e.g., threshold/saturation), which acts as a harmonic filter in the phase variable and stabilizes a dominant cosine component in correlators.
+\end{axiom}
+
+\begin{axiom}[Geometric coupling]\label{ax:geom}
+Settings couple to the hidden phase via a connection over \(\Config\). In Version-0A this coupling is static. In Version-0B the effective phase transport depends on the traversal of \(\Config\) through a bounded memory variable.
+\end{axiom}
+
+\begin{remark}
+These axioms do \emph{not} introduce signaling or measurement dependence by construction; any such behavior would be a failure mode and must be checked in simulation or experiment.
+\end{remark}
+
+% ============================================================
+\section{Version-0A: Static connection and Tsirelson saturation}
+
+\subsection{Static effective phase}
+In Version-0A, define the effective phase at settings \((a,b)\) as
+\begin{equation}
+\Theta_{\mathrm{eff}}(a,b) = \Theta + \phi(a,b),
+\end{equation}
+where \(\phi\) is a static offset induced by detector frame twists or a \(U(1)\)-like connection on settings space.
+
+Motivated by singlet correlations and geometric-phase analogues, we target correlators of the form
+\begin{equation}\label{eq:coscor}
+E(a,b) = -v\cos(a-b+\beta),
+\end{equation}
+with visibility \(v\in(0,1]\) and a constant offset \(\beta\).
+
+\subsection{CHSH and a geometric view of the plaquette}
+For canonical CHSH angles (e.g., \(a_0=0\), \(a_1=\pi/4\), \(b_0=\pi/8\), \(b_1=-\pi/8\)),
+Eq.~\eqref{eq:coscor} yields \(|S|\approx 2\sqrt{2}v\).
+We interpret this as the maximal compatible ``flux'' of a discrete \(U(1)\) connection on the CHSH plaquette, consistent with no-signaling constraints.
+This viewpoint echoes how gauge-invariant loop observables (Wilson loops) encode curvature \cite{Berry1984,WilczekZee1984}.
+
+\begin{remark}
+In this paper we emphasize operational structure rather than claiming a unique derivation of Eq.~\eqref{eq:coscor}. A more formal derivation (e.g., from explicit connection 1-forms or discrete gauge theory on \(\Config\)) is future work.
+\end{remark}
+
+% ============================================================
+\section{Version-0B: Dynamic holonomy via bounded memory transport}
+
+\subsection{Bounded memory variable}
+Version-0B introduces a bounded internal state \(h\) (Bob-centric in the Option-B configuration) updated at each step:
+\begin{equation}\label{eq:hupdate}
+h_{t+1} = (1-\lambda)h_t + \delta\,\sigma_t,
+\end{equation}
+where \(\lambda\in[0,1)\) is leakage, \(\delta\) is a small geometric ``kick,'' and \(\sigma_t\in\{+1,-1\}\) encodes orientation of the step in the settings traversal. This is not a communication channel; it is an internal phase-transport degree of freedom.
+
+\subsection{Operational holonomy and CW/CCW asymmetry}
+Consider traversing the CHSH plaquette \(\Config\) in a clockwise (CW) or counter-clockwise (CCW) cycle. Because \(\sigma_t\) changes sign under reversal, the accumulated transport differs:
+\begin{equation}
+\Hol_{\CW} \neq \Hol_{\CCW}.
+\end{equation}
+Operationally, this implies
+\begin{equation}\label{eq:asym}
+S_{\CW} \neq S_{\CCW},
+\end{equation}
+even though local marginals remain flat (Axiom~\ref{ax:local}).
+
+\begin{definition}[Asymmetry statistic]
+Define
+\begin{equation}
+\Delta S \equiv S_{\CW}-S_{\CCW}.
+\end{equation}
+A nonzero \(\Delta S\) is the primary ``smoking-gun'' signature of path-dependent holonomy in X--\(\Theta\).
+\end{definition}
+
+\begin{remark}
+Standard quantum mechanics typically predicts path-independence of correlations under mere re-ordering of settings (assuming stationarity and idealized memoryless detection). X--\(\Theta\) predicts a controlled violation of this path-independence while maintaining no-signaling.
+\end{remark}
+
+% ============================================================
+\section{Empirical summary from simulations}
+We summarize representative empirical values (from the reported configuration), emphasizing that the \emph{relative} CW/CCW asymmetry is the central claim.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}lcl@{}}
+\toprule
+Metric & Empirical value & Physical significance \\
+\midrule
+Static \(S\) (0A) & \(\approx -2.5998\) & Baseline Tsirelson-like strength (static geometry). \\
+CW Path \(S\) (0B) & \(\approx -2.4794\) & Orientation-dependent torsion reduces strength. \\
+CCW Path \(S\) (0B) & \(\approx -2.7170\) & Opposite orientation enhances strength. \\
+Asymmetry \(\Delta S\) & \(\approx 0.2375\) & Operational signature of chirality/holonomy. \\
+\bottomrule
+\end{tabular}
+\caption{Representative values demonstrating path-dependent asymmetry between CW and CCW traversals of the CHSH settings loop.}
+\label{tab:results}
+\end{table}
+
+\paragraph{Interpretation.}
+The absolute values of \(S\) can vary with visibility, detector nonlinearity, and the effective coupling of the transported phase. The claim is that \(\Delta S\) persists under controls that preserve no-signaling and measurement-independence and vanishes when the transport mechanism is disabled.
+
+% ============================================================
+\section{No-signaling and consistency checks}
+A central consistency requirement is that, for each fixed local setting, local outcome probabilities are independent of the remote choice. Operationally:
+\begin{equation}
+P(x=+1\mid a_i,b_0) \approx P(x=+1\mid a_i,b_1),\quad
+P(y=+1\mid a_0,b_j) \approx P(y=+1\mid a_1,b_j).
+\end{equation}
+X--\(\Theta\) enforces this by construction through symmetric local thresholding and uniform \(\Theta\) sampling. Any empirical deployment must verify these equalities within statistical uncertainty, alongside confirming that \(\Delta S\) is not an artifact of drift, selection bias, or time-tag asymmetries.
+
+% ============================================================
+\section{Experimental outlook}
+The framework suggests a direct test:
+\begin{itemize}[leftmargin=1.2em]
+\item Run a high-rate Bell test while cycling the four settings in a controlled CW order for long blocks, then CCW for long blocks.
+\item Compute \(S_{\CW}\), \(S_{\CCW}\), and \(\Delta S\) with identical estimators and identical acceptance criteria.
+\item Verify no-signaling marginals in each block.
+\item Perform permutation or block-resampling tests to rule out time-drift explanations.
+\end{itemize}
+Existing photonic datasets with recorded trial order may already be suitable for retrospective analysis.
+
+% ============================================================
+\section{Future refinements (physics, not tuning)}
+If one seeks a larger or cleaner \(\Delta S\) signal without introducing signaling or dependence on unphysical knobs, the legitimate directions are:
+\begin{enumerate}[leftmargin=1.2em]
+\item \textbf{Curved memory geometry:} let \(h\in S^1\) (phase transport) rather than a scalar accumulator, making holonomy explicit.
+\item \textbf{Non-Abelian transport:} promote \(h\) to a two-component state (SU(2)-like), enabling path-order sensitivity beyond mere orientation.
+\item \textbf{Time-correlated switching:} incorporate dwell-time dependence \(\delta\mapsto \delta(\tau)\), connecting predictions to realistic modulator dynamics.
+\item \textbf{Beyond CHSH:} analyze orientation dependence in individual correlators \(E_{ij}\), not only in the aggregate \(S\).
+\end{enumerate}
+These are \emph{future work} and not required for the core claim of this paper.
+
+% ============================================================
+\section{Conclusion}
+We presented X--\(\Theta\), a geometric framework in which Bell-type correlations arise from a hidden phase connection over detector configuration space. Version-0A reproduces Tsirelson-level CHSH correlations as a static geometric effect, while Version-0B introduces bounded path-dependent transport that yields a CW/CCW asymmetry \(\Delta S\) without enabling signaling. This suggests a falsifiable geometric signature: Bell correlations may depend weakly on the traversal orientation of settings in \(\Config\), reflecting operational holonomy rather than superluminal influence.
+
+% ============================================================
+\appendix
+\section{Notes on interpretation and falsifiability}
+The X--\(\Theta\) framework is falsified if:
+\begin{itemize}[leftmargin=1.2em]
+\item controlled CW/CCW cycling yields \(\Delta S\) consistent with zero within tight bounds \emph{and} systematic drift explanations are ruled out;
+\item any nonzero \(\Delta S\) necessarily correlates with signaling marginals or other known experimental artifacts.
+\end{itemize}
+Conversely, a reproducible \(\Delta S\neq 0\) under strict no-signaling controls would motivate deeper geometric modeling.
+
+% ============================================================
+\printbibliography
+
+\end{document}
