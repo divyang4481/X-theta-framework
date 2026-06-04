@@ -2,23 +2,49 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-def plot_correlation_ellipsoid(phi, ax=None):
+def get_correlation_ellipsoid_radii(phi, mode="strength", cap=10.0):
     """
-    Plots the correlation ellipsoid cos^2(2phi)x^2 + cos^2(2phi)y^2 + z^2 = 1.
+    Returns the radii for the correlation ellipsoid.
+
+    mode="strength":
+        rx = ry = |cos(2phi)|
+        rz = 1
+
+    mode="dual":
+        rx = ry = 1/|cos(2phi)|
+        rz = 1
+        (capped by 'cap' parameter)
+    """
+    cos2phi = np.cos(2*phi)
+
+    if mode == "strength":
+        rx = np.abs(cos2phi)
+        ry = rx
+        rz = 1.0
+    elif mode == "dual":
+        if np.abs(cos2phi) < 1.0/cap:
+            rx = cap
+        else:
+            rx = 1.0 / np.abs(cos2phi)
+        ry = rx
+        rz = 1.0
+    else:
+        raise ValueError(f"Unknown mode: {mode}")
+
+    return rx, ry, rz
+
+def plot_correlation_ellipsoid(phi, ax=None, mode="strength", cap=10.0):
+    """
+    Plots the correlation ellipsoid.
+
+    mode="strength" -> direct correlation-strength ellipsoid (rx=ry=|cos(2phi)|, rz=1)
+    mode="dual"     -> dual response ellipsoid (rx=ry=1/|cos(2phi)|, rz=1)
     """
     if ax is None:
         fig = plt.figure(figsize=(8, 8))
         ax = fig.add_subplot(111, projection='3d')
 
-    # Radii
-    # a*x^2 + b*y^2 + c*z^2 = 1 => radii are 1/sqrt(a), 1/sqrt(b), 1/sqrt(c)
-    # Here a = b = cos^2(2phi), c = 1
-    # Radii: rx = ry = 1/|cos(2phi)|, rz = 1
-
-    cos2phi = np.cos(2*phi)
-    rx = 1.0 / np.abs(cos2phi) if np.abs(cos2phi) > 1e-10 else 10.0 # Cap for visualization
-    ry = rx
-    rz = 1.0
+    rx, ry, rz = get_correlation_ellipsoid_radii(phi, mode=mode, cap=cap)
 
     u = np.linspace(0, 2 * np.pi, 100)
     v = np.linspace(0, np.pi, 100)
@@ -27,7 +53,8 @@ def plot_correlation_ellipsoid(phi, ax=None):
     y = ry * np.outer(np.sin(u), np.sin(v))
     z = rz * np.outer(np.ones(np.size(u)), np.cos(v))
 
-    ax.plot_surface(x, y, z, color='b', alpha=0.3)
+    color = 'b' if mode == "strength" else 'r'
+    ax.plot_surface(x, y, z, color=color, alpha=0.3)
 
     # Plot axes
     max_r = max(rx, ry, rz)
@@ -38,9 +65,19 @@ def plot_correlation_ellipsoid(phi, ax=None):
     ax.set_xlabel('X (Correlation)')
     ax.set_ylabel('Y (Correlation)')
     ax.set_zlabel('Z (Correlation)')
-    ax.set_title(f'Correlation Ellipsoid ($\phi$ = {phi:.4f})')
+
+    title_suffix = "Strength" if mode == "strength" else "Dual Response"
+    ax.set_title(f'Correlation Ellipsoid ({title_suffix}) [$\phi$ = {phi:.4f}]')
 
     return ax
+
+def plot_correlation_strength_ellipsoid(phi, ax=None):
+    """Wrapper for strength mode."""
+    return plot_correlation_ellipsoid(phi, ax=ax, mode="strength")
+
+def plot_dual_response_ellipsoid(phi, ax=None, cap=10.0):
+    """Wrapper for dual mode."""
+    return plot_correlation_ellipsoid(phi, ax=ax, mode="dual", cap=cap)
 
 def plot_anisotropy_curve(phi_range):
     """Plots R_theta and CHSH max vs phi."""

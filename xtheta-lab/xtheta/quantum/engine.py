@@ -77,6 +77,77 @@ def compute_chsh_max(T):
     s_max = 2 * np.sqrt(u_sorted[0]**2 + u_sorted[1]**2)
     return s_max
 
+def compute_chsh_from_tensor(T, a0, a1, b0, b1):
+    """
+    Generic CHSH calculator using E(a,b) = a.T @ T @ b.
+    Returns S = E(a0,b0) + E(a0,b1) + E(a1,b0) - E(a1,b1).
+    Input vectors a0, a1, b0, b1 are normalized internally.
+    """
+    def normalize(v):
+        norm = np.linalg.norm(v)
+        if norm < 1e-12:
+            raise ValueError("Zero vector passed to CHSH calculator.")
+        return v / norm
+
+    a0 = normalize(a0)
+    a1 = normalize(a1)
+    b0 = normalize(b0)
+    b1 = normalize(b1)
+
+    def E(a, b):
+        return a.T @ T @ b
+
+    return E(a0, b0) + E(a0, b1) + E(a1, b0) - E(a1, b1)
+
+def compute_chsh_xy(phi: float) -> float:
+    """Returns S_XY = 2√2 |cos(2φ)|."""
+    # Settings
+    X = np.array([1.0, 0.0, 0.0])
+    Y = np.array([0.0, 1.0, 0.0])
+
+    A0 = X
+    A1 = Y
+    B0 = -(X + Y) / np.sqrt(2)
+    B1 =  (Y - X) / np.sqrt(2)
+
+    psi = evolve_state(phi)
+    T = compute_correlation_tensor(psi)
+    S = compute_chsh_from_tensor(T, A0, A1, B0, B1)
+    return abs(S)
+
+def compute_chsh_xz(phi: float) -> float:
+    """Returns S_XZ = 2√2 cos²(φ)."""
+    # Settings
+    X = np.array([1.0, 0.0, 0.0])
+    Z = np.array([0.0, 0.0, 1.0])
+
+    A0 = Z
+    A1 = X
+    B0 = -(Z + X) / np.sqrt(2)
+    B1 =  (X - Z) / np.sqrt(2)
+
+    psi = evolve_state(phi)
+    T = compute_correlation_tensor(psi)
+    S = compute_chsh_from_tensor(T, A0, A1, B0, B1)
+    return abs(S)
+
+def compute_concurrence_from_phi(phi: float) -> float:
+    """Returns C(φ)=|cos(2φ)| for the X-Theta evolved pure state."""
+    return abs(np.cos(2 * phi))
+
+def compute_concurrence_from_state(state) -> float:
+    """
+    Compute concurrence numerically for a two-qubit pure state.
+    For |ψ⟩ = a|00⟩ + b|01⟩ + c|10⟩ + d|11⟩, C = 2 |ad - bc|.
+    """
+    if state.type != 'ket':
+        raise ValueError("compute_concurrence_from_state only supports pure states (kets).")
+
+    # QuTiP kets are (4, 1) for two qubits
+    coeffs = state.full().flatten()
+    a, b, c, d = coeffs
+    return 2 * abs(a * d - b * c)
+
 def compute_invariants(T):
     """
     Computes:

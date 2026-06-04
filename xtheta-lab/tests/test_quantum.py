@@ -1,4 +1,10 @@
-from xtheta.quantum.engine import get_paulis, get_bell_states, get_relational_generator, get_unitary_evolution, evolve_state, compute_correlation_tensor, compute_chsh_max, compute_invariants
+from xtheta.quantum.engine import (
+    get_paulis, get_bell_states, get_relational_generator,
+    get_unitary_evolution, evolve_state, compute_correlation_tensor,
+    compute_chsh_max, compute_invariants, compute_chsh_from_tensor,
+    compute_chsh_xy, compute_chsh_xz, compute_concurrence_from_phi,
+    compute_concurrence_from_state
+)
 import numpy as np
 import pytest
 
@@ -18,13 +24,8 @@ def test_bell_states():
 def test_relational_generator():
     G_rel = get_relational_generator()
     assert G_rel.isherm
-    # G_rel should act on |Psi-> to give i|Psi+>
-    # G_rel = 1/2(XY - YX)
-    # G_rel |Psi-> = i |Psi+> ?
-    # Let's check numerically
     psi_minus, psi_plus = get_bell_states()
     res = G_rel * psi_minus
-    # G_rel |Psi-> = -i |Psi+>
     assert (res + 1j * psi_plus).norm() < 1e-10
 
 def test_unitary_evolution():
@@ -34,24 +35,6 @@ def test_unitary_evolution():
 
     psi_minus, psi_plus = get_bell_states()
     psi_phi = U * psi_minus
-
-    # |Psi(phi)> = cos(phi)|Psi-> + i*sin(phi)|Psi+> ?
-    # Wait, my engine says psi_phi_analytic = np.cos(phi) * psi_minus + np.sin(phi) * psi_plus
-    # If G_rel |Psi-> = i|Psi+>, then exp(i phi G_rel) |Psi-> = (cos(phi) + i sin(phi) (i|Psi+><Psi-| + ...)) |Psi->
-    # exp(i phi G_rel) |Psi-> = cos(phi)|Psi-> + i sin(phi) (G_rel/ (norm of G_rel effect)) ...
-    # G_rel^2 |Psi-> = G_rel (i|Psi+>)
-    # X|0> = |1>, X|1> = |0>
-    # Y|0> = i|1>, Y|1> = -i|0>
-    # |Psi-> = 1/sqrt(2) (|01> - |10>)
-    # X⊗Y |01> = |1> ⊗ (-i|0>) = -i|10>
-    # X⊗Y |10> = |0> ⊗ (i|1>) = i|01>
-    # X⊗Y |Psi-> = 1/sqrt(2) (-i|10> - i|01>) = -i |Psi+>
-    # Y⊗X |01> = (i|1>) ⊗ |0> = i|10>
-    # Y⊗X |10> = (-i|0>) ⊗ |1> = -i|01>
-    # Y⊗X |Psi-> = 1/sqrt(2) (i|10> + i|01>) = i |Psi+>
-    # G_rel |Psi-> = 1/2 (-i|Psi+> - i|Psi+>) = -i |Psi+>
-    # So U_rel |Psi-> = exp(i phi G_rel) |Psi-> = cos(phi)|Psi-> + i sin(phi) (-i|Psi+>) = cos(phi)|Psi-> + sin(phi)|Psi+>
-    # Correct!
 
     expected = np.cos(phi) * psi_minus + np.sin(phi) * psi_plus
     assert (psi_phi - expected).norm() < 1e-10
@@ -83,3 +66,51 @@ def test_invariants():
 
     assert abs(I_theta - expected_I) < 1e-10
     assert abs(R_theta - expected_R) < 1e-10
+
+def test_chsh_projections():
+    for phi in [0.0, 0.1, 0.3, 0.4]:
+        s_xy = compute_chsh_xy(phi)
+        s_xz = compute_chsh_xz(phi)
+
+        expected_xy = 2 * np.sqrt(2) * abs(np.cos(2*phi))
+        expected_xz = 2 * np.sqrt(2) * (np.cos(phi)**2)
+
+        assert abs(s_xy - expected_xy) < 1e-10
+        assert abs(s_xz - expected_xz) < 1e-10
+
+def test_chsh_generic():
+    phi = 0.2
+    psi = evolve_state(phi)
+    T = compute_correlation_tensor(psi)
+
+    X = np.array([1.0, 0.0, 0.0])
+    Y = np.array([0.0, 1.0, 0.0])
+    Z = np.array([0.0, 0.0, 1.0])
+
+    # Test XY geometry
+    A0 = X
+    A1 = Y
+    B0 = -(X + Y) / np.sqrt(2)
+    B1 =  (Y - X) / np.sqrt(2)
+    s_xy = compute_chsh_from_tensor(T, A0, A1, B0, B1)
+    assert abs(abs(s_xy) - compute_chsh_xy(phi)) < 1e-10
+
+    # Test normalization and error
+    with pytest.raises(ValueError):
+        compute_chsh_from_tensor(T, np.array([0,0,0]), A1, B0, B1)
+
+def test_concurrence():
+    for phi in [0.0, 0.1, 0.4, np.pi/4]:
+        c_phi = compute_concurrence_from_phi(phi)
+        psi = evolve_state(phi)
+        c_state = compute_concurrence_from_state(psi)
+
+        expected = abs(np.cos(2*phi))
+
+        assert abs(c_phi - expected) < 1e-10
+        assert abs(c_state - expected) < 1e-10
+
+        # Verify S_max relation
+        T = compute_correlation_tensor(psi)
+        s_max = compute_chsh_max(T)
+        assert abs(s_max - 2 * np.sqrt(1 + c_phi**2)) < 1e-10
