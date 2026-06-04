@@ -21,21 +21,40 @@ The framework implements a kinematic phenomenological model where the presence o
     $$T(\Phi) = \text{diag}[-\cos(2\Phi), -\cos(2\Phi), -1]$$
 
 4.  **Entanglement Lensing**:
-    The deformation of the correlation sphere into a prolate spheroid:
-    $$\cos^2(2\Phi)x^2 + \cos^2(2\Phi)y^2 + z^2 = 1$$
+    The deformation of the correlation sphere into an ellipsoid. We define two surfaces:
+    *   **Direct Correlation-Strength Ellipsoid**: Shows actual observable correlation magnitudes.
+        Radii: $r_x = r_y = |\cos(2\Phi)|, r_z = 1$
+        Equation: $\frac{x^2}{\cos^2(2\Phi)} + \frac{y^2}{\cos^2(2\Phi)} + z^2 = 1$
+    *   **Dual Response Ellipsoid**: The inverse surface associated with $v^T(T^T T)v = 1$.
+        Radii: $r_x = r_y = 1/|\cos(2\Phi)|, r_z = 1$
+        Equation: $\cos^2(2\Phi)x^2 + \cos^2(2\Phi)y^2 + z^2 = 1$
 
 5.  **Invariants**:
     $$R_{\Theta} = 3 - \text{Tr}(T^T T) = 2 \sin^2(2\Phi)$$
+    $$C(\Phi) = |\cos(2\Phi)| \quad \text{(Concurrence)}$$
+    $$S_{\max} = 2\sqrt{1 + C^2}$$
+
+## Scientific Framing
+
+**Note**: The current implementation is a **kinematic phenomenological model**.
+1. It does not yet derive the relational generator $G_{\rm rel}$ from a fundamental action $S[g, \Theta]$.
+2. It does not yet solve the full covariant surface-selection problem for the relational surface $\Sigma$.
+3. It serves to validate the computational signature of curvature-driven entanglement anisotropy.
 
 ## Project Structure
 
 - `xtheta/`: Core Python package.
-    - `quantum/`: Quantum state evolution and correlation tensor logic.
+    - `quantum/`: Quantum state evolution, correlation tensor, and CHSH projections.
     - `geometry/`: Schwarzschild phase calculations.
     - `experiments/`: Benchmark scenarios (Micius, GPS, Neutron Star, etc.).
-    - `montecarlo/`: Uncertainty propagation.
-    - `visualization/`: Ellipsoid and anisotropy plotting.
+    - `montecarlo/`: Uncertainty propagation for all V2 observables.
+    - `visualization/`: Ellipsoid (Strength/Dual) and anisotropy plotting.
 - `notebooks/`: Research notebooks for analysis.
+    - `01_internal_consistency.ipynb`: Verifies the mathematical heart of the theory.
+    - `02_benchmark_scenarios.ipynb`: Computes predictions for real-world and extreme astrophysical cases.
+    - `03_entanglement_lensing.ipynb`: Visualizes Direct vs Dual correlation surfaces.
+    - `04_monte_carlo_uncertainty.ipynb`: Analyzes sensitivity to experimental uncertainties.
+    - `05_concurrence_chsh_geometry.ipynb`: Explores the geometry of CHSH projections.
 - `tests/`: Unit tests for all modules.
 
 ## Installation
@@ -46,18 +65,13 @@ pip install -r requirements.txt
 
 ## Running the Research Stack
 
-You can explore the framework through the provided Jupyter notebooks:
-
-1.  `01_internal_consistency.ipynb`: Verifies the mathematical heart of the theory.
-2.  `02_benchmark_scenarios.ipynb`: Computes predictions for real-world and extreme astrophysical cases.
-3.  `03_entanglement_lensing.ipynb`: Visualizes the correlation ellipsoid deformation.
-4.  `04_monte_carlo_uncertainty.ipynb`: Analyzes sensitivity to experimental uncertainties.
+You can explore the framework through the provided Jupyter notebooks in the `notebooks/` directory.
 
 ## Testing
 
 Run unit tests using `pytest`:
 
 ```bash
-export PYTHONPATH=$PYTHONPATH:$(pwd)
-pytest tests/
+export PYTHONPATH=$PYTHONPATH:$(pwd)/xtheta-lab
+python3 -m pytest xtheta-lab/tests/
 ```
