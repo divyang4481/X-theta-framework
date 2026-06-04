@@ -1,0 +1,11 @@
+numpy
+scipy
+pandas
+matplotlib
+jupyter
+pytest
+qutip
+einsteinpy
+skyfield
+sgp4
+astropy
