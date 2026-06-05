@@ -3,7 +3,8 @@ from xtheta.quantum.engine import (
     get_unitary_evolution, evolve_state, compute_correlation_tensor,
     compute_chsh_max, compute_invariants, compute_chsh_from_tensor,
     compute_chsh_xy, compute_chsh_xz, compute_concurrence_from_phi,
-    compute_concurrence_from_state
+    compute_concurrence_from_state, compute_density_matrix, compute_purity,
+    compute_analytic_correlation_tensor, compute_tensor_spectrum
 )
 import numpy as np
 import pytest
@@ -114,3 +115,43 @@ def test_concurrence():
         T = compute_correlation_tensor(psi)
         s_max = compute_chsh_max(T)
         assert abs(s_max - 2 * np.sqrt(1 + c_phi**2)) < 1e-10
+
+def test_density_matrix_trace():
+    for phi in [0.0, 0.1, 0.5]:
+        psi = evolve_state(phi)
+        rho = compute_density_matrix(psi)
+        assert abs(rho.tr() - 1.0) < 1e-10
+
+def test_purity_preserved_under_unitary():
+    for phi in np.linspace(0, np.pi, 20):
+        psi = evolve_state(phi)
+        purity = compute_purity(psi)
+        # For a pure state evolved unitarily, purity should remain 1.0
+        assert abs(purity - 1.0) < 1e-10
+
+def test_analytic_tensor_vs_numerical():
+    phis = np.linspace(0, np.pi / 2, 100)
+    for phi in phis:
+        psi = evolve_state(phi)
+        T_num = compute_correlation_tensor(psi)
+        T_ana = compute_analytic_correlation_tensor(phi)
+        np.testing.assert_allclose(T_num, T_ana, atol=1e-10)
+
+def test_tensor_spectrum():
+    phis = [0.0, 0.1, 0.3, 0.4]
+    for phi in phis:
+        psi = evolve_state(phi)
+        T = compute_correlation_tensor(psi)
+        spec = compute_tensor_spectrum(T)
+
+        # singular values = [1, |cos(2phi)|, |cos(2phi)|] (unsorted in SVD)
+        expected_sv = sorted([1.0, abs(np.cos(2*phi)), abs(np.cos(2*phi))], reverse=True)
+        np.testing.assert_allclose(sorted(spec["singular_values"], reverse=True), expected_sv, atol=1e-10)
+
+        # I_theta = 1 + 2cos^2(2phi)
+        expected_I = 1 + 2 * np.cos(2*phi)**2
+        assert abs(spec["I_theta"] - expected_I) < 1e-10
+
+        # R_theta = 2sin^2(2phi)
+        expected_R = 2 * np.sin(2*phi)**2
+        assert abs(spec["R_theta"] - expected_R) < 1e-10

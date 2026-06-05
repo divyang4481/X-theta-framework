@@ -5,19 +5,23 @@ import numpy as np
 import math
 from typing import Tuple, List
 
+@dataclass
 class RunningAB:
+    count: np.ndarray  # shape (4,)
+    sum_ab: np.ndarray 
+      
     """Aggregates for Alice-Bob outcomes by (a,b) setting pairs."""
-    def __init__(self):
-        self.count = np.zeros(4, dtype=np.int64)
-        self.sum_ab = np.zeros(4, dtype=np.int64)
+    def __init__(self, count=None, sum_ab=None):
+        self.count = count if count is not None else np.zeros(4, dtype=np.int64)
+        self.sum_ab = sum_ab if sum_ab is not None else np.zeros(4, dtype=np.int64)
 
-    def update(self, a: int, b: int, ab: int):
+    def update(self, a: int, b: int, ab: int, weight: int = 1):
         """
         a, b in {0, 1}
         ab in {-1, 1}
         """
         idx = a * 2 + b
-        self.count[idx] += 1
+        self.count[idx] += weight
         self.sum_ab[idx] += ab
 
     def expectation(self) -> np.ndarray:
@@ -42,7 +46,63 @@ class RunningAB:
                 continue
             var = max(0.0, 1.0 - float(E[i] ** 2))
             se_terms.append(var / n)
-        return float(math.sqrt(sum(se_terms)))
+        return float(np.sqrt(np.sum(se_terms)))
+
+@dataclass
+class ThetaBinnedAB:
+    bins: int
+    count: np.ndarray  # shape (bins,4)
+    sum_ab: np.ndarray  # shape (bins,4)
+
+    def __init__(self, bins, count=None, sum_ab=None):
+        self.bins = bins
+        self.count = count if count is not None else np.zeros((bins, 4), dtype=np.int64)
+        self.sum_ab = sum_ab if sum_ab is not None else np.zeros((bins, 4), dtype=np.int64)
+
+    def update(self, bin_id: int, a: int, b: int, ab: int, weight: int = 1):
+        idx = a * 2 + b
+        self.count[bin_id, idx] += weight
+        self.sum_ab[bin_id, idx] += ab
+
+    def chsh_by_bin(self) -> Tuple[np.ndarray, np.ndarray]:
+        S = np.zeros(self.bins, dtype=float)
+        Nmin = np.zeros(self.bins, dtype=int)
+        for k in range(self.bins):
+            cnt = self.count[k]
+            sab = self.sum_ab[k]
+            E = np.zeros(4, dtype=float)
+            nz = cnt > 0
+            E[nz] = sab[nz] / cnt[nz]
+            S[k] = E[0] + E[1] + E[2] - E[3]
+            Nmin[k] = int(cnt.min())
+        return S, Nmin
+
+def compute_correlations_per_setting(df: pd.DataFrame) -> pd.DataFrame:
+    schema = BellEventSchema()
+    valid_df = df[(df[schema.alice_outcome].isin([1, -1])) & (df[schema.bob_outcome].isin([1, -1]))].copy()
+    valid_df['ab'] = valid_df[schema.alice_outcome] * valid_df[schema.bob_outcome]
+    grouped = valid_df.groupby([schema.alice_setting, schema.bob_setting])
+    correlations = grouped['ab'].agg(['mean', 'count', 'std']).reset_index()
+    correlations = correlations.rename(columns={'mean': 'E', 'std': 'E_std'})
+    correlations['E_sem'] = correlations['E_std'] / np.sqrt(correlations['count'])
+    return correlations
+
+def calculate_chsh_from_correlations(correlations: pd.DataFrame, a0, a1, b0, b1) -> dict:
+    def get_e(a, b):
+        row = correlations[(correlations[correlations.columns[0]] == a) & (correlations[correlations.columns[1]] == b)]
+        if row.empty: return 0.0, 0
+        return row['E'].values[0], row['count'].values[0]
+
+    E_a0b0, n00 = get_e(a0, b0)
+    E_a0b1, n01 = get_e(a0, b1)
+    E_a1b0, n10 = get_e(a1, b0)
+    E_a1b1, n11 = get_e(a1, b1)
+    S = E_a0b0 + E_a0b1 + E_a1b0 - E_a1b1
+    return {
+        "S": S,
+        "counts": {"n00": n00, "n01": n01, "n10": n10, "n11": n11},
+        "correlations": {"E_a0b0": E_a0b0, "E_a0b1": E_a0b1, "E_a1b0": E_a1b0, "E_a1b1": E_a1b1}
+    }
 
 def bootstrap_chsh(alice_out: np.ndarray, bob_out: np.ndarray,
                    alice_set: np.ndarray, bob_set: np.ndarray,

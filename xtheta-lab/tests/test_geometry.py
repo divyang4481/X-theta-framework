@@ -22,10 +22,10 @@ def test_benchmarks():
     results = run_benchmark_scenarios()
     assert len(results) == 4
 
-    micius = next(r for r in results if r['name'] == "Micius")
+    micius = next(r for r in results if r['scenario'] == "Micius")
     # Micius phi should be very small
     assert abs(micius['phi_rel']) < 1e-10
 
-    ns = next(r for r in results if r['name'] == "Neutron Star")
+    ns = next(r for r in results if r['scenario'] == "Neutron Star")
     # NS phi should be significant
     assert abs(ns['phi_rel']) > 0.1

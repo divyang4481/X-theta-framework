@@ -132,7 +132,10 @@ def compute_chsh_xz(phi: float) -> float:
     return abs(S)
 
 def compute_concurrence_from_phi(phi: float) -> float:
-    """Returns C(φ)=|cos(2φ)| for the X-Theta evolved pure state."""
+    """
+    Returns C(φ)=|cos(2φ)| for the X-Theta evolved pure state.
+    Note that concurrence is not constant under relational evolution.
+    """
     return abs(np.cos(2 * phi))
 
 def compute_concurrence_from_state(state) -> float:
@@ -158,3 +161,56 @@ def compute_invariants(T):
     I_theta = np.trace(TT)
     R_theta = 3 - I_theta
     return I_theta, R_theta
+
+def compute_density_matrix(state):
+    """
+    Computes the density matrix rho = |psi><psi| or returns the density matrix if passed.
+    """
+    if state.type == 'ket':
+        return state * state.dag()
+    return state
+
+def compute_purity(state_or_rho) -> float:
+    """
+    Computes the purity of a quantum state: Tr(rho^2).
+    For a pure state, purity = 1.
+    """
+    rho = compute_density_matrix(state_or_rho)
+    return (rho * rho).tr().real
+
+def compute_analytic_correlation_tensor(phi: float) -> np.ndarray:
+    """
+    Returns the analytic X-Theta correlation tensor for a given phi.
+    T(phi) = diag[-cos(2phi), -cos(2phi), -1.0]
+    """
+    return np.diag([
+        -np.cos(2 * phi),
+        -np.cos(2 * phi),
+        -1.0
+    ])
+
+def compute_tensor_spectrum(T: np.ndarray) -> dict:
+    """
+    Return eigenvalues of T.T @ T, singular values of T,
+    tensor norm invariant, and anisotropy invariant.
+    """
+    # Singular values of T
+    singular_values = np.linalg.svd(T, compute_uv=False)
+
+    # Eigenvalues of T.T @ T
+    tt_eigenvalues = np.linalg.eigvalsh(T.T @ T)
+
+    # Invariants
+    i_theta = np.trace(T.T @ T)
+    r_theta = 3 - i_theta
+
+    # Effective rank (number of non-zero singular values)
+    rank_effective = np.sum(singular_values > 1e-10)
+
+    return {
+        "singular_values": singular_values,
+        "tt_eigenvalues": tt_eigenvalues,
+        "I_theta": i_theta,
+        "R_theta": r_theta,
+        "rank_effective": rank_effective
+    }

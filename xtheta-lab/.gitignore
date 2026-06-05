@@ -1,0 +1,5 @@
+outputs/
+*.npz
+*.csv
+*.png
+!xtheta/**/*.png

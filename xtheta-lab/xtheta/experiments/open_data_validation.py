@@ -1,13 +1,9 @@
-"""
-Generic Bell/CHSH data validation experiment runner.
-"""
 import pandas as pd
 import numpy as np
 import os
-from pathlib import Path
-from xtheta.data.bell_chsh import RunningAB, bootstrap_chsh
-from xtheta.data.effective_fit import fit_phi_eff_from_smax, anisotropy_from_phi
-from xtheta.data.schema import validate_bell_schema
+from xtheta.data.bell_chsh import RunningAB, bootstrap_chsh, compute_correlations_per_setting, calculate_chsh_from_correlations
+from xtheta.data.schema import BellEventSchema, validate_bell_schema
+from xtheta.data.loaders import load_bell_data
 
 SCIENTIFIC_WARNING = (
     "Phi_eff is an effective phenomenological parameter only. "
@@ -48,9 +44,7 @@ def run_open_data_chsh_validation(
                 count = mask.sum()
                 if count > 0:
                     prod = (chunk.loc[mask, "alice_outcome"] * chunk.loc[mask, "bob_outcome"]).sum()
-                    idx = a * 2 + b
-                    rab.count[idx] += count
-                    rab.sum_ab[idx] += int(prod)
+                    rab.update(a, b, int(prod), weight=int(count))
 
         if bootstrap_samples > 0:
             all_events.append(chunk[["alice_setting", "bob_setting", "alice_outcome", "bob_outcome"]].copy())
@@ -85,7 +79,8 @@ def run_open_data_chsh_validation(
         results.update(boot)
         results["bootstrap_samples"] = bootstrap_samples
 
-    fit = fit_phi_eff_from_smax(S)
+    # Fit phi_eff
+    fit = fit_effective_phi_from_chsh(S, 'smax-envelope')
     results["phi_eff"] = fit["phi_eff"]
     results["R_theta_eff"] = fit["R_theta_eff"]
     results["fit_status"] = fit["fit_status"]
@@ -141,3 +136,33 @@ def run_open_data_chsh_validation(
     print(f"Phi_eff = {results['phi_eff']:.4f}")
 
     return results
+
+def fit_effective_phi_from_chsh(S_observed: float, geometry: str) -> dict:
+    """
+    Fits an effective phi value from an observed CHSH S value.
+    """
+    from scipy.optimize import minimize_scalar
+
+    def objective(phi):
+        if geometry == 'xy':
+            S_theory = 2 * np.sqrt(2) * abs(np.cos(2 * phi))
+        elif geometry == 'xz':
+            S_theory = 2 * np.sqrt(2) * (np.cos(phi)**2)
+        elif geometry == 'smax-envelope':
+            S_theory = 2 * np.sqrt(1 + np.cos(2 * phi)**2)
+        else:
+            raise ValueError(f"Unknown geometry: {geometry}")
+        return (abs(S_observed) - S_theory)**2
+
+    res = minimize_scalar(objective, bounds=(0, np.pi/4), method='bounded')
+    phi_eff = res.x
+    r_theta_eff = 2 * (np.sin(2 * phi_eff)**2)
+
+    return {
+        "S_observed": S_observed,
+        "geometry": geometry,
+        "phi_eff": phi_eff,
+        "R_theta_eff": r_theta_eff,
+        "fit_status": "Success" if res.success else "Failed",
+        "warning": SCIENTIFIC_WARNING
+    }

@@ -1,10 +1,12 @@
 # X-Theta Lab V2: Advanced Computational Research Stack
 
-X-Theta Lab is a research framework for simulating the effects of curved spacetime on quantum entanglement, specifically focusing on the **relational entanglement anisotropy** and **entanglement lensing** phenomenological model.
+X-Theta Lab is a research framework for simulating the effects of curved spacetime on quantum entanglement, specifically focusing on the **relational entanglement anisotropy** and **entanglement lensing** kinematic phenomenological model.
 
 ## Core Theory (X-Theta V2)
 
 The framework implements a kinematic phenomenological model where the presence of a gravitational potential induces a relational phase $\Phi_{\rm rel}$ between entangled qubits.
+
+Unitary relational evolution preserves state purity and norm, while entanglement concurrence follows the curve $C(\Phi) = |\cos(2\Phi)|$. The resulting CHSH variation is understood as a detector-geometry projection of the underlying correlation tensor anisotropy.
 
 ### Key Equations
 
@@ -20,16 +22,7 @@ The framework implements a kinematic phenomenological model where the presence o
     The evolved Bell state $|\Psi^- \rangle \rightarrow U_{\rm rel}(\Phi)|\Psi^- \rangle$ results in a correlation tensor $T_{ij} = \text{Tr}(\rho (\sigma_i \otimes \sigma_j))$:
     $$T(\Phi) = \text{diag}[-\cos(2\Phi), -\cos(2\Phi), -1]$$
 
-4.  **Entanglement Lensing**:
-    The deformation of the correlation sphere into an ellipsoid. We define two surfaces:
-    - **Direct Correlation-Strength Ellipsoid**: Shows actual observable correlation magnitudes.
-      Radii: $r_x = r_y = |\cos(2\Phi)|, r_z = 1$
-      Equation: $\frac{x^2}{\cos^2(2\Phi)} + \frac{y^2}{\cos^2(2\Phi)} + z^2 = 1$
-    - **Dual Response Ellipsoid**: The inverse surface associated with $v^T(T^T T)v = 1$.
-      Radii: $r_x = r_y = 1/|\cos(2\Phi)|, r_z = 1$
-      Equation: $\cos^2(2\Phi)x^2 + \cos^2(2\Phi)y^2 + z^2 = 1$
-
-5.  **Invariants**:
+4.  **Invariants**:
     $$R_{\Theta} = 3 - \text{Tr}(T^T T) = 2 \sin^2(2\Phi)$$
     $$C(\Phi) = |\cos(2\Phi)| \quad \text{(Concurrence)}$$
     $$S_{\max} = 2\sqrt{1 + C^2}$$
@@ -38,25 +31,24 @@ The framework implements a kinematic phenomenological model where the presence o
 
 **Note**: The current implementation is a **kinematic phenomenological model**.
 
-1. It does not yet derive the relational generator $G_{\rm rel}$ from a fundamental action $S[g, \Theta]$.
-2. It does not yet solve the full covariant surface-selection problem for the relational surface $\Sigma$.
-3. It serves to validate the computational signature of curvature-driven entanglement anisotropy.
+1. It serves to validate the computational signature of curvature-driven entanglement anisotropy.
+2. It does not yet derive the relational generator $G_{\rm rel}$ from a fundamental action.
+3. Earth-orbit predictions are many orders below current practical sensitivity. Compact-object scenarios are theoretical stress tests.
 
 ## Project Structure
 
 - `xtheta/`: Core Python package.
-  - `quantum/`: Quantum state evolution, correlation tensor, and CHSH projections.
+  - `quantum/`: Quantum state evolution, correlation tensor, spectrum, and purity diagnostics.
   - `geometry/`: Schwarzschild phase calculations.
-  - `experiments/`: Benchmark scenarios (Micius, GPS, Neutron Star, etc.).
+  - `experiments/`: Benchmark scenarios, random CHSH landscape, and open data validation.
+  - `data/`: Open data adapter layer (CSV, Parquet, NPZ loaders).
   - `montecarlo/`: Uncertainty propagation for all V2 observables.
-  - `visualization/`: Ellipsoid (Strength/Dual) and anisotropy plotting.
-- `notebooks/`: Research notebooks for analysis.
-  - `01_internal_consistency.ipynb`: Verifies the mathematical heart of the theory.
-  - `02_benchmark_scenarios.ipynb`: Computes predictions for real-world and extreme astrophysical cases.
-  - `03_entanglement_lensing.ipynb`: Visualizes Direct vs Dual correlation surfaces.
-  - `04_monte_carlo_uncertainty.ipynb`: Analyzes sensitivity to experimental uncertainties.
-  - `05_concurrence_chsh_geometry.ipynb`: Explores the geometry of CHSH projections.
-- `tests/`: Unit tests for all modules.
+  - `visualization/`: Ellipsoid (Strength/Dual), anisotropy, and landscape plotting.
+- `scripts/`:
+  - `generate_paper1_artifacts.py`: One-command generation of all research artifacts.
+  - `run_open_data_validation.py`: Validate pipeline against real datasets.
+- `notebooks/`: Research notebooks for interactive analysis.
+- `tests/`: Extensive unit test suite.
 
 ## Installation
 
@@ -67,27 +59,34 @@ pip install -e .
 
 ## Running the Research Stack
 
-You can explore the framework through the provided Jupyter notebooks in the `notebooks/` directory.
-
-### Running notebooks
-
-From the `xtheta-lab` directory, install the package in editable mode:
-
+### 1. Generate Paper 1 Artifacts
+To regenerate all figures, data files, and the validation summary:
 ```bash
-pip install -e .
+python scripts/generate_paper1_artifacts.py
+```
+Outputs will be saved in the `outputs/` directory.
+
+### 2. Run Tests
+```bash
+pytest tests/ -v
 ```
 
-Then run notebooks from `xtheta-lab/notebooks`.
+## Open Bell/CHSH Data Validation
 
-If running directly from an IDE, each notebook also includes a small fallback cell that adds the project root to `sys.path`.
+The framework includes a validation pipeline for real Bell-test datasets. This pipeline computes the CHSH S-statistic and fits an effective phenomenological X-Theta phase ($\Phi_{eff}$) and anisotropy ($R_{\Theta, eff}$).
 
-## Testing
+### Scientific Warning
+**Phi_eff is an effective phenomenological parameter only.** Without gravitational path, altitude, curvature, or spacetime-baseline metadata, this is not evidence of spacetime-induced X-Theta holonomy.
 
-Run unit tests using `pytest`:
+### Running Validation
+
+You can run validation on generic CSV data or supported specific datasets (Weihs, Hensen, BIG Bell Test):
 
 ```bash
-export PYTHONPATH=$PYTHONPATH:$(pwd)/xtheta-lab
-python3 -m pytest xtheta-lab/tests/
+python scripts/run_open_data_validation.py \
+  --dataset hensen \
+  --data path/to/dataset.txt \
+  --output outputs/open_data/hensen
 ```
 
 ```powershell
