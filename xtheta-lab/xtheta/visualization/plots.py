@@ -113,3 +113,37 @@ def plot_anisotropy_curve(phi_range):
 
     plt.tight_layout()
     plt.show()
+
+def plot_random_chsh_landscape(df, output_path=None):
+    """
+    Plots the random CHSH landscape.
+    df: DataFrame from simulate_random_chsh_landscape
+    """
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    plt.figure(figsize=(10, 6))
+
+    # Plot random CHSH cloud
+    plt.scatter(df['phi'], df['S_abs'], alpha=0.1, s=1, color='gray', label='Random CHSH')
+
+    # Plot S_max envelope (it's the same for all samples at a given phi)
+    phi_unique = df['phi'].unique()
+    s_max_unique = df.groupby('phi')['S_max'].first()
+    plt.plot(phi_unique, s_max_unique, 'r-', linewidth=2, label=r'Horodecki $S_{max}$')
+
+    # Limits
+    plt.axhline(y=2.0, color='blue', linestyle='--', label='Bell Limit (2.0)')
+    plt.axhline(y=2*np.sqrt(2), color='green', linestyle=':', label='Tsirelson Limit ($2\sqrt{2}$)')
+
+    plt.xlabel('Relational Phase $\Phi$')
+    plt.ylabel('CHSH $|S|$')
+    plt.title('Random CHSH Landscape and Horodecki Envelope')
+    plt.legend(loc='upper right')
+    plt.grid(True, alpha=0.3)
+
+    if output_path:
+        plt.savefig(output_path)
+        print(f"Plot saved to {output_path}")
+
+    plt.show()
