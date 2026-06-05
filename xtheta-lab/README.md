@@ -57,6 +57,8 @@ pip install -r requirements.txt
 pip install -e .
 ```
 
+> **Note on Python versions**: Development environment used Python 3.14.5, but the project target is Python 3.10+. For reproducible scientific runs, Python 3.11 or 3.12 is recommended.
+
 ## Running the Research Stack
 
 ### 1. Generate Paper 1 Artifacts

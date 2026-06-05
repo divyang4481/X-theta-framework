@@ -1,11 +1,19 @@
 """
 Correlation and CHSH calculations for Bell-test data.
 """
-import numpy as np
-import math
-from typing import Tuple, List
+from __future__ import annotations
 
-@dataclass
+import math
+from dataclasses import dataclass
+from typing import Any, Dict, Iterable, List, Optional, Tuple
+
+import numpy as np
+import pandas as pd
+
+from xtheta.data.schema import BellEventSchema
+
+
+@dataclass(init=False)
 class RunningAB:
     count: np.ndarray  # shape (4,)
     sum_ab: np.ndarray 
@@ -48,7 +56,7 @@ class RunningAB:
             se_terms.append(var / n)
         return float(np.sqrt(np.sum(se_terms)))
 
-@dataclass
+@dataclass(init=False)
 class ThetaBinnedAB:
     bins: int
     count: np.ndarray  # shape (bins,4)
