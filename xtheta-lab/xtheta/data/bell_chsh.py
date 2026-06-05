@@ -1,19 +1,25 @@
-import pandas as pd
+"""
+Correlation and CHSH calculations for Bell-test data.
+"""
 import numpy as np
-from dataclasses import dataclass
-from typing import Tuple
-from xtheta.data.schema import BellEventSchema
+import math
+from typing import Tuple, List
 
 @dataclass
 class RunningAB:
     count: np.ndarray  # shape (4,)
-    sum_ab: np.ndarray  # shape (4,)
-
+    sum_ab: np.ndarray 
+      
+    """Aggregates for Alice-Bob outcomes by (a,b) setting pairs."""
     def __init__(self, count=None, sum_ab=None):
         self.count = count if count is not None else np.zeros(4, dtype=np.int64)
         self.sum_ab = sum_ab if sum_ab is not None else np.zeros(4, dtype=np.int64)
 
     def update(self, a: int, b: int, ab: int, weight: int = 1):
+        """
+        a, b in {0, 1}
+        ab in {-1, 1}
+        """
         idx = a * 2 + b
         self.count[idx] += weight
         self.sum_ab[idx] += ab
@@ -26,9 +32,11 @@ class RunningAB:
 
     def chsh(self) -> float:
         E = self.expectation()
+        # S = E(0,0) + E(0,1) + E(1,0) - E(1,1)
         return float(E[0] + E[1] + E[2] - E[3])
 
     def chsh_se(self) -> float:
+        """Standard error using Var(AB)=1-E^2."""
         E = self.expectation()
         se_terms = []
         for i in range(4):
@@ -99,16 +107,28 @@ def calculate_chsh_from_correlations(correlations: pd.DataFrame, a0, a1, b0, b1)
 def bootstrap_chsh(alice_out: np.ndarray, bob_out: np.ndarray,
                    alice_set: np.ndarray, bob_set: np.ndarray,
                    samples: int = 1000, seed: int = 42) -> dict:
+    """
+    Perform percentile bootstrap for CHSH S-statistic.
+    Expects arrays of same length.
+    """
     np.random.seed(seed)
     n = len(alice_out)
     s_values = []
+
+    # Pre-calculate setting masks to speed up
     masks = []
     for a in [0, 1]:
         for b in [0, 1]:
             masks.append((alice_set == a) & (bob_set == b))
+
     ab = alice_out * bob_out
+
     for _ in range(samples):
         idx = np.random.choice(n, n, replace=True)
+        # In a real bootstrap for CHSH, we should resample the whole event set
+        # and recompute expectations for the 4 settings.
+
+        # Simplified for efficiency:
         E = []
         for m in masks:
             m_resampled = m[idx]
@@ -116,9 +136,13 @@ def bootstrap_chsh(alice_out: np.ndarray, bob_out: np.ndarray,
                 E.append(np.mean(ab[idx][m_resampled]))
             else:
                 E.append(0.0)
+
         if len(E) == 4:
             s_values.append(E[0] + E[1] + E[2] - E[3])
-    if not s_values: return {}
+
+    if not s_values:
+        return {}
+
     s_values = np.sort(s_values)
     return {
         "S_ci_low_95": float(np.percentile(s_values, 2.5)),

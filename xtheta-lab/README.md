@@ -89,6 +89,29 @@ python scripts/run_open_data_validation.py \
   --output outputs/open_data/hensen
 ```
 
+```powershell
+$env:PYTHONPATH = "$env:PYTHONPATH;$PWD\xtheta-lab"
+python -m pytest xtheta-lab\tests\
+```
+
+## Open Bell/CHSH Data Validation
+
+The framework includes a validation pipeline for real Bell-test datasets. This pipeline computes the CHSH S-statistic and fits an effective phenomenological X-Theta phase ($\Phi_{eff}$) and anisotropy ($R_{\Theta, eff}$).
+
+### Scientific Warning
+**Phi_eff is an effective phenomenological parameter only.** Without gravitational path, altitude, curvature, or spacetime-baseline metadata, this is not evidence of spacetime-induced X-Theta holonomy.
+
+### Running Validation
+
+You can run validation on generic CSV data or supported specific datasets (Weihs, Hensen, BIG Bell Test):
+
+```bash
+python scripts/run_open_data_validation.py \
+  --dataset hensen \
+  --data ../bell_open_data.txt \
+  --output outputs/open_data/hensen
+```
+
 ### Interpreting Phi_eff
 - $\Phi_{eff} \approx 0$ indicates maximal Bell violation ($S \approx 2\sqrt{2}$) and minimal anisotropy.
 - $\Phi_{eff} \approx \pi/4$ indicates a result at the classical Bell limit ($S \approx 2$).

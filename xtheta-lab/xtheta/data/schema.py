@@ -1,3 +1,6 @@
+"""
+Canonical Bell-event schema definitions and validation logic.
+"""
 from dataclasses import dataclass
 import pandas as pd
 import numpy as np
