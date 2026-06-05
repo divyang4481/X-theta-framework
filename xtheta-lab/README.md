@@ -61,11 +61,24 @@ The framework implements a kinematic phenomenological model where the presence o
 
 ```bash
 pip install -r requirements.txt
+pip install -e .
 ```
 
 ## Running the Research Stack
 
 You can explore the framework through the provided Jupyter notebooks in the `notebooks/` directory.
+
+### Running notebooks
+
+From the `xtheta-lab` directory, install the package in editable mode:
+
+```bash
+pip install -e .
+```
+
+Then run notebooks from `xtheta-lab/notebooks`.
+
+If running directly from an IDE, each notebook also includes a small fallback cell that adds the project root to `sys.path`.
 
 ## Testing
 
