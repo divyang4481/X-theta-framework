@@ -85,7 +85,7 @@ The framework includes a formal validation pipeline for real Bell-test datasets.
 All commands assume you are in the project root:
 
 ```powershell
-cd C:\workspace\Physics\X-theta\X-theta-framework\xtheta-lab
+cd C:\path\to\X-theta-framework\xtheta-lab
 
 python -m venv .venv
 .venv\Scripts\activate
