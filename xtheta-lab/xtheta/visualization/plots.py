@@ -67,7 +67,7 @@ def plot_correlation_ellipsoid(phi, ax=None, mode="strength", cap=10.0):
     ax.set_zlabel('Z (Correlation)')
 
     title_suffix = "Strength" if mode == "strength" else "Dual Response"
-    ax.set_title(f'Correlation Ellipsoid ({title_suffix}) [$\phi$ = {phi:.4f}]')
+    ax.set_title(rf'Correlation Ellipsoid ({title_suffix}) [$\phi$ = {phi:.4f}]')
 
     return ax
 
@@ -97,17 +97,17 @@ def plot_anisotropy_curve(phi_range):
 
     plt.figure(figsize=(10, 5))
     plt.subplot(1, 2, 1)
-    plt.plot(phi_range, rs, label='$R_{\Theta}$')
-    plt.xlabel('$\phi$')
-    plt.ylabel('$R_{\Theta}$')
+    plt.plot(phi_range, rs, label=r'$R_{\Theta}$')
+    plt.xlabel(r'$\phi$')
+    plt.ylabel(r'$R_{\Theta}$')
     plt.title('Entanglement Anisotropy Invariant')
     plt.legend()
 
     plt.subplot(1, 2, 2)
-    plt.plot(phi_range, chshs, label='$S_{max}$')
-    plt.axhline(y=2*np.sqrt(2), color='r', linestyle='--', label='$2\sqrt{2}$')
-    plt.xlabel('$\phi$')
-    plt.ylabel('$S_{max}$')
+    plt.plot(phi_range, chshs, label=r'$S_{max}$')
+    plt.axhline(y=2*np.sqrt(2), color='r', linestyle='--', label=r'$2\sqrt{2}$')
+    plt.xlabel(r'$\phi$')
+    plt.ylabel(r'$S_{max}$')
     plt.title('Maximum Bell Violation')
     plt.legend()
 
@@ -134,9 +134,9 @@ def plot_random_chsh_landscape(df, output_path=None):
 
     # Limits
     plt.axhline(y=2.0, color='blue', linestyle='--', label='Bell Limit (2.0)')
-    plt.axhline(y=2*np.sqrt(2), color='green', linestyle=':', label='Tsirelson Limit ($2\sqrt{2}$)')
+    plt.axhline(y=2*np.sqrt(2), color='green', linestyle=':', label=r'Tsirelson Limit ($2\sqrt{2}$)')
 
-    plt.xlabel('Relational Phase $\Phi$')
+    plt.xlabel(r'Relational Phase $\Phi$')
     plt.ylabel('CHSH $|S|$')
     plt.title('Random CHSH Landscape and Horodecki Envelope')
     plt.legend(loc='upper right')
