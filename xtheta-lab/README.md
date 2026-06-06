@@ -73,46 +73,84 @@ Outputs will be saved in the `outputs/` directory.
 pytest tests/ -v
 ```
 
-## Open Bell/CHSH Data Validation
+## Reproducible Open-Data Validation
 
-The framework includes a validation pipeline for real Bell-test datasets. This pipeline computes the CHSH S-statistic and fits an effective phenomenological X-Theta phase ($\Phi_{eff}$) and anisotropy ($R_{\Theta, eff}$).
+The framework includes a formal validation pipeline for real Bell-test datasets. This pipeline computes the CHSH S-statistic, calculates sign variants, and fits an effective phenomenological X-Theta phase ($\Phi_{\rm eff}$) and anisotropy ($R_{\Theta, \rm eff}$).
 
 ### Scientific Warning
-**Phi_eff is an effective phenomenological parameter only.** Without gravitational path, altitude, curvature, or spacetime-baseline metadata, this is not evidence of spacetime-induced X-Theta holonomy.
+**Phi_eff is an effective phenomenological parameter only. Without gravitational path, altitude, curvature, or spacetime-baseline metadata, the open Bell/CHSH datasets are not evidence of spacetime-induced X-Theta holonomy. They validate the computational mapping from observed CHSH statistics to effective X-Theta parameters.**
 
-### Running Validation
+### 1. Windows PowerShell Instructions
 
-You can run validation on generic CSV data or supported specific datasets (Weihs, Hensen, BIG Bell Test):
-
-```bash
-python scripts/run_open_data_validation.py \
-  --dataset hensen \
-  --data path/to/dataset.txt \
-  --output outputs/open_data/hensen
-```
+All commands assume you are in the project root:
 
 ```powershell
-$env:PYTHONPATH = "$env:PYTHONPATH;$PWD\xtheta-lab"
-python -m pytest xtheta-lab\tests\
+cd C:\path\to\X-theta-framework\xtheta-lab
+
+python -m venv .venv
+.venv\Scripts\activate
+
+pip install -r requirements.txt
+pip install -e .
+
+# Download Hensen/Delft 2015 data
+python scripts\download_open_data.py --dataset hensen
+
+# Run validation for Hensen
+python scripts\run_open_data_validation.py `
+  --dataset hensen `
+  --data data\open_bell\hensen\raw\bell_open_data.txt `
+  --output outputs\open_data\hensen `
+  --bootstrap-samples 1000
+
+# Run batch runner for all available datasets
+python scripts\run_all_open_data_validation.py
+
+# View comparison results
+Import-Csv outputs\open_data\comparison\open_data_comparison.csv | Format-Table
+
+# Run tests
+python -m pytest tests\ -v
 ```
 
-## Open Bell/CHSH Data Validation
+### 2. Bash/Linux/Mac Instructions
 
-The framework includes a validation pipeline for real Bell-test datasets. This pipeline computes the CHSH S-statistic and fits an effective phenomenological X-Theta phase ($\Phi_{eff}$) and anisotropy ($R_{\Theta, eff}$).
-
-### Scientific Warning
-**Phi_eff is an effective phenomenological parameter only.** Without gravitational path, altitude, curvature, or spacetime-baseline metadata, this is not evidence of spacetime-induced X-Theta holonomy.
-
-### Running Validation
-
-You can run validation on generic CSV data or supported specific datasets (Weihs, Hensen, BIG Bell Test):
+All commands assume you are in the project root:
 
 ```bash
+cd X-theta-framework/xtheta-lab
+
+python -m venv .venv
+source .venv/bin/activate
+
+pip install -r requirements.txt
+pip install -e .
+
+# Download Hensen/Delft 2015 data
+python scripts/download_open_data.py --dataset hensen
+
+# Run validation for Hensen
 python scripts/run_open_data_validation.py \
   --dataset hensen \
-  --data ../bell_open_data.txt \
-  --output outputs/open_data/hensen
+  --data data/open_bell/hensen/raw/bell_open_data.txt \
+  --output outputs/open_data/hensen \
+  --bootstrap-samples 1000
+
+# Run batch runner for all available datasets
+python scripts/run_all_open_data_validation.py
+
+# View comparison results
+cat outputs/open_data/comparison/open_data_comparison.csv
+
+# Run tests
+python -m pytest tests/ -v
 ```
+
+### Expected Outputs
+- `outputs/open_data/hensen/data/hensen_chsh_summary.csv`
+- `outputs/open_data/hensen/data/hensen_setting_counts.csv`
+- `outputs/open_data/hensen/reports/hensen_validation_report.md`
+- `outputs/open_data/comparison/open_data_comparison.csv`
 
 ### Interpreting Phi_eff
 - $\Phi_{eff} \approx 0$ indicates maximal Bell violation ($S \approx 2\sqrt{2}$) and minimal anisotropy.

@@ -9,10 +9,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-# Add adapter path to access download functions if needed
-sys.path.append(str(Path(__file__).parent.parent))
-from xtheta.data.adapters.hensen import download_hensen_data
-
+# Important: All paths are relative to xtheta-lab/
 DATASETS = [
     {
         "name": "hensen",
@@ -22,16 +19,12 @@ DATASETS = [
     },
 ]
 
-
 def run_dataset(item: dict) -> dict | None:
     data_path = item["data"]
 
-    # Attempt download/cache if missing
-    if item["dataset"] == "hensen" and not data_path.exists():
-        download_hensen_data(data_path)
-
     if not data_path.exists():
         print(f"[SKIP] {item['name']}: missing data file: {data_path}")
+        print(f"Run: python scripts/download_open_data.py --dataset {item['dataset']}")
         return None
 
     cmd = [
@@ -49,7 +42,12 @@ def run_dataset(item: dict) -> dict | None:
 
     print(f"\n[RUN] {item['name']}")
     print(" ".join(cmd))
-    subprocess.run(cmd, check=True)
+
+    try:
+        subprocess.run(cmd, check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"[ERROR] Validation failed for {item['name']}: {e}")
+        return None
 
     summary_file = item["output"] / "data" / f"{item['dataset']}_chsh_summary.csv"
     if not summary_file.exists():
@@ -59,7 +57,6 @@ def run_dataset(item: dict) -> dict | None:
     with summary_file.open("r", newline="", encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
         return rows[0] if rows else None
-
 
 def main() -> None:
     results = []
@@ -74,6 +71,7 @@ def main() -> None:
     comparison_file = comparison_dir / "open_data_comparison.csv"
 
     if results:
+        # Final columns as required
         fields = [
             "dataset_name",
             "row_count",
@@ -97,7 +95,6 @@ def main() -> None:
         print(f"\n[DONE] Comparison saved to: {comparison_file}")
     else:
         print("\n[WARN] No datasets were successfully processed.")
-
 
 if __name__ == "__main__":
     main()
