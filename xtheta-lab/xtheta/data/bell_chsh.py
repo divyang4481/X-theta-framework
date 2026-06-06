@@ -158,3 +158,29 @@ def bootstrap_chsh(alice_out: np.ndarray, bob_out: np.ndarray,
         "S_bootstrap_mean": float(np.mean(s_values)),
         "S_bootstrap_std": float(np.std(s_values))
     }
+
+def compute_chsh_variants(E00: float, E01: float, E10: float, E11: float) -> dict:
+    """
+    Compute all 4 sign variants of the CHSH S-statistic and find the maximum absolute value.
+    Returns a dict with the variants, max_abs, and max_abs_convention.
+    """
+    variants = {
+        "+++-": E00 + E01 + E10 - E11,
+        "++-+": E00 + E01 - E10 + E11,
+        "+-++": E00 - E01 + E10 + E11,
+        "-+++": -E00 + E01 + E10 + E11,
+    }
+
+    max_abs_val = -1.0
+    max_abs_conv = ""
+
+    for conv, val in variants.items():
+        if abs(val) > max_abs_val:
+            max_abs_val = abs(val)
+            max_abs_conv = conv
+
+    result = dict(variants)
+    result["max_abs"] = float(max_abs_val)
+    result["max_abs_convention"] = max_abs_conv
+
+    return result
