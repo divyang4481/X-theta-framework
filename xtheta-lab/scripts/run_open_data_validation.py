@@ -2,6 +2,7 @@
 """
 Command-line runner for Open Bell/CHSH Data Validation.
 """
+from __future__ import annotations
 import argparse
 import sys
 import os
@@ -12,7 +13,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 from xtheta.experiments.open_data_validation import run_open_data_chsh_validation
 from xtheta.data.adapters.weihs import load_weihs_dataset
-from xtheta.data.adapters.hensen import load_hensen_dataset
+from xtheta.data.adapters.hensen import load_hensen_dataset, download_hensen_data
 from xtheta.data.adapters.big_bell_test import load_big_bell_test_dataset
 from xtheta.data.loaders import get_loader
 
@@ -31,6 +32,11 @@ def main():
     args = parser.parse_args()
 
     data_path = Path(args.data)
+
+    # Pre-flight for Hensen: try to download if missing
+    if args.dataset == "hensen" and not data_path.exists():
+        download_hensen_data(data_path)
+
     if not data_path.exists():
         print(f"Error: Data path does not exist: {data_path}")
         sys.exit(1)

@@ -13,7 +13,8 @@
 
 - **Effective Phase ($\Phi_{eff}$):** 0.134846 rad
 - **Effective Anisotropy ($R_{\Theta, eff}$):** 0.141975
-- **Fit Status:** success
+- **Fit Status:** Success
+- **Fit Warning:** Phi_eff is an effective phenomenological parameter only. Without gravitational path, altitude, curvature, or spacetime-baseline metadata, this is not evidence of spacetime-induced X-Theta holonomy.
 
 ## Setting Expectations and Counts
 
