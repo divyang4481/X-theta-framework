@@ -112,6 +112,24 @@ def iter_dataframes(path: Path, chunksize: int) -> Iterator[pd.DataFrame]:
         return iter_npz(path, chunksize)
     raise ValueError(f"Unsupported file extension: {ext}")
 
+def get_loader(data_path):
+    """
+    Returns a loader function for the given data path.
+    If data_path is a directory, the loader will iterate through all supported files.
+    """
+    path = Path(data_path)
+
+    def loader(p, chunksize=200_000):
+        p = Path(p)
+        if p.is_dir():
+            files = pick_data_files(p)
+            for file_path in files:
+                yield from iter_dataframes(file_path, chunksize=chunksize)
+        else:
+            yield from iter_dataframes(p, chunksize=chunksize)
+
+    return loader
+
 def load_bell_data(filepath, schema_map=None, **kwargs):
     """
     Load Bell test data from various formats.
