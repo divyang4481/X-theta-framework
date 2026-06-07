@@ -8,7 +8,7 @@ from typing import Iterator
 from xtheta.quantum.correlation_tensor import get_correlation_tensor
 
 def generate_synthetic_xtheta_data(
-    phi: float,
+    Phi: float,
     n_trials: int = 1000,
     geometry: str = 'smax-envelope',
     seed: int = 42,
@@ -19,10 +19,10 @@ def generate_synthetic_xtheta_data(
     """
     rng = np.random.default_rng(seed)
 
-    # Correlation tensor T(phi) = diag(-cos(2phi), -cos(2phi), -1)
-    T = get_correlation_tensor(phi)
+    # Correlation tensor T(Phi) = diag(-cos(2Phi), -cos(2Phi), -1)
+    T = get_correlation_tensor(Phi)
 
-    # Standard CHSH settings for maximal violation (for phi=0)
+    # Standard CHSH settings for maximal violation (for Phi=0)
     # A1 = Z, A2 = X
     # B1 = (Z+X)/sqrt(2), B2 = (Z-X)/sqrt(2)
 
@@ -73,5 +73,5 @@ def generate_synthetic_xtheta_data(
             "bob_setting": bob_settings,
             "alice_outcome": alice_outcomes,
             "bob_outcome": bob_outcomes,
-            "phi_true": phi
+            "Phi_true": Phi
         })

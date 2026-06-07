@@ -10,8 +10,8 @@ def test_random_unit_vector():
 
 def test_random_chsh_never_exceeds_horodecki_envelope():
     # Use small samples for speed in test
-    phi_values = np.linspace(0.0, np.pi/2, 11)
-    df = simulate_random_chsh_landscape(phi_values=phi_values, samples_per_phi=50, seed=42)
+    Phi_values = np.linspace(0.0, np.pi/2, 11)
+    df = simulate_random_chsh_landscape(Phi_values=Phi_values, samples_per_Phi=50, seed=42)
 
     # abs(S_random) <= S_max + 1e-9
     # S_max <= 2sqrt(2) + 1e-9

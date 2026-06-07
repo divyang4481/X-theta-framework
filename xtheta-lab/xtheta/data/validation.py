@@ -4,7 +4,7 @@ import os
 from xtheta.data.bell_chsh import RunningAB, bootstrap_chsh, compute_correlations_per_setting, calculate_chsh_from_correlations, compute_chsh_variants
 from xtheta.data.schema import BellEventSchema, validate_bell_schema
 from xtheta.data.loaders import load_bell_data
-from xtheta.fitting.phi_eff_fit import fit_phi_eff
+from xtheta.fitting.Phi_eff_fit import fit_Phi_eff
 
 SCIENTIFIC_WARNING = (
     "Phi_eff is an effective phenomenological parameter only. "
@@ -93,13 +93,13 @@ def run_open_data_chsh_validation(
         results.update(boot)
         results["bootstrap_samples"] = bootstrap_samples
 
-    # Fit phi_eff
+    # Fit Phi_eff
     # Use max_abs variant for fitting to handle sign conventions
     variants = compute_chsh_variants(E[0], E[1], E[2], E[3])
     S_max_abs = variants["max_abs"]
 
-    fit = fit_phi_eff(S_max_abs, 'smax-envelope')
-    results["phi_eff"] = fit["phi_eff"]
+    fit = fit_Phi_eff(S_max_abs, 'smax-envelope')
+    results["Phi_eff"] = fit["Phi_eff"]
     results["R_theta_eff"] = fit["R_theta_eff"]
     results["fit_status"] = fit["fit_status"]
     results["fit_warning"] = SCIENTIFIC_WARNING
@@ -133,7 +133,7 @@ def run_open_data_chsh_validation(
             f.write(f"- **Bootstrap Samples:** {bootstrap_samples}\n")
 
         f.write(f"\n## Effective X-Theta Fit\n\n")
-        f.write(r"- **Effective Phase ($\Phi_{eff}$):** " + f"{results['phi_eff']:.6f} rad\n")
+        f.write(r"- **Effective Phase ($\Phi_{eff}$):** " + f"{results['Phi_eff']:.6f} rad\n")
         f.write(r"- **Effective Anisotropy ($R_{\Theta, eff}$):** " + f"{results['R_theta_eff']:.6f}\n")
         f.write(f"- **Fit Status:** {results['fit_status']}\n")
         if "fit_warning" in results:
@@ -154,7 +154,7 @@ def run_open_data_chsh_validation(
 
     print(f"Results saved to {output_dir}")
     print(f"S = {S:.4f} ± {S_se:.4f}")
-    print(f"Phi_eff = {results['phi_eff']:.4f}")
+    print(f"Phi_eff = {results['Phi_eff']:.4f}")
 
     return results
 

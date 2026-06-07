@@ -1,5 +1,5 @@
 import numpy as np
-from xtheta.geometry.schwarzschild import compute_phi_rel
+from xtheta.geometry.schwarzschild import compute_Phi_rel
 from scipy.constants import g
 
 # Constants
@@ -81,19 +81,19 @@ def get_black_hole_params():
 def compute_scenario_results(name, mass, theta, r_emit, r_det):
     from xtheta.quantum.engine import (
         evolve_state, compute_correlation_tensor, compute_chsh_max,
-        compute_invariants, compute_concurrence_from_phi, compute_purity,
+        compute_invariants, compute_concurrence_from_Phi, compute_purity,
         compute_chsh_xy, compute_chsh_xz
     )
 
-    phi = compute_phi_rel(mass, theta, r_emit, r_det)
-    psi = evolve_state(phi)
+    Phi = compute_Phi_rel(mass, theta, r_emit, r_det)
+    psi = evolve_state(Phi)
     T = compute_correlation_tensor(psi)
     i_theta, r_theta = compute_invariants(T)
     s_max = compute_chsh_max(T)
-    conc = compute_concurrence_from_phi(phi)
+    conc = compute_concurrence_from_Phi(Phi)
     purity = compute_purity(psi)
-    s_xy = compute_chsh_xy(phi)
-    s_xz = compute_chsh_xz(phi)
+    s_xy = compute_chsh_xy(Phi)
+    s_xz = compute_chsh_xz(Phi)
 
     return {
         "scenario": name,
@@ -101,8 +101,8 @@ def compute_scenario_results(name, mass, theta, r_emit, r_det):
         "theta_rad": theta,
         "r_emit_m": r_emit,
         "r_det_m": r_det,
-        "phi_rel": phi,
-        "abs_phi_rel": abs(phi),
+        "Phi_rel": Phi,
+        "abs_Phi_rel": abs(Phi),
         "Txx": T[0,0],
         "Tyy": T[1,1],
         "Tzz": T[2,2],
@@ -115,7 +115,7 @@ def compute_scenario_results(name, mass, theta, r_emit, r_det):
         "S_max": s_max,
         "delta_S_from_tsirelson": abs(s_max - 2*np.sqrt(2)),
         # Scientific notation fields
-        "phi_rel_scientific": f"{phi:.4e}",
+        "Phi_rel_scientific": f"{Phi:.4e}",
         "R_theta_scientific": f"{r_theta:.4e}",
         "delta_S_scientific": f"{abs(s_max - 2*np.sqrt(2)):.4e}"
     }

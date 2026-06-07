@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from xtheta.data.loaders import load_bell_data
 from xtheta.data.bell_chsh import compute_correlations_per_setting, calculate_chsh_from_correlations
-from xtheta.fitting.phi_eff_fit import fit_phi_eff
+from xtheta.fitting.Phi_eff_fit import fit_Phi_eff
 
 def test_data_pipeline_with_dummy():
     # Create dummy data
@@ -26,7 +26,7 @@ def test_data_pipeline_with_dummy():
 
     os.remove(dummy_path)
 
-def test_phi_fitting():
-    # S_max = 2*sqrt(2) approx 2.828 -> phi = 0
-    res = fit_phi_eff(2.8284271247, 'smax-envelope')
-    assert abs(res['phi_eff']) < 1e-5
+def test_Phi_fitting():
+    # S_max = 2*sqrt(2) approx 2.828 -> Phi = 0
+    res = fit_Phi_eff(2.8284271247, 'smax-envelope')
+    assert abs(res['Phi_eff']) < 1e-5

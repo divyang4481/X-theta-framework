@@ -25,17 +25,17 @@ def random_detector_quadruple(rng: np.random.Generator):
     )
 
 def simulate_random_chsh_landscape(
-    phi_values: np.ndarray = None,
-    samples_per_phi: int = 1000,
+    Phi_values: np.ndarray = None,
+    samples_per_Phi: int = 1000,
     seed: int = 42
 ) -> pd.DataFrame:
     """
-    Simulate random CHSH landscape for a range of phi values.
+    Simulate random CHSH landscape for a range of Phi values.
     Returns a DataFrame with columns:
-    phi, sample_id, S_random, S_abs, S_max, bell_limit, tsirelson_limit
+    Phi, sample_id, S_random, S_abs, S_max, bell_limit, tsirelson_limit
     """
-    if phi_values is None:
-        phi_values = np.linspace(0.0, np.pi / 2, 101)
+    if Phi_values is None:
+        Phi_values = np.linspace(0.0, np.pi / 2, 101)
 
     rng = np.random.default_rng(seed)
     data = []
@@ -43,17 +43,17 @@ def simulate_random_chsh_landscape(
     bell_limit = 2.0
     tsirelson_limit = 2 * np.sqrt(2)
 
-    for phi in phi_values:
-        psi = evolve_state(phi)
+    for Phi in Phi_values:
+        psi = evolve_state(Phi)
         T = compute_correlation_tensor(psi)
         s_max = compute_chsh_max(T)
 
-        for i in range(samples_per_phi):
+        for i in range(samples_per_Phi):
             a0, a1, b0, b1 = random_detector_quadruple(rng)
             s_random = compute_chsh_from_tensor(T, a0, a1, b0, b1)
 
             data.append({
-                "phi": phi,
+                "Phi": Phi,
                 "sample_id": i,
                 "S_random": s_random,
                 "S_abs": abs(s_random),
