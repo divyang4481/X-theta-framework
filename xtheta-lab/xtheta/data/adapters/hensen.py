@@ -49,42 +49,89 @@ def download_hensen_data(target_path: Path) -> bool:
 def load_hensen_dataset(path: str, chunksize: int = 200_000) -> Iterator[pd.DataFrame]:
     """
     Load Hensen (Delft) 2015 dataset from raw text file.
-    Mapping (based on download_delft.py):
-    - Col 1: Alice setting
-    - Col 2: Bob setting
-    - Col 3: Alice outcome (0/1)
-    - Col 4: Bob outcome (0/1)
+    Implements the official filtering and mapping logic from the 2015 Nature paper.
     """
     p = Path(path)
     if not download_hensen_data(p):
         raise FileNotFoundError(f"Hensen data not found and could not be downloaded to: {path}")
 
-    # Read raw lines
-    with open(p, 'r', encoding='utf-8') as f:
-        lines = [l.strip().split(',') for l in f.readlines() if l.strip()]
+    # Read raw data
+    # The file has no header. Col 0 is timestamp, followed by 16 data columns.
+    df_raw = pd.read_csv(p, header=None)
 
-    data = []
-    for line in lines:
-        try:
-            # Map settings to 0/1: a=1->0, a=2->1; b=1->0, b=2->1 (approx)
-            # Actually Delft settings are a={0, 1} and b={0, 1} in CHSH terms.
-            a_set = int(line[1]) - 1
-            b_set = int(line[2]) - 1
-            a_out = 1 if int(line[4]) == 1 else -1
-            b_out = 1 if int(line[6]) == 1 else -1
+    # Official constants for event-ready (heralding) and readout windows
+    EVENT_READY_WINDOW_START_CH0 = 5426350
+    EVENT_READY_WINDOW_START_CH1 = 5425700
+    EVENT_READY_WINDOW_LENGTH = 52450
+    EVENT_READY_WINDOW_SEPARATION = 250000
+    READOUT_WINDOW_START = 10620
+    READOUT_WINDOW_LENGTH = 3700
+    CHECK_FOR_INVALID_MARKER_IN_PAST = 250
 
-            data.append({
-                "trial_id": len(data),
-                "timestamp": line[0],
-                "alice_setting": a_set,
-                "bob_setting": b_set,
-                "alice_outcome": a_out,
-                "bob_outcome": b_out,
-                "source_file": p.name
-            })
-        except (ValueError, IndexError):
-            continue
+    # Column mapping (0-indexed based on raw file)
+    ER_CLICK1_TIME = 3
+    ER_CLICK1_CH = 4
+    ER_CLICK2_TIME = 5
+    ER_CLICK2_CH = 6
+    RN_A = 7
+    RN_B = 8
+    RO_CLICK_A_TIME = 11
+    RO_CLICK_B_TIME = 12
+    CLICK_AFTER_EXCITE_A = 13
+    CLICK_AFTER_EXCITE_B = 14
+    INVALID_MARKER_A = 15
+    INVALID_MARKER_B = 16
 
-    df = pd.DataFrame(data)
-    for i in range(0, len(df), chunksize):
-        yield df.iloc[i : i + chunksize]
+    # 1. Heralding Filters (Event Ready)
+    t1 = df_raw[ER_CLICK1_TIME]
+    ch1 = df_raw[ER_CLICK1_CH]
+    t2 = df_raw[ER_CLICK2_TIME]
+    ch2 = df_raw[ER_CLICK2_CH]
+
+    filter_w1_ch0 = (EVENT_READY_WINDOW_START_CH0 <= t1) & (t1 < EVENT_READY_WINDOW_START_CH0 + EVENT_READY_WINDOW_LENGTH) & (ch1 == 0)
+    filter_w1_ch1 = (EVENT_READY_WINDOW_START_CH1 <= t1) & (t1 < EVENT_READY_WINDOW_START_CH1 + EVENT_READY_WINDOW_LENGTH) & (ch1 == 1)
+    w1_filter = filter_w1_ch0 | filter_w1_ch1
+
+    filter_w2_ch0 = (EVENT_READY_WINDOW_START_CH0 + EVENT_READY_WINDOW_SEPARATION <= t2) & (t2 < EVENT_READY_WINDOW_START_CH0 + EVENT_READY_WINDOW_SEPARATION + EVENT_READY_WINDOW_LENGTH) & (ch2 == 0)
+    filter_w2_ch1 = (EVENT_READY_WINDOW_START_CH1 + EVENT_READY_WINDOW_SEPARATION <= t2) & (t2 < EVENT_READY_WINDOW_START_CH1 + EVENT_READY_WINDOW_SEPARATION + EVENT_READY_WINDOW_LENGTH) & (ch2 == 1)
+    w2_filter = filter_w2_ch0 | filter_w2_ch1
+
+    psi_min_filter = (ch1 != ch2)
+    ready_filter = w1_filter & w2_filter & psi_min_filter
+
+    # 2. Signal Integrity Filters
+    inv_a = df_raw[INVALID_MARKER_A]
+    inv_b = df_raw[INVALID_MARKER_B]
+    no_invalid_marker = ((inv_a == 0) | (inv_a > CHECK_FOR_INVALID_MARKER_IN_PAST)) & \
+                        ((inv_b == 0) | (inv_b > CHECK_FOR_INVALID_MARKER_IN_PAST))
+
+    exc_a = df_raw[CLICK_AFTER_EXCITE_A]
+    exc_b = df_raw[CLICK_AFTER_EXCITE_B]
+    no_excitation = (exc_a == 0) & (exc_b == 0)
+
+    # Final Bell Trial Filter
+    bell_trial_filter = ready_filter & no_invalid_marker & no_excitation
+    df_filtered = df_raw[bell_trial_filter].copy()
+
+    if df_filtered.empty:
+        return iter([])
+
+    # 3. Derive Outcomes from Readout Windows
+    ro_a = df_filtered[RO_CLICK_A_TIME]
+    ro_b = df_filtered[RO_CLICK_B_TIME]
+    det_a = (ro_a > READOUT_WINDOW_START) & (ro_a <= READOUT_WINDOW_START + READOUT_WINDOW_LENGTH)
+    det_b = (ro_b > READOUT_WINDOW_START) & (ro_b <= READOUT_WINDOW_START + READOUT_WINDOW_LENGTH)
+
+    # 4. Map to Canonical Schema
+    df_final = pd.DataFrame({
+        "trial_id": df_filtered.index,
+        "timestamp": df_filtered[0],
+        "alice_setting": df_filtered[RN_A].astype(int),
+        "bob_setting": df_filtered[RN_B].astype(int),
+        "alice_outcome": np.where(det_a, 1, -1),
+        "bob_outcome": np.where(det_b, 1, -1),
+        "source_file": p.name
+    })
+
+    for i in range(0, len(df_final), chunksize):
+        yield df_final.iloc[i : i + chunksize]
