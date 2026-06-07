@@ -10,17 +10,17 @@ def test_classify_claim():
 
 def test_falsification_rule_1():
     # Zero observed anisotropy when non-zero predicted
-    phi_pred = 0.05
-    phi_eff = 0.001
-    phi_eff_se = 0.01
-    report = check_falsification(phi_pred, phi_eff, phi_eff_se)
+    Phi_pred = 0.05
+    Phi_eff = 0.001
+    Phi_eff_se = 0.01
+    report = check_falsification(Phi_pred, Phi_eff, Phi_eff_se)
     assert report['constrained'] is True
     assert any(r['id'] == 'RULE_1' for r in report['rules'])
 
 def test_falsification_rule_2():
     # Inconsistency
-    phi_pred = 0.10
-    phi_eff = 0.20
-    phi_eff_se = 0.01
-    report = check_falsification(phi_pred, phi_eff, phi_eff_se)
+    Phi_pred = 0.10
+    Phi_eff = 0.20
+    Phi_eff_se = 0.01
+    report = check_falsification(Phi_pred, Phi_eff, Phi_eff_se)
     assert any(r['id'] == 'RULE_2' for r in report['rules'])

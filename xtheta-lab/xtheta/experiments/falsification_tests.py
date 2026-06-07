@@ -4,14 +4,14 @@ X-Theta falsification rules and scientific checks.
 from __future__ import annotations
 import numpy as np
 
-def check_falsification(phi_pred: float, phi_eff: float, phi_eff_se: float) -> dict:
+def check_falsification(Phi_pred: float, Phi_eff: float, Phi_eff_se: float) -> dict:
     """
     Applies falsification rules to X-Theta results.
     """
     rules = []
 
     # Rule 1: Zero observed anisotropy when non-zero predicted
-    if abs(phi_pred) > 1e-6 and abs(phi_eff) < 2 * phi_eff_se:
+    if abs(Phi_pred) > 1e-6 and abs(Phi_eff) < 2 * Phi_eff_se:
         rules.append({
             "id": "RULE_1",
             "status": "CONSTRAINED",
@@ -19,7 +19,7 @@ def check_falsification(phi_pred: float, phi_eff: float, phi_eff_se: float) -> d
         })
 
     # Rule 2: Inconsistency between predicted and effective phase
-    if abs(phi_pred - phi_eff) > 3 * phi_eff_se and phi_eff_se > 0:
+    if abs(Phi_pred - Phi_eff) > 3 * Phi_eff_se and Phi_eff_se > 0:
         rules.append({
             "id": "RULE_2",
             "status": "INCONSISTENT",

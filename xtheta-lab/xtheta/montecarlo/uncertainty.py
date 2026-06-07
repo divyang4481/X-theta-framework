@@ -1,5 +1,5 @@
 import numpy as np
-from xtheta.geometry.schwarzschild import compute_phi_rel
+from xtheta.geometry.schwarzschild import compute_Phi_rel
 from xtheta.quantum.engine import (
     evolve_state,
     compute_correlation_tensor,
@@ -7,7 +7,7 @@ from xtheta.quantum.engine import (
     compute_chsh_xy,
     compute_chsh_xz,
     compute_invariants,
-    compute_concurrence_from_phi
+    compute_concurrence_from_Phi
 )
 
 def monte_carlo_sensitivity(mass, theta, r_emit, r_det,
@@ -20,7 +20,7 @@ def monte_carlo_sensitivity(mass, theta, r_emit, r_det,
     by resampling.
     """
     results = {
-        "phi": [],
+        "Phi": [],
         "s_max": [],
         "s_xy": [],
         "s_xz": [],
@@ -42,17 +42,17 @@ def monte_carlo_sensitivity(mass, theta, r_emit, r_det,
         if m_s <= 0 or re_s <= 0 or rd_s <= 0 or t_s < 0:
             continue
 
-        phi = compute_phi_rel(m_s, t_s, re_s, rd_s)
-        psi = evolve_state(phi)
+        Phi = compute_Phi_rel(m_s, t_s, re_s, rd_s)
+        psi = evolve_state(Phi)
         T = compute_correlation_tensor(psi)
 
         s_max = compute_chsh_max(T)
-        s_xy = compute_chsh_xy(phi)
-        s_xz = compute_chsh_xz(phi)
+        s_xy = compute_chsh_xy(Phi)
+        s_xz = compute_chsh_xz(Phi)
         _, r_theta = compute_invariants(T)
-        concurrence = compute_concurrence_from_phi(phi)
+        concurrence = compute_concurrence_from_Phi(Phi)
 
-        results["phi"].append(phi)
+        results["Phi"].append(Phi)
         results["s_max"].append(s_max)
         results["s_xy"].append(s_xy)
         results["s_xz"].append(s_xz)

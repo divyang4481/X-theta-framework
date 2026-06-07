@@ -22,26 +22,26 @@ def get_relational_generator():
     X, Y, Z = get_paulis()
     return 0.5 * (tensor(X, Y) - tensor(Y, X))
 
-def get_unitary_evolution(phi):
-    """Returns the unitary operator U_rel(phi) = exp(i * phi * G_rel)."""
+def get_unitary_evolution(Phi):
+    """Returns the unitary operator U_rel(Phi) = exp(i * Phi * G_rel)."""
     G_rel = get_relational_generator()
-    return (1j * phi * G_rel).expm()
+    return (1j * Phi * G_rel).expm()
 
-def evolve_state(phi):
+def evolve_state(Phi):
     """
-    Evolves the |Psi-> state by phi.
-    Returns |Psi(phi)> = cos(phi)|Psi-> + sin(phi)|Psi+>.
-    Also verifies it matches U_rel(phi) * |Psi->.
+    Evolves the |Psi-> state by Phi.
+    Returns |Psi(Phi)> = cos(Phi)|Psi-> + sin(Phi)|Psi+>.
+    Also verifies it matches U_rel(Phi) * |Psi->.
     """
     psi_minus, psi_plus = get_bell_states()
     # Analytic formula
-    psi_phi_analytic = np.cos(phi) * psi_minus + np.sin(phi) * psi_plus
+    psi_Phi_analytic = np.cos(Phi) * psi_minus + np.sin(Phi) * psi_plus
 
     # Numerical evolution
-    U = get_unitary_evolution(phi)
-    psi_phi_numeric = U * psi_minus
+    U = get_unitary_evolution(Phi)
+    psi_Phi_numeric = U * psi_minus
 
-    return psi_phi_numeric
+    return psi_Phi_numeric
 
 def compute_correlation_tensor(state):
     """
@@ -65,12 +65,12 @@ def compute_correlation_tensor(state):
 
 def compute_chsh_max(T):
     """
-    Computes S_max = 2 * sqrt(1 + cos^2(2*phi)) using the singular values of T.
-    For X-Theta T = diag[-cos(2phi), -cos(2phi), -1].
+    Computes S_max = 2 * sqrt(1 + cos^2(2*Phi)) using the singular values of T.
+    For X-Theta T = diag[-cos(2Phi), -cos(2Phi), -1].
     The two largest singular values squared are used.
     """
     # Singular values of T
-    # T.T @ T = diag[cos^2(2phi), cos^2(2phi), 1]
+    # T.T @ T = diag[cos^2(2Phi), cos^2(2Phi), 1]
     # S_max = 2 * sqrt(u1^2 + u2^2) where u1, u2 are the two largest singular values
     u = np.linalg.svd(T, compute_uv=False)
     u_sorted = np.sort(u)[::-1]
@@ -99,8 +99,8 @@ def compute_chsh_from_tensor(T, a0, a1, b0, b1):
 
     return E(a0, b0) + E(a0, b1) + E(a1, b0) - E(a1, b1)
 
-def compute_chsh_xy(phi: float) -> float:
-    """Returns S_XY = 2√2 |cos(2φ)|."""
+def compute_chsh_xy(Phi: float) -> float:
+    """Returns S_XY = 2√2 |cos(2Phi)|."""
     # Settings
     X = np.array([1.0, 0.0, 0.0])
     Y = np.array([0.0, 1.0, 0.0])
@@ -110,13 +110,13 @@ def compute_chsh_xy(phi: float) -> float:
     B0 = -(X + Y) / np.sqrt(2)
     B1 =  (Y - X) / np.sqrt(2)
 
-    psi = evolve_state(phi)
+    psi = evolve_state(Phi)
     T = compute_correlation_tensor(psi)
     S = compute_chsh_from_tensor(T, A0, A1, B0, B1)
     return abs(S)
 
-def compute_chsh_xz(phi: float) -> float:
-    """Returns S_XZ = 2√2 cos²(φ)."""
+def compute_chsh_xz(Phi: float) -> float:
+    """Returns S_XZ = 2√2 cos²(Phi)."""
     # Settings
     X = np.array([1.0, 0.0, 0.0])
     Z = np.array([0.0, 0.0, 1.0])
@@ -126,17 +126,17 @@ def compute_chsh_xz(phi: float) -> float:
     B0 = -(Z + X) / np.sqrt(2)
     B1 =  (X - Z) / np.sqrt(2)
 
-    psi = evolve_state(phi)
+    psi = evolve_state(Phi)
     T = compute_correlation_tensor(psi)
     S = compute_chsh_from_tensor(T, A0, A1, B0, B1)
     return abs(S)
 
-def compute_concurrence_from_phi(phi: float) -> float:
+def compute_concurrence_from_Phi(Phi: float) -> float:
     """
-    Returns C(φ)=|cos(2φ)| for the X-Theta evolved pure state.
+    Returns C(Phi)=|cos(2Phi)| for the X-Theta evolved pure state.
     Note that concurrence is not constant under relational evolution.
     """
-    return abs(np.cos(2 * phi))
+    return abs(np.cos(2 * Phi))
 
 def compute_concurrence_from_state(state) -> float:
     """
@@ -178,14 +178,14 @@ def compute_purity(state_or_rho) -> float:
     rho = compute_density_matrix(state_or_rho)
     return (rho * rho).tr().real
 
-def compute_analytic_correlation_tensor(phi: float) -> np.ndarray:
+def compute_analytic_correlation_tensor(Phi: float) -> np.ndarray:
     """
-    Returns the analytic X-Theta correlation tensor for a given phi.
-    T(phi) = diag[-cos(2phi), -cos(2phi), -1.0]
+    Returns the analytic X-Theta correlation tensor for a given Phi.
+    T(Phi) = diag[-cos(2Phi), -cos(2Phi), -1.0]
     """
     return np.diag([
-        -np.cos(2 * phi),
-        -np.cos(2 * phi),
+        -np.cos(2 * Phi),
+        -np.cos(2 * Phi),
         -1.0
     ])
 

@@ -9,9 +9,9 @@ def test_correlation_tensor_structure():
     T = get_correlation_tensor(0.0)
     assert np.allclose(T, np.diag([-1, -1, -1]))
 
-    T_phi = get_correlation_tensor(np.pi/4)
+    T_Phi = get_correlation_tensor(np.pi/4)
     # cos(2*pi/4) = cos(pi/2) = 0
-    assert np.allclose(T_phi, np.diag([0, 0, -1]))
+    assert np.allclose(T_Phi, np.diag([0, 0, -1]))
 
 def test_g_rel_hermitian():
     G = get_g_rel()

@@ -21,19 +21,19 @@ def get_g_rel():
 
     return 0.5 * (XY - YX)
 
-def get_correlation_tensor(phi: float) -> np.ndarray:
+def get_correlation_tensor(Phi: float) -> np.ndarray:
     """
-    Returns the X-Theta correlation tensor T(phi) = diag(-cos(2phi), -cos(2phi), -1).
+    Returns the X-Theta correlation tensor T(Phi) = diag(-cos(2Phi), -cos(2Phi), -1).
 
     Scientific status:
     Mathematical theorem derived from unitary evolution of Bell singlet
-    under U_rel(phi) = exp(i phi G_rel).
+    under U_rel(Phi) = exp(i Phi G_rel).
     """
-    cos2phi = np.cos(2 * phi)
-    return np.diag([-cos2phi, -cos2phi, -1.0])
+    cos2Phi = np.cos(2 * Phi)
+    return np.diag([-cos2Phi, -cos2Phi, -1.0])
 
-def get_anisotropy_invariant(phi: float) -> float:
+def get_anisotropy_invariant(Phi: float) -> float:
     """
-    Returns the anisotropy invariant R_theta = 2 * sin^2(2phi).
+    Returns the anisotropy invariant R_theta = 2 * sin^2(2Phi).
     """
-    return 2.0 * (np.sin(2 * phi)**2)
+    return 2.0 * (np.sin(2 * Phi)**2)

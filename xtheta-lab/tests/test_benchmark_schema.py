@@ -10,7 +10,7 @@ def test_run_benchmark_scenarios_schema():
 
     required_keys = [
         "scenario",
-        "phi_rel",
+        "Phi_rel",
         "S_max",
         "delta_S_from_tsirelson",
         "R_theta",
@@ -25,7 +25,7 @@ def test_run_benchmark_scenarios_schema():
 
         # Check types
         assert isinstance(row["scenario"], str)
-        assert isinstance(row["phi_rel"], (int, float, np.number))
+        assert isinstance(row["Phi_rel"], (int, float, np.number))
         assert isinstance(row["S_max"], (int, float, np.number))
         assert isinstance(row["delta_S_from_tsirelson"], (int, float, np.number))
         assert isinstance(row["R_theta"], (int, float, np.number))
