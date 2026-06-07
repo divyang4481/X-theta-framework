@@ -6,14 +6,15 @@ from __future__ import annotations
 import argparse
 import sys
 import os
+import pandas as pd
 from pathlib import Path
 
 # Ensure xtheta-lab is in path
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
-from xtheta.experiments.open_data_validation import run_open_data_chsh_validation
+from xtheta.data.validation import run_open_data_chsh_validation
 from xtheta.data.adapters.weihs import load_weihs_dataset
-from xtheta.data.adapters.hensen import load_hensen_dataset, download_hensen_data
+from xtheta.data.adapters.hensen import load_hensen_dataset
 from xtheta.data.adapters.big_bell_test import load_big_bell_test_dataset
 from xtheta.data.loaders import get_loader
 
@@ -28,14 +29,11 @@ def main():
     parser.add_argument("--seed", type=int, default=42, help="Random seed for bootstrap.")
     parser.add_argument("--geometry-fit", choices=["smax-envelope", "xy", "xz"],
                         default="smax-envelope", help="Fit geometry to use.")
+    parser.add_argument("--claim-level", default="phenomenological_fit", help="Claim level for report.")
 
     args = parser.parse_args()
 
     data_path = Path(args.data)
-
-    # Pre-flight for Hensen: try to download if missing
-    if args.dataset == "hensen" and not data_path.exists():
-        download_hensen_data(data_path)
 
     if not data_path.exists():
         print(f"Error: Data path does not exist: {data_path}")
@@ -53,13 +51,25 @@ def main():
         loader_func = get_loader(data_path)
         data_iterator = loader_func(data_path, chunksize=args.chunksize)
 
+    # Pre-calculate raw row count if it's a file for reporting
+    raw_row_count = None
+    if data_path.is_file():
+        try:
+            # Simple line count for raw audit
+            with open(data_path, 'r') as f:
+                raw_row_count = sum(1 for _ in f)
+        except:
+            pass
+
     # Run validation
     run_open_data_chsh_validation(
         data_iterator,
         dataset_name=args.dataset if args.dataset != "generic" else data_path.stem,
         output_dir=args.output,
         bootstrap_samples=args.bootstrap_samples,
-        seed=args.seed
+        seed=args.seed,
+        claim_level=args.claim_level,
+        raw_row_count=raw_row_count
     )
 
 if __name__ == "__main__":
