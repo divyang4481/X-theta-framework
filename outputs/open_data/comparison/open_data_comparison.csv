@@ -1,0 +1,2 @@
+dataset_name,row_count,CHSH_S,CHSH_S_se,S_ci_low_95,S_ci_high_95,S_bootstrap_mean,S_bootstrap_std,phi_eff,R_theta_eff,fit_status,interpretation_warning
+hensen,245,2.4224998704613703,0.20382659825201987,2.002545796252275,2.805228895642471,2.424742094194,0.20430086873147751,0.4091482169821624,1.0657490771776925,Success,"Phi_eff is an effective phenomenological parameter only. Without gravitational path, altitude, curvature, or spacetime-baseline metadata, this is not evidence of spacetime-induced X-Theta holonomy."

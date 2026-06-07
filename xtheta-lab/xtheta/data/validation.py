@@ -1,9 +1,10 @@
 import pandas as pd
 import numpy as np
 import os
-from xtheta.data.bell_chsh import RunningAB, bootstrap_chsh, compute_correlations_per_setting, calculate_chsh_from_correlations
+from xtheta.data.bell_chsh import RunningAB, bootstrap_chsh, compute_correlations_per_setting, calculate_chsh_from_correlations, compute_chsh_variants
 from xtheta.data.schema import BellEventSchema, validate_bell_schema
 from xtheta.data.loaders import load_bell_data
+from xtheta.fitting.phi_eff_fit import fit_phi_eff
 
 SCIENTIFIC_WARNING = (
     "Phi_eff is an effective phenomenological parameter only. "
@@ -16,7 +17,9 @@ def run_open_data_chsh_validation(
     dataset_name: str = "unknown",
     output_dir: str = "outputs",
     bootstrap_samples: int = 1000,
-    seed: int = 42
+    seed: int = 42,
+    claim_level: str = "phenomenological_fit",
+    raw_row_count: int | None = None
 ) -> dict:
     """
     Run CHSH validation on provided data and compute effective X-Theta fit.
@@ -53,6 +56,13 @@ def run_open_data_chsh_validation(
         print("Error: No valid events processed.")
         return {}
 
+    # Validation: fail if any setting pair has near-zero count
+    for i in range(4):
+        if rab.count[i] < 5:  # Arbitrary threshold for "near-zero"
+            a_s, b_s = i // 2, i % 2
+            print(f"Error: Setting pair {a_s}{b_s} has insufficient counts ({rab.count[i]}).")
+            return {"status": "failed", "error": f"Insufficient counts for setting {a_s}{b_s}"}
+
     S = rab.chsh()
     S_se = rab.chsh_se()
 
@@ -61,8 +71,12 @@ def run_open_data_chsh_validation(
         "row_count": total_rows,
         "CHSH_S": float(S),
         "CHSH_S_se": float(S_se),
-        "interpretation_warning": SCIENTIFIC_WARNING
+        "interpretation_warning": SCIENTIFIC_WARNING,
+        "claim_level": claim_level
     }
+    if raw_row_count is not None:
+        results["raw_row_count"] = raw_row_count
+        results["rejected_row_count"] = raw_row_count - total_rows
 
     E = rab.expectation()
     for i in range(4):
@@ -80,32 +94,39 @@ def run_open_data_chsh_validation(
         results["bootstrap_samples"] = bootstrap_samples
 
     # Fit phi_eff
-    fit = fit_effective_phi_from_chsh(S, 'smax-envelope')
+    # Use max_abs variant for fitting to handle sign conventions
+    variants = compute_chsh_variants(E[0], E[1], E[2], E[3])
+    S_max_abs = variants["max_abs"]
+
+    fit = fit_phi_eff(S_max_abs, 'smax-envelope')
     results["phi_eff"] = fit["phi_eff"]
     results["R_theta_eff"] = fit["R_theta_eff"]
     results["fit_status"] = fit["fit_status"]
-    if "warning" in fit:
-        results["fit_warning"] = fit["warning"]
+    results["fit_warning"] = SCIENTIFIC_WARNING
 
-    os.makedirs(os.path.join(output_dir, "data"), exist_ok=True)
-    summary_path = os.path.join(output_dir, "data", f"{dataset_name}_chsh_summary.csv")
-    pd.DataFrame([results]).to_csv(summary_path, index=False)
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Generic audit CSV
+    audit_df = pd.DataFrame([results])
+    audit_df.to_csv(os.path.join(output_dir, f"{dataset_name}_audit.csv"), index=False)
 
     counts_df = pd.DataFrame({
         "setting_pair": ["00", "01", "10", "11"],
         "count": [results[f"count_{s}"] for s in ["00", "01", "10", "11"]],
         "expectation": [results[f"E_{s}"] for s in ["00", "01", "10", "11"]]
     })
-    counts_path = os.path.join(output_dir, "data", f"{dataset_name}_setting_counts.csv")
-    counts_df.to_csv(counts_path, index=False)
 
-    os.makedirs(os.path.join(output_dir, "reports"), exist_ok=True)
-    report_path = os.path.join(output_dir, "reports", f"{dataset_name}_validation_report.md")
+    report_path = os.path.join(output_dir, f"{dataset_name}_audit.md")
     with open(report_path, "w") as f:
-        f.write(f"# CHSH Validation Report: {dataset_name}\n\n")
+        f.write(f"# X-Theta Audit Report: {dataset_name}\n\n")
         f.write(f"**Scientific Warning:** {SCIENTIFIC_WARNING}\n\n")
+        f.write(f"## Claim Level\n\n")
+        f.write(f"- **Level:** {claim_level}\n\n")
         f.write(f"## Summary Results\n\n")
-        f.write(f"- **Total Row Count:** {total_rows}\n")
+        if raw_row_count is not None:
+            f.write(f"- **Raw Row Count:** {raw_row_count}\n")
+            f.write(f"- **Rejected Row Count:** {results['rejected_row_count']}\n")
+        f.write(f"- **Valid Bell Trial Count:** {total_rows}\n")
         f.write(f"- **CHSH S-statistic:** {S:.6f} ± {S_se:.6f} (Standard Error)\n")
         if "S_ci_low_95" in results:
             f.write(f"- **95% Bootstrap Confidence Interval:** [{results['S_ci_low_95']:.6f}, {results['S_ci_high_95']:.6f}]\n")
@@ -137,32 +158,3 @@ def run_open_data_chsh_validation(
 
     return results
 
-def fit_effective_phi_from_chsh(S_observed: float, geometry: str) -> dict:
-    """
-    Fits an effective phi value from an observed CHSH S value.
-    """
-    from scipy.optimize import minimize_scalar
-
-    def objective(phi):
-        if geometry == 'xy':
-            S_theory = 2 * np.sqrt(2) * abs(np.cos(2 * phi))
-        elif geometry == 'xz':
-            S_theory = 2 * np.sqrt(2) * (np.cos(phi)**2)
-        elif geometry == 'smax-envelope':
-            S_theory = 2 * np.sqrt(1 + np.cos(2 * phi)**2)
-        else:
-            raise ValueError(f"Unknown geometry: {geometry}")
-        return (abs(S_observed) - S_theory)**2
-
-    res = minimize_scalar(objective, bounds=(0, np.pi/4), method='bounded')
-    phi_eff = res.x
-    r_theta_eff = 2 * (np.sin(2 * phi_eff)**2)
-
-    return {
-        "S_observed": S_observed,
-        "geometry": geometry,
-        "phi_eff": phi_eff,
-        "R_theta_eff": r_theta_eff,
-        "fit_status": "Success" if res.success else "Failed",
-        "warning": SCIENTIFIC_WARNING
-    }

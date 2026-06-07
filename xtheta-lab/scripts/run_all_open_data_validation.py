@@ -14,8 +14,8 @@ DATASETS = [
     {
         "name": "hensen",
         "dataset": "hensen",
-        "data": Path("data/open_bell/hensen/raw/bell_open_data.txt"),
-        "output": Path("outputs/open_data/hensen"),
+        "data": Path("xtheta-lab/data/open_bell/hensen/raw/bell_open_data.txt"),
+        "output": Path("xtheta-lab/outputs/open_data/hensen"),
     },
 ]
 
@@ -29,7 +29,7 @@ def run_dataset(item: dict) -> dict | None:
 
     cmd = [
         sys.executable,
-        "scripts/run_open_data_validation.py",
+        "xtheta-lab/scripts/run_open_data_validation.py",
         "--dataset",
         item["dataset"],
         "--data",
@@ -49,7 +49,7 @@ def run_dataset(item: dict) -> dict | None:
         print(f"[ERROR] Validation failed for {item['name']}: {e}")
         return None
 
-    summary_file = item["output"] / "data" / f"{item['dataset']}_chsh_summary.csv"
+    summary_file = item["output"] / f"{item['dataset']}_audit.csv"
     if not summary_file.exists():
         print(f"[WARN] Summary not found: {summary_file}")
         return None
@@ -66,7 +66,7 @@ def main() -> None:
         if result:
             results.append(result)
 
-    comparison_dir = Path("outputs/open_data/comparison")
+    comparison_dir = Path("xtheta-lab/outputs/open_data/comparison")
     comparison_dir.mkdir(parents=True, exist_ok=True)
     comparison_file = comparison_dir / "open_data_comparison.csv"
 
