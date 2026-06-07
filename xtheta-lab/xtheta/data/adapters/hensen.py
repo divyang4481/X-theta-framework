@@ -9,42 +9,7 @@ import requests
 from pathlib import Path
 from typing import Iterator, Dict
 
-# The dataset is often referred to by its DOI or the 4TU.ResearchData link.
-# Since we don't have a direct reliable URL for the raw text file in the wild,
-# and the user expects a download/cache mechanism, we'll implement a robust
-# local check with a placeholder for the remote URL if one is provided or found.
-HENSEN_DATA_URL = "https://raw.githubusercontent.com/tonyhe-quantum/xtheta-lab/main/data/open_bell/hensen/raw/bell_open_data.txt"
-
-def download_hensen_data(target_path: Path) -> bool:
-    """
-    Attempt to download the Hensen dataset if it's missing.
-    """
-    if target_path.exists():
-        return True
-
-    print(f"Data not found at {target_path}. Attempting download...")
-    try:
-        response = requests.get(HENSEN_DATA_URL, timeout=30)
-        if response.status_code == 200:
-            target_path.parent.mkdir(parents=True, exist_ok=True)
-            target_path.write_bytes(response.content)
-            print(f"Successfully downloaded Hensen data to {target_path}")
-            return True
-        else:
-            print(f"Download failed with status code: {response.status_code}")
-    except Exception as e:
-        print(f"Download error: {e}")
-
-    # Fallback: check repository root as per instructions
-    root_file = Path("../bell_open_data.txt")
-    if root_file.exists():
-        print(f"Found data at repository root. Copying to {target_path}")
-        target_path.parent.mkdir(parents=True, exist_ok=True)
-        import shutil
-        shutil.copy(root_file, target_path)
-        return True
-
-    return False
+# Target reproduction: ~245 trials, S ~ 2.42 +/- 0.20
 
 def load_hensen_dataset(path: str, chunksize: int = 200_000) -> Iterator[pd.DataFrame]:
     """
@@ -52,11 +17,11 @@ def load_hensen_dataset(path: str, chunksize: int = 200_000) -> Iterator[pd.Data
     Implements the official filtering and mapping logic from the 2015 Nature paper.
     """
     p = Path(path)
-    if not download_hensen_data(p):
-        raise FileNotFoundError(f"Hensen data not found and could not be downloaded to: {path}")
+    if not p.exists():
+        raise FileNotFoundError(f"Hensen data not found at: {path}")
 
     # Read raw data
-    # The file has no header. Col 0 is timestamp, followed by 16 data columns.
+    # The file has no header. Col 0 is timestamp.
     df_raw = pd.read_csv(p, header=None)
 
     # Official constants for event-ready (heralding) and readout windows
@@ -69,6 +34,7 @@ def load_hensen_dataset(path: str, chunksize: int = 200_000) -> Iterator[pd.Data
     CHECK_FOR_INVALID_MARKER_IN_PAST = 250
 
     # Column mapping (0-indexed based on raw file)
+    # Col 0: Timestamp
     ER_CLICK1_TIME = 3
     ER_CLICK1_CH = 4
     ER_CLICK2_TIME = 5
@@ -88,10 +54,12 @@ def load_hensen_dataset(path: str, chunksize: int = 200_000) -> Iterator[pd.Data
     t2 = df_raw[ER_CLICK2_TIME]
     ch2 = df_raw[ER_CLICK2_CH]
 
+    # Window 1
     filter_w1_ch0 = (EVENT_READY_WINDOW_START_CH0 <= t1) & (t1 < EVENT_READY_WINDOW_START_CH0 + EVENT_READY_WINDOW_LENGTH) & (ch1 == 0)
     filter_w1_ch1 = (EVENT_READY_WINDOW_START_CH1 <= t1) & (t1 < EVENT_READY_WINDOW_START_CH1 + EVENT_READY_WINDOW_LENGTH) & (ch1 == 1)
     w1_filter = filter_w1_ch0 | filter_w1_ch1
 
+    # Window 2
     filter_w2_ch0 = (EVENT_READY_WINDOW_START_CH0 + EVENT_READY_WINDOW_SEPARATION <= t2) & (t2 < EVENT_READY_WINDOW_START_CH0 + EVENT_READY_WINDOW_SEPARATION + EVENT_READY_WINDOW_LENGTH) & (ch2 == 0)
     filter_w2_ch1 = (EVENT_READY_WINDOW_START_CH1 + EVENT_READY_WINDOW_SEPARATION <= t2) & (t2 < EVENT_READY_WINDOW_START_CH1 + EVENT_READY_WINDOW_SEPARATION + EVENT_READY_WINDOW_LENGTH) & (ch2 == 1)
     w2_filter = filter_w2_ch0 | filter_w2_ch1
@@ -102,6 +70,7 @@ def load_hensen_dataset(path: str, chunksize: int = 200_000) -> Iterator[pd.Data
     # 2. Signal Integrity Filters
     inv_a = df_raw[INVALID_MARKER_A]
     inv_b = df_raw[INVALID_MARKER_B]
+    # Filter if invalid marker is present (within recent past)
     no_invalid_marker = ((inv_a == 0) | (inv_a > CHECK_FOR_INVALID_MARKER_IN_PAST)) & \
                         ((inv_b == 0) | (inv_b > CHECK_FOR_INVALID_MARKER_IN_PAST))
 
@@ -123,6 +92,8 @@ def load_hensen_dataset(path: str, chunksize: int = 200_000) -> Iterator[pd.Data
     det_b = (ro_b > READOUT_WINDOW_START) & (ro_b <= READOUT_WINDOW_START + READOUT_WINDOW_LENGTH)
 
     # 4. Map to Canonical Schema
+    # alice_setting/bob_setting in {0, 1}
+    # alice_outcome/bob_outcome in {1, -1}
     df_final = pd.DataFrame({
         "trial_id": df_filtered.index,
         "timestamp": df_filtered[0],
